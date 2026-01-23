@@ -47,3 +47,22 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+/.quarto/
+
+/prac_1/*
+
+/prac_3/*
+/prac_5/*
+/prac_6/*
+
+
+/prac_1/Data/*
+
+/prac_7/*
+/prac_8/*
