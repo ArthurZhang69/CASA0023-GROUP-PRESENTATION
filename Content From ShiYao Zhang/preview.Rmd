@@ -1,0 +1,305 @@
+---
+title: "EO-HEAT · Slides 2–4 Preview"
+subtitle: "Problem Definition · HaoYu Jiang"
+output:
+  xaringan::moon_reader:
+    css: [default, custom.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+      slideNumberFormat: "%current% / %total%"
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  fig.retina = 3, fig.align = "center"
+)
+```
+
+```{r libraries, include=FALSE}
+library(ggplot2)
+library(scales)
+library(showtext)
+font_add_google("Cormorant+Garamond", "cormorant")
+font_add_google("Outfit", "outfit")
+showtext_auto()
+
+theme_eoheat <- function(base_size = 12) {
+  theme_minimal(base_family = "outfit", base_size = base_size) +
+  theme(
+    plot.background  = element_rect(fill = "#0F1117", color = NA),
+    panel.background = element_rect(fill = "#0F1117", color = NA),
+    panel.grid.major = element_line(color = "#252A40", linewidth = 0.4),
+    panel.grid.minor = element_blank(),
+    text             = element_text(color = "#9DA3B4"),
+    axis.text        = element_text(color = "#5C6380", size = rel(0.82)),
+    axis.title       = element_text(color = "#9DA3B4", size = rel(0.9)),
+    plot.title       = element_text(color = "#EDE8DF", face = "bold",
+                                    size = rel(1.15), margin = margin(b = 6)),
+    plot.subtitle    = element_text(color = "#9DA3B4", size = rel(0.85),
+                                    margin = margin(b = 12)),
+    plot.caption     = element_text(color = "#5C6380", size = rel(0.7),
+                                    hjust = 0, margin = margin(t = 8)),
+    legend.background = element_rect(fill = "#0F1117", color = NA),
+    legend.text      = element_text(color = "#9DA3B4"),
+    legend.title     = element_text(color = "#EDE8DF"),
+    plot.margin      = margin(12, 12, 12, 12)
+  )
+}
+```
+
+---
+
+## The Problem: Extreme Urban Heat Kills
+
+.slide-label[Slide 02 · Problem Definition · HaoYu Jiang]
+
+.left-wide[
+
+```{r fig-a, fig.height=4.2, fig.width=7}
+df <- data.frame(
+  year       = c(2001, 2006, 2011, 2016, 2021, 2025),
+  population = c(3.52, 4.52, 5.57, 6.50, 7.21, 8.05),
+  builtup    = c(190,  265,  320,  390,  445,  495)
+)
+coeff <- 60
+
+ggplot(df, aes(x = year)) +
+  geom_area(aes(y = builtup / coeff), fill = "#C9A96E", alpha = 0.12) +
+  geom_line(aes(y = builtup / coeff, color = "Built-up Area (km²)"),
+            linewidth = 1.1, linetype = "dashed") +
+  geom_point(aes(y = builtup / coeff, color = "Built-up Area (km²)"),
+             size = 2.8, shape = 15) +
+  geom_line(aes(y = population, color = "Population (millions)"),
+            linewidth = 1.4) +
+  geom_point(aes(y = population, color = "Population (millions)"),
+             size = 3.2, shape = 19) +
+  annotate("segment",
+           x = 2010, xend = 2010, y = 0.3, yend = 6.0,
+           color = "#E05C5C", linetype = "dotted", linewidth = 0.9) +
+  annotate("label",
+           x = 2010.2, y = 6.5,
+           label = "May 2010\n1,344 deaths",
+           fill = "#1E2235", color = "#E05C5C",
+           size = 3.0, fontface = "bold", family = "outfit",
+           label.padding = unit(0.35, "lines"),
+           label.r = unit(0.2, "lines"), hjust = 0) +
+  scale_y_continuous(
+    name = "Population (millions)", limits = c(0, 9.5),
+    sec.axis = sec_axis(~ . * coeff, name = "Built-up Area (km²)")
+  ) +
+  scale_x_continuous(breaks = c(2001, 2006, 2011, 2016, 2021, 2025)) +
+  scale_color_manual(values = c("Population (millions)" = "#EDE8DF",
+                                "Built-up Area (km²)"   = "#C9A96E")) +
+  labs(title    = "Rapid urbanisation drives escalating heat risk",
+       subtitle = "Ahmedabad population growth & built-up area expansion, 2001–2025",
+       caption  = "Sources: Census of India (2001, 2011); Patel & Rawat (2021); projected values",
+       x = NULL, color = NULL) +
+  theme_eoheat() +
+  theme(legend.position      = c(0.2, 0.85),
+        axis.title.y.right   = element_text(color = "#C9A96E"),
+        axis.title.y.left    = element_text(color = "#EDE8DF"))
+```
+
+.fig-caption[Fig. A · Population vs. Built-up Area · Census India + Literature]
+
+]
+
+.right-narrow[
+
+<br>
+
+.stat-box.alert[
+<span class="stat-number">1,344</span>
+<span class="stat-label">Excess deaths, May 2010</span>
+<span class="stat-source">Azhar et al. (2014), PLOS ONE</span>
+]
+
+.stat-box[
+<span class="stat-number">46.8°C</span>
+<span class="stat-label">Peak temperature, May 25</span>
+<span class="stat-source">IMD / Azhar et al. (2014)</span>
+]
+
+.stat-box[
+<span class="stat-number">+5°C</span>
+<span class="stat-label">LST rise from urbanisation</span>
+<span class="stat-source">Mohammad et al. (2022)</span>
+]
+
+.stat-box.teal[
+<span class="stat-number">70%</span>
+<span class="stat-label">of city area projected ≥45°C</span>
+<span class="stat-source">Mohammad et al. (2022)</span>
+]
+
+]
+
+.footnote[Azhar, G.S. et al. (2014) *PLOS ONE* 9(3):e91831 · Mohammad et al. (2022) *J Water Clim Change*]
+
+---
+
+## Who Suffers Most? Heat Vulnerability is Unequal
+
+.slide-label[Slide 03 · Problem Definition · HaoYu Jiang]
+
+.pull-left[
+
+```{r fig-c, fig.height=5.2, fig.width=5.5}
+library(ggforce)
+
+circles <- data.frame(
+  x    = c(-0.85,  0.85,  0.0),
+  y    = c(-0.45, -0.45,  0.7),
+  r    = c(1.35,   1.35,  1.35),
+  fill = c("#C0392B", "#2980B9", "#27AE60")
+)
+
+ggplot() +
+  geom_circle(data = circles,
+              aes(x0 = x, y0 = y, r = r, fill = fill),
+              alpha = 0.10, color = NA) +
+  geom_circle(data = circles,
+              aes(x0 = x, y0 = y, r = r, color = fill),
+              linewidth = 0.9, fill = NA) +
+  scale_fill_identity() +
+  scale_color_identity() +
+  annotate("text", x = -1.6, y = -1.1,
+           label = "HAZARD\nHigh LST\nHeat Wave Frequency",
+           size = 3.4, color = "#E05C5C",
+           family = "outfit", fontface = "bold", lineheight = 1.3) +
+  annotate("text", x = 1.6, y = -1.1,
+           label = "EXPOSURE\nPopulation Density\nOutdoor Workers",
+           size = 3.4, color = "#5DADE2",
+           family = "outfit", fontface = "bold", lineheight = 1.3) +
+  annotate("text", x = 0.0, y = 1.65,
+           label = "VULNERABILITY\nLow Income · Elderly\nMetal Roofs, No Greenery",
+           size = 3.4, color = "#58D68D",
+           family = "outfit", fontface = "bold", lineheight = 1.3) +
+  annotate("label", x = 0, y = 0.05,
+           label = "HEAT\nRISK",
+           size = 4.5, fontface = "bold", family = "outfit",
+           fill = "#C9A96E", color = "#0F1117",
+           label.padding = unit(0.5, "lines"),
+           label.r = unit(0.25, "lines")) +
+  coord_equal(xlim = c(-3.3, 3.3), ylim = c(-2.6, 3.2)) +
+  labs(title    = "Heat risk = Hazard × Exposure × Vulnerability",
+       subtitle = "Adapted from IPCC AR6 WGII (2022), Chapter 8") +
+  theme_void(base_family = "outfit") +
+  theme(plot.background = element_rect(fill = "#0F1117", color = NA),
+        plot.title      = element_text(color = "#EDE8DF", size = 11,
+                                       face = "bold", hjust = 0.5,
+                                       margin = margin(b = 4)),
+        plot.subtitle   = element_text(color = "#5C6380", size = 8.5,
+                                       hjust = 0.5, margin = margin(b = 8)),
+        plot.margin     = margin(8, 8, 8, 8))
+```
+
+.fig-caption[Fig. C · IPCC AR6 Risk Framework adapted for Ahmedabad]
+
+]
+
+.pull-right[
+
+### Most exposed groups
+
+| Group | Mechanism |
+|-------|-----------|
+| 🏚️ Slum communities | Metal roofs, no shade, no greenery |
+| 👷 Outdoor workers | Direct thermal exposure, 8h+/day |
+| 👴 Elderly & infants | Impaired thermoregulation |
+| 💰 Low-income | No AC, no access to cooling centres |
+
+<br>
+
+> "The official temperature is recorded **8 km outside** the city. On the tarmac where workers walk, it can be **10°C hotter**."
+>
+> — Dr. Mavalankar, *Exemplars in Global Health* (2022)
+
+.chip.alert[Spatial Data Gap] .chip[Ward-level] .chip.teal[1 Weather Station]
+
+]
+
+.footnote[IPCC AR6 WGII (2022) Ch.8 · Knowlton et al. (2014) *IJERPH* 11(4):3473 · Exemplars in Global Health (2022)]
+
+---
+
+## Policy Context: From Global Goals to Local Action
+
+.slide-label[Slide 04 · Problem Definition · HaoYu Jiang]
+
+.left-narrow[
+
+<br>
+
+.policy-global[
+<span class="policy-label">🌍 Global</span>
+**SDG** 3.9 · 11.5 · 11.7 · 13.1  
+**Sendai Framework** Priority 1 & 3  
+**New Urban Agenda** Para 37, 65, 79
+]
+
+↓
+
+.policy-national[
+<span class="policy-label">🇮🇳 National</span>
+**NAPCC** — Mission on Sustainable Habitat  
+**India NDC 2022** — 33% urban green cover
+]
+
+↓
+
+.policy-local[
+<span class="policy-label">🏙️ Local</span>
+**Ahmedabad HAP 2019**  
+~1,190 deaths averted / year
+]
+
+↓
+
+.policy-project[
+<span class="policy-label">🛰️ Our Project</span>
+**EO-HEAT** fills the spatial gap  
+Ward-level LST + HVI
+]
+
+]
+
+.right-wide[
+
+### Ahmedabad Heat Action Plan (2019) — 4 Pillars
+
+<br>
+
+.stat-box[
+<span class="stat-label">① Public Awareness & Community Outreach</span>
+Multilingual pamphlets, WhatsApp alerts, LED boards, school campaigns
+]
+
+.stat-box.teal[
+<span class="stat-label">② Early Warning System</span>
+Colour-coded heat alerts (Green → Red) triggered by IMD temperature thresholds
+]
+
+.stat-box[
+<span class="stat-label">③ Medical Preparedness</span>
+Heat stroke wards, ORS corners in all AMC hospitals, frontline worker training
+]
+
+.stat-box[
+<span class="stat-label">④ Reduce Heat Exposure (Long-term)</span>
+Cool Roofs Programme, 24hr park access, cooling centres for slum communities
+]
+
+<br>
+
+> The HAP is pioneering — but all 4 pillars activate from **one weather station**. EO-HEAT provides the **ward-level spatial data** that makes every pillar more targeted.
+
+]
+
+.footnote[AMC / NRDC / IIPH-G (2019) *Ahmedabad HAP 2019* · Hess et al. (2018) *J Environ Public Health* · UNDRR (2015) Sendai · UN (2017) NUA]
