@@ -176,7 +176,7 @@ ggplot(df, aes(x, y)) +
 
 ]
 
-.footnote[参考文献1 · 参考文献2]
+.footnote[参考文献1 · 参考文献2，3，4]
 
 ---
 
@@ -368,6 +368,10 @@ digraph workflow {
 ║  .policy-global[ ]    蓝色                            ║
 ║  .policy-national[ ]  橙色                            ║
 ║  .policy-local[ ]     绿色                            ║
-║  .policy-project[ ]   金色                            ║
+║  .policy-project[ ]   金色  
+║
+
+
+
 ╚══════════════════════════════════════════════════════╝
 -->
