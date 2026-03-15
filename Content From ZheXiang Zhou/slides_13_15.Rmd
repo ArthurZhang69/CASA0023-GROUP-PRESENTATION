@@ -29,11 +29,13 @@ knitr::opts_chunk$set(
 library(ggplot2)
 library(scales)
 library(showtext)
+
 font_add_google("Cormorant Garamond", "cormorant")
 font_add_google("Outfit", "outfit")
 showtext_auto()
+showtext_opts(dpi = 300)
 
-theme_eoheat <- function(base_size = 12) {
+theme_eoheat <- function(base_size = 14) {
   theme_minimal(base_family = "outfit", base_size = base_size) +
   theme(
     plot.background  = element_rect(fill = "#0F1117", color = NA),
@@ -41,183 +43,198 @@ theme_eoheat <- function(base_size = 12) {
     panel.grid.major = element_line(color = "#252A40", linewidth = 0.4),
     panel.grid.minor = element_blank(),
     text             = element_text(color = "#9DA3B4"),
-    axis.text        = element_text(color = "#5C6380", size = rel(0.82)),
+    axis.text        = element_text(color = "#5C6380", size = rel(0.85)),
     axis.title       = element_text(color = "#9DA3B4", size = rel(0.9)),
     plot.title       = element_text(color = "#EDE8DF", face = "bold",
-                                    size = rel(1.15), margin = margin(b = 6)),
-    plot.subtitle    = element_text(color = "#9DA3B4", size = rel(0.85),
-                                    margin = margin(b = 12)),
-    plot.caption     = element_text(color = "#5C6380", size = rel(0.7),
-                                    hjust = 0, margin = margin(t = 8)),
+                                    size = rel(1.1), margin = margin(b = 4)),
+    plot.subtitle    = element_text(color = "#9DA3B4", size = rel(0.8),
+                                    margin = margin(b = 10)),
+    plot.caption     = element_text(color = "#5C6380", size = rel(0.65),
+                                    hjust = 0, margin = margin(t = 6)),
     legend.background = element_rect(fill = "#0F1117", color = NA),
     legend.text      = element_text(color = "#9DA3B4"),
     legend.title     = element_text(color = "#EDE8DF"),
-    plot.margin      = margin(12, 12, 12, 12)
+    plot.margin      = margin(10, 10, 10, 10)
   )
 }
 ```
 
 ---
 
-## Project Timeline & Budget
+## Project Timeline
 
-.slide-label[Slide 13 · Project Plan]
+.slide-label[Slide 13a · Project Plan]
 
 .left-wide[
 
-```{r gantt-chart, fig.height=4.2, fig.width=8}
-library(dplyr)
+```{r gantt-chart, fig.height=3.8, fig.width=8, out.width="100%"}
+lvls <- rev(c("WP0  Stakeholder Scoping & Data Audit",
+              "WP1  LST Mapping (Landsat 8/9 TIRS)",
+              "WP2  Land Cover & Green Space (Sentinel-2)",
+              "WP3  Heat Vulnerability Index",
+              "WP4  Dashboard & Deliverables",
+              "WP5  Training, Handover & BAU"))
 
-tasks <- data.frame(
-  wp    = factor(rep(c("WP0 Scoping", "WP1 LST", "WP2 Land Cover",
-                        "WP3 HVI", "WP4 Dashboard", "WP5 Handover"),
-                      c(2, 3, 3, 2, 2, 2)),
-                 levels = rev(c("WP0 Scoping", "WP1 LST", "WP2 Land Cover",
-                                "WP3 HVI", "WP4 Dashboard", "WP5 Handover"))),
-  task  = c("Stakeholder scoping", "Data audit & access",
-            "GEE pipeline dev", "LST composite & trend", "UHI intensity map",
-            "Training data", "RF classification", "NDVI-LST regression",
-            "Census integration", "HVI construction & validation",
-            "GEE App & report", "Dissemination",
-            "AMC staff training", "BAU setup & handover"),
-  start = c(1, 1,   2, 3, 4,   3, 4, 5,   5, 6,   7, 8,   9, 10),
-  end   = c(2, 2,   3, 5, 5,   5, 6, 6,   7, 8,   9, 10,  11, 12),
-  col   = rep(c("#5C6380", "#C9A96E", "#4FC4CF",
-                "#58D68D", "#E05C5C", "#9B59B6"), c(2, 3, 3, 2, 2, 2))
+wp <- data.frame(
+  label = factor(c("WP0  Stakeholder Scoping & Data Audit",
+                    "WP1  LST Mapping (Landsat 8/9 TIRS)",
+                    "WP2  Land Cover & Green Space (Sentinel-2)",
+                    "WP3  Heat Vulnerability Index",
+                    "WP4  Dashboard & Deliverables",
+                    "WP5  Training, Handover & BAU"), levels = lvls),
+  start = c(1, 2, 3, 5, 7, 9),
+  end   = c(2, 5, 6, 8, 10, 12),
+  col   = c("#5C6380", "#C9A96E", "#4FC4CF",
+            "#58D68D", "#E05C5C", "#9B59B6")
 )
 
-tasks$task <- factor(tasks$task, levels = rev(tasks$task))
-
-# Milestones
+# Milestones mapped to the same factor levels
 ms <- data.frame(
-  x     = c(2,     6,     8,     10,    12),
-  label = c("Data Audit\nComplete",
-            "LST & LULC\nMaps Done",
+  month = c(2, 6, 8, 10, 12),
+  wp    = factor(c("WP0  Stakeholder Scoping & Data Audit",
+                    "WP2  Land Cover & Green Space (Sentinel-2)",
+                    "WP3  Heat Vulnerability Index",
+                    "WP4  Dashboard & Deliverables",
+                    "WP5  Training, Handover & BAU"), levels = lvls),
+  tag   = c("Data Audit\nComplete",
+            "LST & LULC\nDelivered",
             "HVI Map\nDelivered",
             "Dashboard\nBeta",
-            "Final\nHandover"),
-  y     = c(13, 9, 5, 3, 1)
+            "Final\nHandover")
 )
 
-ggplot(tasks, aes(y = task)) +
-  # Phase background bands
-  annotate("rect", xmin = 0.5, xmax = 2.5,
-           ymin = 0.3, ymax = 14.7,
-           fill = "#5C6380", alpha = 0.04) +
-  annotate("rect", xmin = 2.5, xmax = 6.5,
-           ymin = 0.3, ymax = 14.7,
-           fill = "#C9A96E", alpha = 0.04) +
-  annotate("rect", xmin = 6.5, xmax = 10.5,
-           ymin = 0.3, ymax = 14.7,
-           fill = "#E05C5C", alpha = 0.04) +
-  annotate("rect", xmin = 10.5, xmax = 12.5,
-           ymin = 0.3, ymax = 14.7,
-           fill = "#9B59B6", alpha = 0.04) +
-  # Task bars
-  geom_segment(aes(x = start - 0.05, xend = end + 0.05,
-                   yend = task, color = col),
-               linewidth = 4.5, lineend = "round") +
-  # Milestone diamonds
-  geom_point(data = ms, aes(x = x, y = y),
-             shape = 18, size = 4, color = "#EDE8DF",
+ggplot(wp, aes(y = label)) +
+  # Bars
+  geom_segment(aes(x = start - 0.1, xend = end + 0.1,
+                   yend = label, colour = col),
+               linewidth = 7, lineend = "round") +
+  # Milestones
+  geom_point(data = ms, aes(x = month, y = wp),
+             shape = 18, size = 5, colour = "#EDE8DF",
              inherit.aes = FALSE) +
-  # Milestone labels
-  geom_text(data = ms, aes(x = x, y = y + 0.7, label = label),
-            color = "#EDE8DF", size = 1.9, family = "outfit",
-            fontface = "bold", lineheight = 0.9,
+  geom_text(data = ms,
+            aes(x = month + 0.35, y = wp, label = tag),
+            colour = "#EDE8DF", size = 2.8, family = "outfit",
+            fontface = "bold", lineheight = 0.85,
+            hjust = 0, vjust = 0.5,
             inherit.aes = FALSE) +
-  # WP labels on right margin
-  scale_color_identity() +
-  scale_x_continuous(breaks = 1:12,
-                     labels = paste0("M", 1:12),
-                     limits = c(0.5, 12.5),
-                     expand = expansion(add = 0)) +
-  labs(
-    title    = "12-month project schedule",
-    subtitle = "6 work packages · 14 tasks · 5 key milestones (◆)",
-    x = NULL, y = NULL
+  scale_colour_identity() +
+  scale_x_continuous(
+    breaks = 1:12, labels = paste0("M", 1:12),
+    limits = c(0.5, 14.5), expand = expansion(add = 0)
   ) +
-  theme_eoheat(base_size = 9) +
-  theme(panel.grid.major.y = element_blank(),
-        axis.text.y = element_text(size = 7, color = "#9DA3B4",
-                                   hjust = 1))
+  labs(title = "12-month delivery schedule",
+       subtitle = "6 work packages \u00b7 5 key milestones \u00b7 phased around pre-monsoon window (Mar\u2013May)",
+       x = NULL, y = NULL) +
+  theme_eoheat(base_size = 13) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text.y  = element_text(size = 10, colour = "#9DA3B4", hjust = 1),
+    axis.text.x  = element_text(size = 9, colour = "#5C6380"),
+    plot.title    = element_text(size = 13),
+    plot.subtitle = element_text(size = 9.5)
+  )
 ```
 
-.fig-caption[Fig. P · Gantt chart: WP0–WP5 with milestone diamonds]
+.fig-caption[Fig. P · Gantt chart — WP0 to WP5 with milestone diamonds]
 
 ]
 
-<div class="right-narrow" style="margin-top: -1rem;">
+.right-narrow[
 
-### Budget · £500,000
+<h3 style="font-family:var(--font-body); font-size:1em; font-weight:500; color:var(--gold); text-transform:uppercase; letter-spacing:0.12em; margin-top:0; margin-bottom:0.6rem;">Why this timeline?</h3>
 
-```{r donut-chart, fig.height=3.2, fig.width=3.8, dev.args=list(bg="#0F1117")}
+<div style="font-size:0.78em; line-height:1.55; color:var(--text-secondary);">
+
+<p style="margin:0 0 0.55rem 0;"><strong style="color:#EDE8DF;">Pre-monsoon window (Mar–May)</strong><br>Peak heat + cloud cover &lt;15% maximises usable Landsat &amp; Sentinel scenes over Gujarat<br><span style="color:#5C6380; font-size:0.9em;">(Rajeshwari &amp; Mani, 2014)</span></p>
+
+<p style="margin:0 0 0.55rem 0;"><strong style="color:#EDE8DF;">WP0 scoping before analysis</strong><br>UNDP guidance mandates stakeholder mapping &amp; data audit before technical work to prevent scope creep<br><span style="color:#5C6380; font-size:0.9em;">(UNDP, 2021)</span></p>
+
+<p style="margin:0 0 0.55rem 0;"><strong style="color:#EDE8DF;">WP5 overlaps WP4 by 2 months</strong><br>Iterative training alongside dashboard development — World Bank "learning-by-doing" model<br><span style="color:#5C6380; font-size:0.9em;">(World Bank, 2019)</span></p>
+
+<p style="margin:0;"><strong style="color:#EDE8DF;">12 months total</strong><br>Consistent with UNEP/GRID urban heat programme: 10–14 months for city-scale delivery<br><span style="color:#5C6380; font-size:0.9em;">(UNEP, 2023)</span></p>
+
+</div>
+
+]
+
+.footnote[Rajeshwari & Mani (2014) *Int. J. Appl. Eng. Res.* · UNDP (2021) *Project Management Guidance* · World Bank (2019) *Capacity Building Framework* · UNEP (2023) *Beating the Heat* report]
+
+---
+
+## Budget & Value for Money
+
+.slide-label[Slide 13b · Project Plan]
+
+.left-wide[
+
+```{r budget-bar, fig.height=3.5, fig.width=8, out.width="100%"}
 budget <- data.frame(
-  category = c("Personnel", "Local Partner", "Software & Cloud",
-               "Stakeholder\nEngagement", "Training", "Reporting",
-               "Contingency"),
-  amount   = c(280, 50, 20, 45, 30, 15, 60),
-  fill     = c("#C9A96E", "#4FC4CF", "#5DADE2",
-               "#58D68D", "#9B59B6", "#F0A04B", "#5C6380")
+  item   = c("Personnel\n(2 RS analysts + 1 GIS engineer + 1 PM)",
+             "Local Partner\n(AMC liaison & field coordination)",
+             "Stakeholder Engagement\n(workshops, ward councillor meetings)",
+             "Capacity Building & Training\n(AMC staff upskilling, SOP manuals)",
+             "Software & Cloud Compute\n(GEE, QGIS, server hosting)",
+             "Reporting & Dissemination\n(publications, policy briefs)",
+             "Contingency Reserve\n(ring-fenced for overruns)"),
+  amount = c(280, 50, 45, 30, 20, 15, 60),
+  fill   = c("#C9A96E", "#4FC4CF", "#58D68D",
+             "#9B59B6", "#5DADE2", "#F0A04B", "#5C6380")
 )
+budget$item <- factor(budget$item, levels = rev(budget$item))
+budget$lab  <- paste0("\u00a3", budget$amount, "k")
+budget$pct  <- paste0(round(budget$amount / 500 * 100), "%")
 
-budget$pct <- budget$amount / sum(budget$amount) * 100
-budget$label <- paste0(budget$category, "\n£", budget$amount, "k")
-
-# Compute positions for labels
-budget <- budget %>%
-  arrange(desc(row_number())) %>%
-  mutate(
-    ymax = cumsum(amount),
-    ymin = lag(ymax, default = 0),
-    ymid = (ymin + ymax) / 2
-  )
-
-# Donut chart
-ggplot(budget, aes(ymax = ymax, ymin = ymin, xmax = 4, xmin = 2.5, fill = fill)) +
-  geom_rect(color = "#0F1117", linewidth = 0.6) +
-  geom_text(aes(x = 3.25, y = ymid,
-                label = paste0(round(pct), "%")),
-            color = "#0F1117", size = 2.5,
-            family = "outfit", fontface = "bold") +
-  geom_text(aes(x = 4.8, y = ymid,
-                label = paste0("£", amount, "k")),
-            color = "#9DA3B4", size = 2.2,
-            family = "outfit", hjust = 0) +
-  # Centre label
-  annotate("text", x = 0, y = 250,
-           label = "£500k", color = "#EDE8DF",
-           size = 4, family = "cormorant", fontface = "bold") +
-  annotate("text", x = 0, y = 210,
-           label = "Total", color = "#5C6380",
-           size = 2.5, family = "outfit") +
+ggplot(budget, aes(x = amount, y = item, fill = fill)) +
+  geom_col(width = 0.55) +
+  geom_text(aes(label = lab),
+            hjust = -0.12, colour = "#EDE8DF",
+            size = 3.8, family = "outfit", fontface = "bold") +
+  geom_text(aes(label = pct, x = amount - 3),
+            hjust = 1, colour = "#0F1117",
+            size = 3.0, family = "outfit", fontface = "bold") +
   scale_fill_identity() +
-  coord_polar(theta = "y") +
-  xlim(c(0, 5.5)) +
-  theme_void(base_family = "outfit") +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.18))) +
+  labs(title = "Budget allocation \u00b7 \u00a3500,000",
+       subtitle = "Personnel-led investment typical of technical consultancy; zero EO data licence cost",
+       x = NULL, y = NULL) +
+  theme_eoheat(base_size = 12) +
   theme(
-    plot.background = element_rect(fill = "#0F1117", color = NA),
-    plot.margin = margin(2, 2, 2, 2)
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_line(colour = "#252A40", linewidth = 0.3),
+    axis.text.y = element_text(size = 9, colour = "#9DA3B4", hjust = 1,
+                               lineheight = 0.9),
+    axis.text.x = element_blank(),
+    plot.title    = element_text(size = 13),
+    plot.subtitle = element_text(size = 9.5)
   )
 ```
 
-<div style="font-size:0.62em; color:#9DA3B4; line-height:1.55; margin-top:0.3rem;">
+.fig-caption[Fig. Q · Budget breakdown by category with percentage labels]
 
-| Item | £k | % |
-|------|----|---|
-| Personnel (2 RS + 1 GIS + 1 PM) | 280 | 56 |
-| Local partner (AMC) | 50 | 10 |
-| Stakeholder engagement | 45 | 9 |
-| Capacity building | 30 | 6 |
-| Software & cloud | 20 | 4 |
-| Reporting | 15 | 3 |
-| **Contingency** | **60** | **12** |
+]
+
+.right-narrow[
+
+<h3 style="font-family:var(--font-body); font-size:1em; font-weight:500; color:var(--gold); text-transform:uppercase; letter-spacing:0.12em; margin-top:0; margin-bottom:0.6rem;">Why this budget?</h3>
+
+<div style="font-size:0.78em; line-height:1.55; color:var(--text-secondary);">
+
+<p style="margin:0 0 0.55rem 0;"><strong style="color:#EDE8DF;">Personnel 56%</strong><br>Consistent with UKRI-funded technical consultancy where specialist staff are the primary cost driver<br><span style="color:#5C6380; font-size:0.9em;">(UKRI, 2022)</span></p>
+
+<p style="margin:0 0 0.55rem 0;"><strong style="color:#EDE8DF;">12% contingency</strong><br>Follows FCDO (formerly DFID) best practice of 10–15% for international development projects<br><span style="color:#5C6380; font-size:0.9em;">(FCDO, 2020)</span></p>
+
+<p style="margin:0 0 0.55rem 0;"><strong style="color:#EDE8DF;">£0 EO data cost</strong><br>All Landsat, Sentinel-2 &amp; MODIS data are open-access via Google Earth Engine — no licensing fee<br><span style="color:#5C6380; font-size:0.9em;">(Gorelick et al., 2017)</span></p>
+
+<p style="margin:0;"><strong style="color:#EDE8DF;">Local partner £50k</strong><br>Embeds AMC liaison from day one, aligning outputs with the Heat Action Plan revision cycle<br><span style="color:#5C6380; font-size:0.9em;">(AMC, 2019)</span></p>
 
 </div>
 
-</div>
+.chip[56% Personnel] .chip.teal[12% Contingency] .chip[0% EO Licence]
 
-.footnote[Personnel cost 56% typical for technical consultancy · 12% contingency follows DFID best practice · All EO data & GEE compute at zero licence cost]
+]
+
+.footnote[UKRI (2022) *Full Economic Costing Guide* · FCDO (2020) *Smart Rules* · Gorelick et al. (2017) *Remote Sens. Environ.* 202:18–27 · AMC/NRDC (2019) *Ahmedabad Heat Action Plan*]
 
 ---
 
@@ -225,91 +242,65 @@ ggplot(budget, aes(ymax = ymax, ymin = ymin, xmax = 4, xmin = 2.5, fill = fill))
 
 .slide-label[Slide 14 · Project Plan]
 
-<div style="font-size:0.78em; margin-top:-0.3rem;">
-
-<table style="width:100%; border-collapse:collapse; font-size:0.95em;">
+<table style="width:100%; border-collapse:collapse; font-size:0.82em; margin-top:0.2rem; line-height:1.45;">
 <thead>
-<tr style="background:#252A40;">
-  <th style="padding:0.5rem 0.6rem; color:#C9A96E; font-size:0.75em; letter-spacing:0.1em; text-transform:uppercase; width:3%;">#</th>
-  <th style="padding:0.5rem 0.6rem; color:#C9A96E; font-size:0.75em; letter-spacing:0.1em; text-transform:uppercase; width:24%;">Risk</th>
-  <th style="padding:0.5rem 0.6rem; color:#C9A96E; font-size:0.75em; letter-spacing:0.1em; text-transform:uppercase; width:10%; text-align:center;">Likelihood</th>
-  <th style="padding:0.5rem 0.6rem; color:#C9A96E; font-size:0.75em; letter-spacing:0.1em; text-transform:uppercase; width:10%; text-align:center;">Impact</th>
-  <th style="padding:0.5rem 0.6rem; color:#C9A96E; font-size:0.75em; letter-spacing:0.1em; text-transform:uppercase; width:53%;">Mitigation Strategy</th>
+<tr style="background:#252A40; border-bottom:2px solid rgba(201,169,110,0.4);">
+  <th style="padding:0.4rem 0.6rem; color:#C9A96E; font-size:0.78em; letter-spacing:0.08em; text-transform:uppercase; text-align:left; width:3%;">#</th>
+  <th style="padding:0.4rem 0.6rem; color:#C9A96E; font-size:0.78em; letter-spacing:0.08em; text-transform:uppercase; text-align:left; width:27%;">Risk Description</th>
+  <th style="padding:0.4rem 0.6rem; color:#C9A96E; font-size:0.78em; letter-spacing:0.08em; text-transform:uppercase; text-align:center; width:7%;">Likelihood</th>
+  <th style="padding:0.4rem 0.6rem; color:#C9A96E; font-size:0.78em; letter-spacing:0.08em; text-transform:uppercase; text-align:center; width:7%;">Impact</th>
+  <th style="padding:0.4rem 0.6rem; color:#C9A96E; font-size:0.78em; letter-spacing:0.08em; text-transform:uppercase; text-align:left; width:56%;">Mitigation Strategy</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background:rgba(224,92,92,0.08); border-bottom:1px solid rgba(201,169,110,0.15);">
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF; font-weight:500;">R1</td>
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF;">Cloud cover limits usable Landsat / Sentinel scenes</td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">Med</span></td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#E05C5C; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">High</span></td>
-  <td style="padding:0.45rem 0.6rem; color:#9DA3B4;">Use pre-monsoon window (Mar–May, <15% cloud); supplement with MODIS 8-day composites for gap-filling</td>
+<tr style="background:rgba(224,92,92,0.06); border-bottom:1px solid rgba(201,169,110,0.12);">
+  <td style="padding:0.35rem 0.6rem; color:#C9A96E; font-weight:600;">R1</td>
+  <td style="padding:0.35rem 0.6rem; color:#EDE8DF;">Cloud cover limits usable Landsat&nbsp;8/9 and Sentinel&#8209;2 scenes for LST and land&#8209;cover analysis</td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">Med</span></td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#E05C5C; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">High</span></td>
+  <td style="padding:0.35rem 0.6rem; color:#9DA3B4;">Acquire in pre&#8209;monsoon dry window (Mar&ndash;May, &lt;15% cloud); gap&#8209;fill with MODIS 8&#8209;day composites</td>
 </tr>
-<tr style="background:rgba(79,196,207,0.05); border-bottom:1px solid rgba(201,169,110,0.15);">
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF; font-weight:500;">R2</td>
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF;">Census ward boundaries change between cycles</td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#58D68D; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">Low</span></td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">Med</span></td>
-  <td style="padding:0.45rem 0.6rem; color:#9DA3B4;">Use AMC's latest administrative shapefile; build spatial harmonisation routine in GEE for boundary alignment</td>
+<tr style="background:rgba(79,196,207,0.04); border-bottom:1px solid rgba(201,169,110,0.12);">
+  <td style="padding:0.35rem 0.6rem; color:#C9A96E; font-weight:600;">R2</td>
+  <td style="padding:0.35rem 0.6rem; color:#EDE8DF;">Ward boundaries redrawn between India Census cycles, causing spatial mismatch with demographic data</td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#58D68D; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">Low</span></td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">Med</span></td>
+  <td style="padding:0.35rem 0.6rem; color:#9DA3B4;">Use Ahmedabad Municipal Corporation (AMC) latest shapefile; automated spatial harmonisation in GEE</td>
 </tr>
-<tr style="background:rgba(224,92,92,0.08); border-bottom:1px solid rgba(201,169,110,0.15);">
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF; font-weight:500;">R3</td>
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF;">AMC staff turnover disrupts BAU adoption</td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">Med</span></td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#E05C5C; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">High</span></td>
-  <td style="padding:0.45rem 0.6rem; color:#9DA3B4;">Train 5+ staff across 2 departments; deliver Standard Operating Procedure (SOP) documentation & video tutorials</td>
+<tr style="background:rgba(224,92,92,0.06); border-bottom:1px solid rgba(201,169,110,0.12);">
+  <td style="padding:0.35rem 0.6rem; color:#C9A96E; font-weight:600;">R3</td>
+  <td style="padding:0.35rem 0.6rem; color:#EDE8DF;">Staff turnover at AMC disrupts adoption of routine annual monitoring (business&#8209;as&#8209;usual) after handover</td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">Med</span></td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#E05C5C; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">High</span></td>
+  <td style="padding:0.35rem 0.6rem; color:#9DA3B4;">Train 5+ staff across 2 AMC departments; deliver Standard Operating Procedure manuals &amp; video tutorials</td>
 </tr>
-<tr style="background:rgba(79,196,207,0.05); border-bottom:1px solid rgba(201,169,110,0.15);">
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF; font-weight:500;">R4</td>
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF;">Budget overrun on personnel costs</td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#58D68D; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">Low</span></td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#E05C5C; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">High</span></td>
-  <td style="padding:0.45rem 0.6rem; color:#9DA3B4;">Fixed-term contracts with capped day-rates; 12% contingency reserve (£60k) ring-fenced for overruns</td>
+<tr style="background:rgba(79,196,207,0.04); border-bottom:1px solid rgba(201,169,110,0.12);">
+  <td style="padding:0.35rem 0.6rem; color:#C9A96E; font-weight:600;">R4</td>
+  <td style="padding:0.35rem 0.6rem; color:#EDE8DF;">Personnel costs exceed budget due to extended specialist engagement or currency fluctuation</td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#58D68D; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">Low</span></td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#E05C5C; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">High</span></td>
+  <td style="padding:0.35rem 0.6rem; color:#9DA3B4;">Fixed&#8209;term contracts with capped day&#8209;rates; 12% contingency reserve (&pound;60k) ring&#8209;fenced for overruns</td>
 </tr>
-<tr style="background:rgba(224,92,92,0.08); border-bottom:1px solid rgba(201,169,110,0.15);">
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF; font-weight:500;">R5</td>
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF;">Stakeholder disengagement delays feedback</td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">Med</span></td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">Med</span></td>
-  <td style="padding:0.45rem 0.6rem; color:#9DA3B4;">Embed AMC liaison officer in project team from M1; quarterly review meetings with ward councillors</td>
+<tr style="background:rgba(224,92,92,0.06); border-bottom:1px solid rgba(201,169,110,0.12);">
+  <td style="padding:0.35rem 0.6rem; color:#C9A96E; font-weight:600;">R5</td>
+  <td style="padding:0.35rem 0.6rem; color:#EDE8DF;">Key stakeholders (AMC officials, ward councillors) disengage, delaying feedback on deliverables</td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">Med</span></td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">Med</span></td>
+  <td style="padding:0.35rem 0.6rem; color:#9DA3B4;">Embed dedicated AMC liaison officer in team from Month&nbsp;1; quarterly review workshops</td>
 </tr>
-<tr style="background:rgba(79,196,207,0.05); border-bottom:1px solid rgba(201,169,110,0.15);">
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF; font-weight:500;">R6</td>
-  <td style="padding:0.45rem 0.6rem; color:#EDE8DF;">LST retrieval accuracy insufficient at ward scale</td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#58D68D; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">Low</span></td>
-  <td style="padding:0.45rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:2px; font-size:0.82em; font-weight:600;">Med</span></td>
-  <td style="padding:0.45rem 0.6rem; color:#9DA3B4;">Cross-validate Landsat LST with MODIS MOD11A2 & IMD ground station records; report RMSE per ward</td>
+<tr style="background:rgba(79,196,207,0.04);">
+  <td style="padding:0.35rem 0.6rem; color:#C9A96E; font-weight:600;">R6</td>
+  <td style="padding:0.35rem 0.6rem; color:#EDE8DF;">Landsat thermal band (100&nbsp;m) yields insufficient accuracy when aggregated to ward&#8209;level for the Heat Vulnerability Index</td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#58D68D; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">Low</span></td>
+  <td style="padding:0.35rem 0.6rem; text-align:center;"><span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-weight:600; font-size:0.85em;">Med</span></td>
+  <td style="padding:0.35rem 0.6rem; color:#9DA3B4;">Cross&#8209;validate with MODIS MOD11A2 &amp; IMD ground stations; report RMSE per ward</td>
 </tr>
 </tbody>
 </table>
 
-</div>
+<div style="margin-top:0.8rem;"></div>
 
-<br>
-
-.stats-row[
-
-.stat-box[
-<span class="stat-number" style="font-size:1.4em;">2</span>
-<span class="stat-label">High-impact risks</span>
-<span class="stat-source">R1 Cloud cover · R3 Staff turnover</span>
-]
-
-.stat-box.teal[
-<span class="stat-number" style="font-size:1.4em;">6</span>
-<span class="stat-label">Dimensions covered</span>
-<span class="stat-source">Data · Admin · Personnel · Budget · Stakeholder · Technical</span>
-]
-
-.stat-box[
-<span class="stat-number" style="font-size:1.4em;">12%</span>
-<span class="stat-label">Contingency reserve</span>
-<span class="stat-source">£60k ring-fenced · DFID best practice</span>
-]
-
-]
-
-.footnote[Risk matrix: <span style="background:#E05C5C; color:#0F1117; padding:0.1em 0.4em; border-radius:2px; font-size:0.9em;">High</span> <span style="background:#F0A04B; color:#0F1117; padding:0.1em 0.4em; border-radius:2px; font-size:0.9em;">Medium</span> <span style="background:#58D68D; color:#0F1117; padding:0.1em 0.4em; border-radius:2px; font-size:0.9em;">Low</span> · All mitigations are operationalised in project SOP]
+.footnote[Risk colour key — <span style="background:#E05C5C; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-size:0.9em; font-weight:600;">High</span>&ensp;<span style="background:#F0A04B; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-size:0.9em; font-weight:600;">Medium</span>&ensp;<span style="background:#58D68D; color:#0F1117; padding:0.15em 0.5em; border-radius:3px; font-size:0.9em; font-weight:600;">Low</span> · 6 dimensions: data quality · administrative · institutional capacity · budget · stakeholder · technical accuracy]
 
 ---
 
@@ -317,60 +308,56 @@ ggplot(budget, aes(ymax = ymax, ymin = ymin, xmax = 4, xmin = 2.5, fill = fill))
 
 .slide-label[Slide 15 · Summary & Call to Action]
 
-<br>
+<div style="display:flex; gap:1.4rem; margin:1rem 0 1.8rem 0;">
 
-<div style="display:flex; gap:1.2rem; margin:0.8rem 0 1.5rem 0;">
-
-<div style="flex:1; background:#1E2235; border:1px solid rgba(201,169,110,0.2); border-top:3px solid #C9A96E; border-radius:0 0 4px 4px; padding:1.2rem 1rem; text-align:center;">
-<div style="font-size:2em; margin-bottom:0.4rem;">🛰️</div>
-<div style="font-family:'Outfit'; font-size:1.05em; font-weight:600; color:#EDE8DF; margin-bottom:0.5rem;">Evidence-Based</div>
-<div style="font-size:0.78em; color:#9DA3B4; line-height:1.5;">Multi-sensor EO pipeline delivers <strong style="color:#C9A96E;">ward-level heat intelligence</strong> unavailable from ground stations alone</div>
+<div style="flex:1; background:#1E2235; border:1px solid rgba(201,169,110,0.25); border-top:3px solid #C9A96E; border-radius:0 0 4px 4px; padding:1.4rem 1.2rem; text-align:center;">
+<div style="font-size:1.6em; margin-bottom:0.5rem;">&#x1F6F0;&#xFE0F;</div>
+<div style="font-family:'Outfit',sans-serif; font-size:1.1em; font-weight:600; color:#EDE8DF; margin-bottom:0.4rem;">Evidence-Based</div>
+<div style="font-size:0.85em; color:#9DA3B4; line-height:1.55;">Multi-sensor EO pipeline delivers <strong style="color:#C9A96E;">ward-level heat intelligence</strong> unavailable from ground stations alone</div>
 </div>
 
-<div style="flex:1; background:#1E2235; border:1px solid rgba(79,196,207,0.3); border-top:3px solid #4FC4CF; border-radius:0 0 4px 4px; padding:1.2rem 1rem; text-align:center;">
-<div style="font-size:2em; margin-bottom:0.4rem;">📋</div>
-<div style="font-family:'Outfit'; font-size:1.05em; font-weight:600; color:#EDE8DF; margin-bottom:0.5rem;">Policy-Ready</div>
-<div style="font-size:0.78em; color:#9DA3B4; line-height:1.5;">Outputs map directly onto <strong style="color:#4FC4CF;">HAP's 4 pillars</strong> and SDG 11 / 13 reporting requirements</div>
+<div style="flex:1; background:#1E2235; border:1px solid rgba(79,196,207,0.3); border-top:3px solid #4FC4CF; border-radius:0 0 4px 4px; padding:1.4rem 1.2rem; text-align:center;">
+<div style="font-size:1.6em; margin-bottom:0.5rem;">&#x1F4CB;</div>
+<div style="font-family:'Outfit',sans-serif; font-size:1.1em; font-weight:600; color:#EDE8DF; margin-bottom:0.4rem;">Policy-Ready</div>
+<div style="font-size:0.85em; color:#9DA3B4; line-height:1.55;">Outputs map directly onto <strong style="color:#4FC4CF;">HAP's 4 pillars</strong> and SDG 11 / 13 reporting requirements</div>
 </div>
 
-<div style="flex:1; background:#1E2235; border:1px solid rgba(88,214,141,0.3); border-top:3px solid #58D68D; border-radius:0 0 4px 4px; padding:1.2rem 1rem; text-align:center;">
-<div style="font-size:2em; margin-bottom:0.4rem;">🔄</div>
-<div style="font-family:'Outfit'; font-size:1.05em; font-weight:600; color:#EDE8DF; margin-bottom:0.5rem;">Sustainable</div>
-<div style="font-size:0.78em; color:#9DA3B4; line-height:1.5;">GEE-based workflow enables AMC to <strong style="color:#58D68D;">self-update annually</strong> at near-zero marginal cost</div>
+<div style="flex:1; background:#1E2235; border:1px solid rgba(88,214,141,0.3); border-top:3px solid #58D68D; border-radius:0 0 4px 4px; padding:1.4rem 1.2rem; text-align:center;">
+<div style="font-size:1.6em; margin-bottom:0.5rem;">&#x1F504;</div>
+<div style="font-family:'Outfit',sans-serif; font-size:1.1em; font-weight:600; color:#EDE8DF; margin-bottom:0.4rem;">Sustainable</div>
+<div style="font-size:0.85em; color:#9DA3B4; line-height:1.55;">GEE-based workflow enables AMC to <strong style="color:#58D68D;">self-update annually</strong> at near-zero marginal cost</div>
 </div>
 
 </div>
 
 .pull-left[
 
-.stats-row[
+> **In 2010, Ahmedabad lost 1,344 lives to a single heat wave. EO-HEAT ensures the city never faces that crisis blind again.**
 
-.stat-box.alert[
-<span class="stat-number" style="font-size:1.6em;">1,344</span>
-<span class="stat-label">Lives lost in one month</span>
-<span class="stat-source">May 2010 · The crisis we address</span>
-]
-
-.stat-box.teal[
-<span class="stat-number" style="font-size:1.6em;">£500k</span>
-<span class="stat-label">Total investment</span>
-<span class="stat-source">Self-sustaining after Year 1</span>
-]
-
+.checklist[
+- First **ward-level Heat Vulnerability Index** for Ahmedabad
+- **Annual self-updating** GEE pipeline — no recurring licence cost
+- Directly feeds **HAP annual revision** & SDG 11/13 national reporting
 ]
 
 ]
 
 .pull-right[
 
-> **In 2010, Ahmedabad lost 1,344 lives to a single heat wave. EO-HEAT ensures the city never faces that crisis blind again.**
+.stats-row[
 
-<br>
+.stat-box.alert[
+<span class="stat-number">1,344</span>
+<span class="stat-label">Lives lost · May 2010</span>
+<span class="stat-source">The crisis we address</span>
+]
 
-.checklist[
-- First **ward-level Heat Vulnerability Index** for Ahmedabad
-- **Annual self-updating** GEE pipeline — no recurring licence cost
-- Directly feeds **HAP annual revision** & SDG 11/13 national reporting
+.stat-box.teal[
+<span class="stat-number">£500k</span>
+<span class="stat-label">Total investment</span>
+<span class="stat-source">Self-sustaining after Year 1</span>
+]
+
 ]
 
 <br>
@@ -381,4 +368,4 @@ github.com/ArthurZhang69/CASA0023-GROUP-PRESENTATION
 
 ]
 
-.footnote[Azhar et al. (2014) · Hess et al. (2018) · AMC/NRDC (2019) HAP · CASA0023 · UCL 2026 · Slides: Xaringan + R + ggplot2 · All EO data via Google Earth Engine]
+.footnote[Azhar et al. (2014) *PLOS ONE* · Hess et al. (2018) · AMC/NRDC (2019) HAP · CASA0023 · UCL 2026 · Xaringan + R + ggplot2 · All EO via GEE]
