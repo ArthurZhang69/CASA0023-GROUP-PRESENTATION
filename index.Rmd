@@ -1,7 +1,7 @@
 ---
 title: "EO-HEAT Ahmedabad"
 subtitle: "Earth Observation for Heat Exposure Assessment and Targeted Mitigation"
-author: "I♥LearningDiary · CASA0023"
+author: "Terravance Advisory Group · CASA0023"
 institute: "Centre for Advanced Spatial Analysis, UCL"
 date: "2026"
 output:
@@ -29,7 +29,7 @@ class: title-slide
 <h2 style="font-family:var(--font-body); font-size:1.05em; font-weight:300; color:var(--text-secondary); letter-spacing:0.03em; margin:0 0 1.5rem 0;">Earth Observation for Heat Exposure Assessment and Targeted Mitigation</h2>
 
 <p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;">Bidding to Ahmedabad Municipal Corporation (AMC)</p>
-<p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;">I&#9829;LearningDiary · UCL CASA</p>
+<p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;">Terravance Advisory Group [TAG] · UCL CASA</p>
 <p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;">March 2026</p>
 
 </div>
