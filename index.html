@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>EO-HEAT Ahmedabad</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="I♥LearningDiary · CASA0023" />
+    <meta name="date" content="2026-01-01" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: title-slide
+
+&lt;div style="position:absolute; top:10%; left:0; right:0; padding:2.5rem 4rem; border-top:1px solid rgba(201,169,110,0.5);"&gt;
+
+&lt;span style="display:inline-block; background:var(--bg-card); border:1px solid rgba(201,169,110,0.5); color:var(--gold); font-family:var(--font-body); font-size:0.7em; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; padding:0.35em 0.9em; border-radius:2px; margin-bottom:1.2rem;"&gt;CASA0023 · Remotely Sensing Cities and Environments · 2026&lt;/span&gt;
+
+&lt;h1 style="font-family:var(--font-display); font-size:3.4em; font-weight:700; color:var(--text-primary); line-height:1.05; margin:0 0 0.3em 0;"&gt;EO-HEAT&lt;br&gt;Ahmedabad&lt;/h1&gt;
+
+&lt;h2 style="font-family:var(--font-body); font-size:1.05em; font-weight:300; color:var(--text-secondary); letter-spacing:0.03em; margin:0 0 1.5rem 0;"&gt;Earth Observation for Heat Exposure Assessment and Targeted Mitigation&lt;/h2&gt;
+
+&lt;p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;"&gt;Bidding to Ahmedabad Municipal Corporation (AMC)&lt;/p&gt;
+&lt;p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;"&gt;I&amp;#9829;LearningDiary · UCL CASA&lt;/p&gt;
+&lt;p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;"&gt;March 2026&lt;/p&gt;
+
+&lt;/div&gt;
+
+
+
+
+---
+
+## Presentation Structure
+
+&lt;br&gt;
+
+.pull-left[
+
+.stat-box[
+&lt;span class="stat-number"&gt;01&lt;/span&gt;
+&lt;span class="stat-label"&gt;Problem Definition&lt;/span&gt;
+&lt;span class="stat-source"&gt;Slides 2–4 · ~2.5 min · 40% of marks&lt;/span&gt;
+]
+
+.stat-box.teal[
+&lt;span class="stat-number"&gt;02&lt;/span&gt;
+&lt;span class="stat-label"&gt;Approach &amp; Methodology&lt;/span&gt;
+&lt;span class="stat-source"&gt;Slides 5–10 · ~4 min · 40% of marks&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;03&lt;/span&gt;
+&lt;span class="stat-label"&gt;Project Plan &amp; VFM&lt;/span&gt;
+&lt;span class="stat-source"&gt;Slides 11–14 · ~2.5 min · 20% of marks&lt;/span&gt;
+]
+
+]
+
+.pull-right[
+
+&lt;br&gt;
+
+&gt; Our proposal is structured around a single question:
+&gt;
+&gt; **How do we get the right intervention to the right ward, on the right day — before people die?**
+
+&lt;br&gt;
+
+.text-small.text-muted[
+All figures in this presentation are produced from open-access  
+Earth Observation data (Landsat 8/9, Sentinel-2, MODIS) unless  
+otherwise noted. Code available at: `https://github.com/ArthurZhang69/CASA0023-GROUP-PRESENTATION.git`
+]
+
+]
+
+---
+class: section-slide
+
+&lt;span class="section-number"&gt;01 · Problem Definition&lt;/span&gt;
+# The Problem
+
+---
+
+## The Problem: Extreme Urban Heat Kills
+
+.slide-label[Slide 02 · Problem Definition]
+
+.left-wide[
+
+&lt;img src="index_files/figure-html/fig-a-1.png" alt="" width="504" style="display: block; margin: auto;" /&gt;
+
+.fig-caption[Fig. A · Built-up area: Chaturvedi et al. (2022) Table 4 · Population: Census of India]
+
+]
+
+&lt;div class="right-narrow" style="margin-top:-2.5rem;"&gt;
+
+.stat-box.alert[
+&lt;span class="stat-number"&gt;1,344&lt;/span&gt;
+&lt;span class="stat-label"&gt;Excess deaths, May 2010&lt;/span&gt;
+&lt;span class="stat-source"&gt;Azhar et al. (2014), PLOS ONE&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;46.8°C&lt;/span&gt;
+&lt;span class="stat-label"&gt;Peak temperature, May 25&lt;/span&gt;
+&lt;span class="stat-source"&gt;IMD / Azhar et al. (2014)&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;+130%&lt;/span&gt;
+&lt;span class="stat-label"&gt;Built-up area growth, 1990–2019&lt;/span&gt;
+&lt;span class="stat-source"&gt;Chaturvedi et al. (2022) Table 4&lt;/span&gt;
+]
+
+.stat-box.teal[
+&lt;span class="stat-number"&gt;70%&lt;/span&gt;
+&lt;span class="stat-label"&gt;of city area projected ≥45°C&lt;/span&gt;
+&lt;span class="stat-source"&gt;Mohammad et al. (2022)&lt;/span&gt;
+]
+
+&lt;/div&gt;
+
+.footnote[Azhar et al. (2014) *PLOS ONE* 9(3):e91831 · Chaturvedi et al. (2022) *J. Geogr. Sci.* 32:1791 · Mohammad et al. (2022) *J Water Clim Change*]
+
+---
+
+## Who Suffers Most? Heat Vulnerability is Unequal
+
+.slide-label[Slide 03 · Problem Definition]
+
+.pull-left[
+
+&lt;img src="index_files/figure-html/fig-c-1.png" alt="" width="417.6" style="display: block; margin: auto;" /&gt;
+
+.fig-caption[Fig. C · IPCC AR6 Risk Framework adapted for Ahmedabad]
+
+]
+
+.pull-right[
+
+### Most exposed groups
+
+
+| Group | Mechanism |
+|-------|-----------|
+| 🏚️ Slum communities | Metal roofs, no shade, no greenery |
+| &lt;span style="color:#EDE8DF"&gt;👷 Outdoor workers&lt;/span&gt; | &lt;span style="color:#9DA3B4"&gt;Direct thermal exposure, 8h+/day&lt;/span&gt; |
+| 👴 Elderly &amp; infants | Impaired thermoregulation |
+| &lt;span style="color:#EDE8DF"&gt;💰 Low-income&lt;/span&gt; | &lt;span style="color:#9DA3B4"&gt;No AC, no access to cooling centres&lt;/span&gt; |
+
+&lt;br&gt;
+
+&gt; "The official temperature is recorded **8 km outside** the city. On the tarmac where workers walk, it can be **10°C hotter**."
+&gt;
+&gt; — Dr. Mavalankar, *Exemplars in Global Health* (2022)
+
+.chip.alert[Spatial Data Gap] .chip[Ward-level] .chip.teal[1 Weather Station]
+
+]
+
+.footnote[IPCC AR6 WGII (2022) Ch.8 · Knowlton et al. (2014) *IJERPH* 11(4):3473 · Exemplars in Global Health (2022)]
+
+---
+
+## Policy Context: From Global Goals to Local Action
+
+.slide-label[Slide 04 · Problem Definition]
+
+.left-narrow[
+
+.policy-global[
+&lt;span class="policy-label"&gt;🌍 Global&lt;/span&gt;
+**SDG** 3.9 · 11.5 · 11.7 · 13.1  
+**Sendai Framework** Priority 1 &amp; 3  
+**New Urban Agenda** Para 37, 65, 79
+]
+
+
+.policy-national[
+&lt;span class="policy-label"&gt;🇮🇳 National&lt;/span&gt;
+**NAPCC** — Mission on Sustainable Habitat  
+**India NDC 2022** — 33% urban green cover
+]
+
+
+.policy-local[
+&lt;span class="policy-label"&gt;🏙️ Local&lt;/span&gt;
+**Ahmedabad HAP 2019**  
+~1,190 deaths averted / year
+]
+
+
+]
+
+.right-wide[
+
+### Ahmedabad Heat Action Plan (2019) — 4 Pillars
+
+.stat-box[
+&lt;span class="stat-label"&gt;① Public Awareness &amp; Community Outreach&lt;/span&gt;
+Multilingual pamphlets, WhatsApp alerts, LED boards, school campaigns
+]
+
+.stat-box[
+&lt;span class="stat-label"&gt;② Early Warning System&lt;/span&gt;
+Colour-coded heat alerts (Green → Red) triggered by IMD temperature thresholds
+]
+
+.stat-box[
+&lt;span class="stat-label"&gt;③ Medical Preparedness&lt;/span&gt;
+Heat stroke wards, ORS corners in all AMC hospitals, frontline worker training
+]
+
+.stat-box[
+&lt;span class="stat-label"&gt;④ Reduce Heat Exposure (Long-term)&lt;/span&gt;
+Cool Roofs Programme, 24hr park access, cooling centres for slum communities
+]
+
+&lt;br&gt;
+
+&gt; The HAP is pioneering — but all 4 pillars activate from **one weather station**. EO-HEAT provides the **ward-level spatial data** that makes every pillar more targeted.
+
+]
+
+.footnote[AMC / NRDC / IIPH-G (2019) *Ahmedabad HAP 2019* · Hess et al. (2018) *J Environ Public Health* · UNDRR (2015) Sendai Framework · UN (2017) New Urban Agenda]
+
+---
+class: section-slide
+
+&lt;span class="section-number"&gt;02 · Approach &amp; Methodology&lt;/span&gt;
+# Our Approach
+
+---
+
+## Earth Observation &amp; Ancillary Data
+
+.slide-label[Slide 06 · Approach]
+
+&lt;img src="index_files/figure-html/fig-f-1.png" alt="" width="792" style="display: block; margin: auto;" /&gt;
+
+.fig-caption[Fig. F · EO Data Timeline · USGS / ESA / NASA / Census India / OpenStreetMap]
+
+.footnote[All EO data accessed via Google Earth Engine · No licensing cost · Full temporal coverage from 1984]
+
+---
+class: section-slide
+
+&lt;span class="section-number"&gt;03 · Project Plan&lt;/span&gt;
+# Project Plan &amp;amp; Value for Money
+
+---
+
+## Project Timeline(纯演示)
+
+.slide-label[Slide 13 · Project Plan]
+
+&lt;img src="index_files/figure-html/gantt-1.png" alt="" width="792" style="display: block; margin: auto;" /&gt;
+
+.footnote[★ M1: AMC Kick-off · ★ M5: LST maps delivered · ★ M8: HVI delivered · ★ M10: Training complete · ★ M12: Final presentation]
+
+---
+
+## Summary: Why EO-HEAT Ahmedabad?
+
+.slide-label[Slide 15 · Summary]
+
+&lt;br&gt;
+
+.stats-row[
+
+.stat-box.alert[
+&lt;span class="stat-number"&gt;1,344&lt;/span&gt;
+&lt;span class="stat-label"&gt;Deaths in one month (2010)&lt;/span&gt;
+&lt;span class="stat-source"&gt;The problem we are solving&lt;/span&gt;
+]
+
+.stat-box.teal[
+&lt;span class="stat-number"&gt;1,190&lt;/span&gt;
+&lt;span class="stat-label"&gt;Deaths averted/yr by HAP&lt;/span&gt;
+&lt;span class="stat-source"&gt;What good policy can do&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;Ward&lt;/span&gt;
+&lt;span class="stat-label"&gt;Level spatial precision&lt;/span&gt;
+&lt;span class="stat-source"&gt;What the HAP currently lacks&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;£500k&lt;/span&gt;
+&lt;span class="stat-label"&gt;Total project cost&lt;/span&gt;
+&lt;span class="stat-source"&gt;Self-sustaining after Year 1&lt;/span&gt;
+]
+
+]
+
+&lt;br&gt;
+
+.pull-left[
+
+.checklist[
+- **Evidence-based**: First ward-level Heat Vulnerability Index for Ahmedabad from multi-sensor EO
+- **Policy-ready**: Direct input to HAP annual updates + SDG 11/13 reporting
+- **Sustainable**: GEE pipeline runs at near-zero marginal cost post-handover
+]
+
+]
+
+.pull-right[
+
+&gt; "For £500,000, we deliver not just a one-time assessment, but a **self-sustaining monitoring system** that will protect Ahmedabad's most vulnerable residents from deadly heat — for years to come."
+
+&lt;br&gt;
+
+.mono.text-small.text-muted[
+github.com/[team]/eo-heat · UCL CASA · 2026
+]
+
+]
+
+---
+class: final-slide
+
+&lt;div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding:3rem 4rem;"&gt;
+
+&lt;h1 style="font-family:var(--font-display); color:var(--text-primary); margin:0 0 0.2em 0;"&gt;Thank You&lt;/h1&gt;
+&lt;p style="font-family:var(--font-body); color:var(--text-muted); letter-spacing:0.15em; text-transform:uppercase; font-size:0.8em; margin:0 0 2.5rem 0;"&gt;Questions Welcome&lt;/p&gt;
+
+&lt;div style="display:flex; gap:1.5rem; width:100%; max-width:900px; margin-bottom:2rem;"&gt;
+
+&lt;div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:4px; padding:1.2rem;"&gt;
+&lt;p style="font-family:var(--font-body); color:var(--gold); font-size:0.65em; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 0.5rem 0;"&gt;Project Lead&lt;/p&gt;
+&lt;p style="color:var(--text-primary); margin:0 0 0.3rem 0;"&gt;Member A&lt;/p&gt;
+&lt;p style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.75em; margin:0;"&gt;a.member@ucl.ac.uk&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:4px; padding:1.2rem;"&gt;
+&lt;p style="font-family:var(--font-body); color:var(--gold); font-size:0.65em; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 0.5rem 0;"&gt;EO Analysis&lt;/p&gt;
+&lt;p style="color:var(--text-primary); margin:0 0 0.3rem 0;"&gt;Member B&lt;/p&gt;
+&lt;p style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.75em; margin:0;"&gt;b.member@ucl.ac.uk&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:4px; padding:1.2rem;"&gt;
+&lt;p style="font-family:var(--font-body); color:var(--teal); font-size:0.65em; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 0.5rem 0;"&gt;Repository&lt;/p&gt;
+&lt;p style="color:var(--text-primary); margin:0 0 0.3rem 0;"&gt;All code &amp;amp; data&lt;/p&gt;
+&lt;p style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.75em; margin:0;"&gt;github.com/[team]/eo-heat&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p style="font-family:var(--font-body); color:var(--text-muted); font-size:0.7em; text-align:center; margin:0;"&gt;CASA0023 · Remotely Sensing Cities and Environments · UCL 2026&lt;br&gt;Slides produced with Xaringan · R · ggplot2 · All EO data via Google Earth Engine&lt;/p&gt;
+
+&lt;/div&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "ratio": "16:9",
+  "countIncrementalSlides": false,
+  "slideNumberFormat": "%current% / %total%",
+  "navigation": {
+    "scroll": false
+  }
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

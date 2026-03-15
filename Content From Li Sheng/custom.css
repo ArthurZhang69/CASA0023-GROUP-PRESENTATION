@@ -32,6 +32,14 @@
 }
 
 /* ── Base & Reset ───────────────────────────────────────────── */
+
+/* 修复灰色下半部分：外层容器统一设为深色 */
+.remark-slide,
+.remark-slide-container,
+.remark-slide-scaler {
+  background-color: var(--bg-primary) !important;
+}
+
 .remark-slide-content {
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -101,21 +109,7 @@ pre code {
 .title-slide {
   background-color: var(--bg-primary) !important;
   padding: 0 !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-.title-slide::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 80% 20%,
-      rgba(79, 196, 207, 0.08) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 60% at 10% 80%,
-      rgba(201, 169, 110, 0.06) 0%, transparent 70%);
-  pointer-events: none;
+  position: relative;
 }
 
 .title-slide .title-block {
@@ -178,6 +172,8 @@ pre code {
   display: flex !important;
   align-items: center !important;
   padding: 0 4rem !important;
+  min-height: 100% !important;
+  height: 100% !important;
 }
 
 .section-slide::after {
@@ -249,14 +245,14 @@ pre code {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-left: 3px solid var(--gold);
-  padding: 1rem 1.2rem;
-  margin: 0.5rem 0;
+  padding: 0.65rem 1rem;
+  margin: 0.3rem 0;
   border-radius: 0 4px 4px 0;
 }
 
 .stat-box .stat-number {
   font-family: var(--font-display);
-  font-size: 2.4em;
+  font-size: 2.0em;
   font-weight: 700;
   color: var(--gold);
   line-height: 1;
@@ -343,10 +339,12 @@ thead th {
 
 tbody tr {
   border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
+  background: var(--bg-primary);
 }
 
-tbody tr:hover { background: var(--bg-card); }
+tbody tr:nth-child(even) { background: var(--bg-card); }
+
+tbody tr:hover { background: var(--bg-highlight); }
 
 tbody td {
   padding: 0.55rem 0.8rem;
@@ -417,13 +415,13 @@ ul li strong { color: var(--text-primary); }
    POLICY LAYER BOXES (Slide 4)
    ══════════════════════════════════════════════════════════════ */
 .policy-global   { background: rgba(46,  134, 193, 0.08); border: 1px solid rgba(46, 134, 193, 0.35);
-                   border-radius: 4px; padding: 0.8rem 1rem; margin: 0.4rem 0; }
+                   border-radius: 4px; padding: 0.5rem 0.8rem; margin: 0.25rem 0; }
 .policy-national { background: rgba(230, 126,  34, 0.08); border: 1px solid rgba(230, 126,  34, 0.35);
-                   border-radius: 4px; padding: 0.8rem 1rem; margin: 0.4rem 0; }
+                   border-radius: 4px; padding: 0.5rem 0.8rem; margin: 0.25rem 0; }
 .policy-local    { background: rgba(39,  174, 96,  0.08); border: 1px solid rgba(39,  174, 96,  0.35);
-                   border-radius: 4px; padding: 0.8rem 1rem; margin: 0.4rem 0; }
+                   border-radius: 4px; padding: 0.5rem 0.8rem; margin: 0.25rem 0; }
 .policy-project  { background: rgba(201, 169, 110, 0.1);  border: 1px solid var(--border-strong);
-                   border-radius: 4px; padding: 0.8rem 1rem; margin: 0.4rem 0; }
+                   border-radius: 4px; padding: 0.5rem 0.8rem; margin: 0.25rem 0; }
 
 .policy-global   .policy-label { color: #5DADE2; }
 .policy-national .policy-label { color: #F0A04B; }
@@ -470,10 +468,7 @@ ul li strong { color: var(--text-primary); }
    ══════════════════════════════════════════════════════════════ */
 .final-slide {
   background-color: var(--bg-secondary) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
+  padding: 0 !important;
 }
 
 .final-slide h1 {
@@ -528,3 +523,42 @@ ul li strong { color: var(--text-primary); }
 
 /* Full-width image with caption */
 .fig-full img { width: 100%; border-radius: 4px; border: 1px solid var(--border); }
+
+/* 强制覆盖 Xaringan default 表格背景 */
+.remark-slide-content table tbody tr:nth-child(even) {
+  background: #1E2235 !important;
+  color: #EDE8DF !important;
+}
+
+.remark-slide-content table tbody tr:nth-child(even) td {
+  color: #EDE8DF !important;
+}
+
+.right-wide .stat-box {
+  padding: 0.4rem 0.8rem !important;
+  margin: 0.15rem 0 !important;
+}
+
+.right-wide .stat-box .stat-label {
+  font-size: 0.7em !important;
+  margin-bottom: 0.1rem !important;
+}
+
+.right-wide .stat-box p {
+  font-size: 0.82em !important;
+  margin: 0 !important;
+}
+
+.left-narrow .policy-global,
+.left-narrow .policy-national,
+.left-narrow .policy-local,
+.left-narrow .policy-project {
+  padding: 0.35rem 0.7rem !important;
+  margin: 0.15rem 0 !important;
+  font-size: 0.82em !important;
+}
+
+.left-narrow .policy-label {
+  font-size: 0.6em !important;
+  margin-bottom: 0.15rem !important;
+}
