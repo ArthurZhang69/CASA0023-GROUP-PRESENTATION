@@ -12,9 +12,9 @@ CASA0023-GROUP-PRESENTATION/
 │
 ├── index.Rmd          ← ⭐ 最终演示文稿主文件（Arthur维护）
 ├── index.html         ← Knit 后生成，GitHub Pages 渲染这个
-├── custom.css         ← 共享主题样式（根目录css的除了Arthur之外其他人不要修改,
+├── custom.css         ← 共享主题样式（根目录css的除了Arthur之外其他人不要修改⚠,
                          然后自己文件夹里的css可以定时跟根目录里的css同步一下）
-├── .gitignore         ← GitHub大文件忽略，切勿往GitHub上传大文件(>200MB)堵塞tree
+├── .gitignore         ← GitHub大文件忽略，切勿往GitHub上传大文件(>100MB)堵塞tree
 ├── README.md
 │
 ├── Content From HaoYu Jiang/
