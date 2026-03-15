@@ -1,7 +1,7 @@
 # CASA0023 Group Presentation
 **Remotely Sensing Cities and Environments · UCL 2026**
 
-🌐 **Live Presentation:** `https://[组长GitHub用户名].github.io/CASA0023-GROUP-PRESENTATION/`
+🌐 **Live Presentation:** `https://arthurzhang69.github.io/CASA0023-GROUP-PRESENTATION/`
 
 ---
 
@@ -106,29 +106,6 @@ git push
 逐一打开每个人文件夹里的 `preview.Rmd` 点 Knit，确保没有报错。
 
 ### Step 2 · 在 index.Rmd 里按顺序引入每个人的内容
-
-```rmd
----
-# Slide 1 Title
----
-
-```{r, child="Content From HaoYu Jiang/preview.Rmd"}
-```
-
-```{r, child="Content From JianShu Wu/preview.Rmd"}
-```
-
-```{r, child="Content From Li Sheng/preview.Rmd"}
-```
-
-```{r, child="Content From ShiYao Zhang/preview.Rmd"}
-```
-
-```{r, child="Content From ZheXiang Zhou/preview.Rmd"}
-```
-```
-
-> `child` 参数会把每个 `preview.Rmd` 的内容直接嵌入，yaml header 部分会被自动忽略，只保留 slide 内容。
 
 ### Step 3 · Knit index.Rmd 生成最终文件
 
