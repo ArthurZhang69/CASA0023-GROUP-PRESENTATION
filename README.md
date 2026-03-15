@@ -134,6 +134,7 @@ git push
 | 样式不对 | `custom.css` 没放在同级目录 | 确认文件夹里有 `custom.css` |
 | Push 被拒绝 | 忘记先 pull | 先 `git pull` 再 push |
 | 图片太大推不上去 | 文件超过 100MB | 大文件放 Google Drive，repo 里只放导出的图表截图 |
+| Push 报 403 / Permission denied | 本地缓存了别人的 GitHub 账号 | 运行 `git remote set-url origin https://你的用户名@github.com/ArthurZhang69/CASA0023-GROUP-PRESENTATION.git` 再 push，弹出密码框时输入自己的 Personal Access Token（GitHub → Settings → Developer Settings → Personal Access Tokens → 勾选 repo 权限生成） |
 
 ---
 
