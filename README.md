@@ -1,7 +1,7 @@
 # CASA0023 Group Presentation
 **Remotely Sensing Cities and Environments · UCL 2026**
 
-🌐 **Live Presentation:** `https://[组长GitHub用户名].github.io/CASA0023-GROUP-PRESENTATION/`
+🌐 **Live Presentation:** `https://arthurzhang69.github.io/CASA0023-GROUP-PRESENTATION/`
 
 ---
 
@@ -12,8 +12,9 @@ CASA0023-GROUP-PRESENTATION/
 │
 ├── index.Rmd          ← ⭐ 最终演示文稿主文件（Arthur维护）
 ├── index.html         ← Knit 后生成，GitHub Pages 渲染这个
-├── custom.css         ← 共享主题样式（根目录css的除了Arthur之外其他人不要修改,然后自己文件夹里的css可以定时跟根目录里的css同步一下）
-├── .gitignore         ← GitHub大文件忽略，切勿往GitHub上传大文件(>200MB)堵塞tree
+├── custom.css         ← 共享主题样式（根目录css的除了Arthur之外其他人不要修改⚠,
+                         然后自己文件夹里的css可以定时跟根目录里的css同步一下）
+├── .gitignore         ← GitHub大文件忽略，切勿往GitHub上传大文件(>100MB)堵塞tree
 ├── README.md
 │
 ├── Content From HaoYu Jiang/
@@ -106,29 +107,6 @@ git push
 逐一打开每个人文件夹里的 `preview.Rmd` 点 Knit，确保没有报错。
 
 ### Step 2 · 在 index.Rmd 里按顺序引入每个人的内容
-
-```rmd
----
-# Slide 1 Title
----
-
-```{r, child="Content From HaoYu Jiang/preview.Rmd"}
-```
-
-```{r, child="Content From JianShu Wu/preview.Rmd"}
-```
-
-```{r, child="Content From Li Sheng/preview.Rmd"}
-```
-
-```{r, child="Content From ShiYao Zhang/preview.Rmd"}
-```
-
-```{r, child="Content From ZheXiang Zhou/preview.Rmd"}
-```
-```
-
-> `child` 参数会把每个 `preview.Rmd` 的内容直接嵌入，yaml header 部分会被自动忽略，只保留 slide 内容。
 
 ### Step 3 · Knit index.Rmd 生成最终文件
 
