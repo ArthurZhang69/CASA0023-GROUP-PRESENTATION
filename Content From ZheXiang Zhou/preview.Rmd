@@ -368,6 +368,7 @@ digraph workflow {
 ║  .policy-global[ ]    蓝色                            ║
 ║  .policy-national[ ]  橙色                            ║
 ║  .policy-local[ ]     绿色                            ║
-║  .policy-project[ ]   金色                            ║
+║  .policy-project[ ]   金色  
+║
 ╚══════════════════════════════════════════════════════╝
 -->
