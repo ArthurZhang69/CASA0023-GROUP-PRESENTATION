@@ -562,3 +562,5 @@ ul li strong { color: var(--text-primary); }
   font-size: 0.6em !important;
   margin-bottom: 0.15rem !important;
 }
+
+.fig-caption { text-align: left !important; }

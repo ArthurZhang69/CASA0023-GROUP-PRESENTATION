@@ -85,15 +85,37 @@ class: section-slide
 
 ---
 
+&lt;!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 02 · The Problem: Extreme Urban Heat Kills    ║
+║  布局A：左栏上下叠两图，右栏统计数字                 ║
+╚══════════════════════════════════════════════════════╝
+--&gt;
+
 ## The Problem: Extreme Urban Heat Kills
 
 .slide-label[Slide 02 · Problem Definition]
 
 .left-wide[
 
-&lt;img src="index_files/figure-html/fig-a-1.png" alt="" width="504" style="display: block; margin: auto;" /&gt;
+&lt;div style="display:flex; gap:0.8rem; align-items:flex-start; margin-bottom:0.3rem;"&gt;
 
-.fig-caption[Fig. A · Built-up area: Chaturvedi et al. (2022) Table 4 · Population: Census of India]
+&lt;div style="flex:1.5;"&gt;
+&lt;img src="Content From ShiYao Zhang/fig_lst_ahmedabad.png" alt="" width="100%" style="display: block; margin: auto auto auto 0;" /&gt;
+&lt;/div&gt;
+
+&lt;div style="flex:1;"&gt;
+&lt;img src="Content From ShiYao Zhang/Land Cover 2019.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;img src="index_files/figure-html/fig-a-syz-1.png" alt="" width="705.6" style="display: block; margin: auto;" /&gt;
+
+&lt;div style="text-align:left;"&gt;
+.fig-caption[Top Left: LST map · Landsat 8 TIRS via GEE &amp;nbsp;·&amp;nbsp; Top Right: Land Cover 2019 · Chaturvedi et al. (2022)  
+Bottom: Built-up &amp; population · Chaturvedi et al. (2022)]
+&lt;/div&gt;
 
 ]
 
@@ -125,8 +147,6 @@ class: section-slide
 
 &lt;/div&gt;
 
-.footnote[Azhar et al. (2014) *PLOS ONE* 9(3):e91831 · Chaturvedi et al. (2022) *J. Geogr. Sci.* 32:1791 · Mohammad et al. (2022) *J Water Clim Change*]
-
 ---
 
 ## Who Suffers Most? Heat Vulnerability is Unequal
@@ -134,8 +154,9 @@ class: section-slide
 .slide-label[Slide 03 · Problem Definition]
 
 .pull-left[
-
-&lt;img src="index_files/figure-html/fig-c-1.png" alt="" width="417.6" style="display: block; margin: auto;" /&gt;
+&lt;div style="margin-top:-1.4rem;"&gt;
+&lt;img src="Content From ShiYao Zhang/IPCC.png" alt="" width="100%" style="display: block; margin: auto auto auto 0;" /&gt;
+&lt;/div&gt;
 
 .fig-caption[Fig. C · IPCC AR6 Risk Framework adapted for Ahmedabad]
 
@@ -172,36 +193,51 @@ class: section-slide
 .slide-label[Slide 04 · Problem Definition]
 
 .left-narrow[
+&lt;div style="height:1.5rem;"&gt;&lt;/div&gt;
 
 .policy-global[
-&lt;span class="policy-label"&gt;🌍 Global&lt;/span&gt;
-**SDG** 3.9 · 11.5 · 11.7 · 13.1  
-**Sendai Framework** Priority 1 &amp; 3  
-**New Urban Agenda** Para 37, 65, 79
+&lt;p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--teal); margin:0.6 0 0.6rem 0;"&gt;🌍 Global&lt;/p&gt;
+&lt;div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;"&gt;
+&lt;div style="font-size:0.95em; line-height:1.8;font-family:var(--font-body);"&gt;
+&lt;strong&gt;SDG&lt;/strong&gt; 3.9 · 11.5 · 11.7 · 13.1&lt;br&gt;
+&lt;strong&gt;Sendai Framework&lt;/strong&gt; Priority 1 &amp;amp; 3&lt;br&gt;
+&lt;strong&gt;New Urban Agenda&lt;/strong&gt; Para 37, 65, 79&lt;br&gt;&amp;nbsp;
+&lt;/div&gt;
+&lt;img src="Content From ShiYao Zhang/SDG.png" style="height:80px; flex-shrink:0;margin-top:-1rem;"&gt;
+&lt;/div&gt;
 ]
 
-&lt;span style="font-size:0.8em;"&gt;↓&lt;/span&gt;
-
+&lt;span style="font-size:1.2em; color:#5C6380;"&gt;&lt;/span&gt;
 
 .policy-national[
-&lt;span class="policy-label"&gt;🇮🇳 National&lt;/span&gt;
-**NAPCC** — Mission on Sustainable Habitat  
-**India NDC 2022** — 33% urban green cover
+&lt;p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin:0.6 0 0.6rem 0;"&gt;🕌 Regional&lt;/p&gt;
+
+&lt;div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;"&gt;
+&lt;div style="font-size:0.98em; line-height:1.8;font-family:var(--font-body);"&gt;
+&lt;strong&gt;NAPCC&lt;/strong&gt; — Mission on Sustainable Habitat&lt;br&gt;
+&lt;strong&gt;India NDC 2022&lt;/strong&gt; — 33% urban green cover&lt;br&gt;&amp;nbsp;
+&lt;/div&gt;
+&lt;img src="Content From ShiYao Zhang/NAPCC.png" style="height:65px; flex-shrink:0;margin-top:-1rem;"&gt;
+&lt;/div&gt;
 ]
 
-&lt;span style="font-size:0.8em;"&gt;↓&lt;/span&gt;
-
+&lt;span style="font-size:1.2em; color:#5C6380;"&gt; &lt;/span&gt;
 
 .policy-local[
-&lt;span class="policy-label"&gt;🏙️ Local&lt;/span&gt;
-**Ahmedabad HAP 2019**  
-~1,190 deaths averted / year
+&lt;p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--white); margin:0.6 0 0.6rem 0;"&gt;🌇 Local&lt;/p&gt;
+&lt;div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;"&gt;
+&lt;div style="font-size:0.95em; line-height:1.8;font-family:var(--font-body);"&gt;
+&lt;strong&gt;Ahmedabad HAP 2019&lt;/strong&gt;&lt;br&gt;
+~1,190 deaths averted / year&lt;br&gt;&amp;nbsp;
+&lt;/div&gt;
+&lt;img src="Content From ShiYao Zhang/AMC.png" style="height:45px; flex-shrink:0;margin-top:-0.3rem;filter:invert(1)"&gt;
+&lt;/div&gt;
 ]
-
 
 ]
 
 .right-wide[
+&lt;div style="height:1.4rem;"&gt;&lt;/div&gt;
 
 ### Ahmedabad Heat Action Plan (2019) — 4 Pillars
 
@@ -225,9 +261,10 @@ Heat stroke wards, ORS corners in all AMC hospitals, frontline worker training
 Cool Roofs Programme, 24hr park access, cooling centres for slum communities
 ]
 
-&lt;br&gt;
 
-&gt; The HAP is pioneering — but all 4 pillars activate from **one weather station**. EO-HEAT provides the **ward-level spatial data** that makes every pillar more targeted.
+&lt;div style="background:var(--bg-card); border-left:3px solid var(--teal); padding:2.98rem 1.2rem; width:100%; box-sizing:border-box; font-style:italic; color:var(--white); font-size:0.9em;font-weight:600;"&gt;
+The HAP is pioneering — but all 4 pillars activate from &lt;strong style="color:var(--teal);"&gt;one weather station&lt;/strong&gt;. EO-HEAT provides the &lt;strong style="color:var(--teal);"&gt;ward-level spatial data&lt;/strong&gt; that makes every pillar more targeted.
+&lt;/div&gt;
 
 ]
 

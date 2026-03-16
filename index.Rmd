@@ -131,89 +131,100 @@ class: section-slide
 
 ---
 
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 02 · The Problem: Extreme Urban Heat Kills    ║
+║  布局A：左栏上下叠两图，右栏统计数字                 ║
+╚══════════════════════════════════════════════════════╝
+-->
+
 ## The Problem: Extreme Urban Heat Kills
 
 .slide-label[Slide 02 · Problem Definition]
 
 .left-wide[
 
-```{r fig-a, fig.height=3.6, fig.width=7}
-# ── Data Source ────────────────────────────────────────────────
-# Built-up area: Chaturvedi et al. (2022) J. Geogr. Sci. 32:1791, Table 4
-#   Landsat Maximum Likelihood Classification, 945 km² study area
-# Population:
-#   1990 / 2019 — Chaturvedi et al. (2022) / World Population Review
-#   2001 / 2011 — Census of India (official)
-# ───────────────────────────────────────────────────────────────
+<div style="display:flex; gap:0.8rem; align-items:flex-start; margin-bottom:0.3rem;">
+
+<div style="flex:1.5;">
+```{r fig-lst-syz, out.width="100%", fig.align="left"}
+knitr::include_graphics("Content From ShiYao Zhang/fig_lst_ahmedabad.png")
+```
+</div>
+
+<div style="flex:1;">
+```{r fig-pie-hyj, out.width="100%", fig.align="center"}
+knitr::include_graphics("Content From ShiYao Zhang/Land Cover 2019.png")
+```
+</div>
+
+</div>
+
+```{r fig-a-syz, fig.height=2.8, fig.width=9.8, dev.args=list(bg="#0F1117")}
+# ══════════════════════════════════════════════
+# 📊 下图：人口与建成区折线图
+# 数据来源：
+#   Built-up area — Chaturvedi et al. (2022) Table 4
+#   Population — Census of India (2001,2011); World Population Review
+# ══════════════════════════════════════════════
 df <- data.frame(
-  year       = c(1990, 2000,   2001,   2010,   2011,   2019),
-  population = c(3.547, 4.519, 4.519,  5.578,  5.578,  7.868),
-  builtup    = c(132.45, 181.55, NA,   276.46,  NA,    305.24)
+  year       = c(1990, 2000,  2001,  2010,  2011,  2019),
+  population = c(3.547,4.519, 4.519, 5.578, 5.578, 7.868),
+  builtup    = c(132.45,181.55,NA,  276.46, NA,   305.24)
 )
-
 df_builtup <- df[!is.na(df$builtup), ]
-
 coeff <- 40
 
 ggplot(df, aes(x = year)) +
-  # Built-up area
   geom_area(data = df_builtup,
-            aes(y = builtup / coeff),
-            fill = "#C9A96E", alpha = 0.12) +
+            aes(y = builtup / coeff), fill = "#C9A96E", alpha = 0.12) +
   geom_line(data = df_builtup,
             aes(y = builtup / coeff, color = "Built-up Area (km²)"),
             linewidth = 1.1, linetype = "dashed") +
   geom_point(data = df_builtup,
              aes(y = builtup / coeff, color = "Built-up Area (km²)"),
-             size = 2.8, shape = 15) +
-  # Population
+             size = 2.5, shape = 15) +
   geom_line(aes(y = population, color = "Population (millions)"),
-            linewidth = 1.4) +
+            linewidth = 1.3) +
   geom_point(aes(y = population, color = "Population (millions)"),
-             size = 3.2, shape = 19) +
-  # 2010 
+             size = 2.8, shape = 19) +
   annotate("segment",
-           x = 2010, xend = 2010,
-           y = 0.3, yend = 6.2,
-           color = "#E05C5C", linetype = "dotted", linewidth = 0.9) +
-  annotate("label",
-           x = 2010.2, y = 6.7,
+           x = 2010, xend = 2010, y = 0.3, yend = 9.4,
+           color = "#E05C5C",alpha = 0.72,linewidth = 1) +
+  annotate("label", x = 2010.4, y = 2.6,
            label = "May 2010\n1,344 deaths",
            fill = "#1E2235", color = "#E05C5C",
-           size = 3.0, fontface = "bold", family = "outfit",
-           label.padding = unit(0.35, "lines"),
-           label.r = unit(0.2, "lines"), hjust = 0) +
-  # 2000–2010 
-  annotate("text",
-           x = 2005, y = 4.3,
-           label = "Fastest decade\n+52% built-up",
-           color = "#C9A96E", size = 2.6,
-           family = "outfit", fontface = "italic") +
+           size = 10.5, fontface = "bold", family = "outfit",
+           label.padding = unit(0.2, "lines"),
+           lineheight = 0.6, 
+           label.r = unit(0.15, "lines"), hjust = 0) +
   scale_y_continuous(
-    name = "Population (millions)",
-    limits = c(0, 9.5),
+    name = "Population (millions)", limits = c(0, 9.5),
     sec.axis = sec_axis(~ . * coeff, name = "Built-up Area (km²)")
   ) +
   scale_x_continuous(breaks = c(1990, 2000, 2010, 2019)) +
-  scale_color_manual(
-    values = c("Population (millions)" = "#EDE8DF",
-               "Built-up Area (km²)"   = "#C9A96E")
-  ) +
-  labs(
-    title    = "Rapid urbanisation drives escalating heat risk",
-    subtitle = "Ahmedabad population growth & built-up area expansion, 1990–2019",
-    caption  = "Built-up area: Chaturvedi et al. (2022) J. Geogr. Sci. 32:1791, Table 4 (Landsat LULC classification)\nPopulation: Census of India (2001, 2011); World Population Review (2021)",
-    x = NULL, color = NULL
-  ) +
-  theme_eoheat() +
-  theme(
-    legend.position    = c(0.2, 0.85),
-    axis.title.y.right = element_text(color = "#C9A96E"),
-    axis.title.y.left  = element_text(color = "#EDE8DF")
-  )
+  scale_color_manual(values = c("Population (millions)" = "#EDE8DF",
+                                "Built-up Area (km²)"   = "#C9A96E")) +
+  labs(title   = "Rapid urbanisation drives escalating heat risk",
+       caption = "Built-up: Chaturvedi et al. (2022) Table 4 · Population: Census of India / World Pop Review",
+       x = NULL, color = NULL) +
+  theme_eoheat(base_size = 10) +
+  theme(legend.position    = c(0.18, 0.82),
+      legend.text        = element_text(size = 26),
+      legend.key.size    = unit(0.4, "cm"),
+      axis.text          = element_text(size = 27, color = "#9DA3B4"),  # ← 轴刻度
+      axis.title         = element_text(size = 27, color = "#9DA3B4"),  # ← 轴标题
+      axis.title.y.right = element_text(size = 27, color = "#C9A96E"),
+      axis.title.y.left  = element_text(size = 27, color = "#EDE8DF"),
+      plot.title         = element_text(size = 29),
+      plot.caption       = element_text(size = 26),
+      plot.margin        = margin(4, 8, 4, 8))
 ```
 
-.fig-caption[Fig. A · Built-up area: Chaturvedi et al. (2022) Table 4 · Population: Census of India]
+<div style="text-align:left;">
+.fig-caption[Top Left: LST map · Landsat 8 TIRS via GEE &nbsp;·&nbsp; Top Right: Land Cover 2019 · Chaturvedi et al. (2022)  
+Bottom: Built-up & population · Chaturvedi et al. (2022)]
+</div>
 
 ]
 
@@ -245,8 +256,6 @@ ggplot(df, aes(x = year)) +
 
 </div>
 
-.footnote[Azhar et al. (2014) *PLOS ONE* 9(3):e91831 · Chaturvedi et al. (2022) *J. Geogr. Sci.* 32:1791 · Mohammad et al. (2022) *J Water Clim Change*]
-
 ---
 
 ## Who Suffers Most? Heat Vulnerability is Unequal
@@ -254,60 +263,11 @@ ggplot(df, aes(x = year)) +
 .slide-label[Slide 03 · Problem Definition]
 
 .pull-left[
-
-```{r fig-c, fig.height=5.8, fig.width=5.8,dev.args=list(bg="#0F1117")}
-library(ggforce)
-
-
-circles <- data.frame(
-  x    = c(-1.0,  1.0,  0.0),
-  y    = c(-0.6, -0.6,  0.95),
-  r    = c(2.0,   2.0,  2.0),
-  fill = c("#C0392B", "#2980B9", "#27AE60")
-)
-
-ggplot() +
-  geom_circle(data = circles,
-              aes(x0 = x, y0 = y, r = r, fill = fill),
-              alpha = 0.12, color = NA) +
-  geom_circle(data = circles,
-              aes(x0 = x, y0 = y, r = r, color = fill),
-              linewidth = 1.0, fill = NA) +
-  scale_fill_identity() +
-  scale_color_identity() +
-
-  annotate("text", x = -1.5, y = -1.5,
-           label = "HAZARD\nHigh LST\nHeat Wave\nFrequency",
-           size = 3.0, color = "#E05C5C",
-           family = "outfit", fontface = "bold", lineheight = 1.35) +
-  annotate("text", x = 1.5, y = -1.5,
-           label = "EXPOSURE\nPopulation\nDensity\nOutdoor Workers",
-           size = 3.0, color = "#5DADE2",
-           family = "outfit", fontface = "bold", lineheight = 1.35) +
-  annotate("text", x = 0.0, y = 2.05,
-           label = "VULNERABILITY\nLow Income · Elderly\nMetal Roofs\nNo Greenery",
-           size = 3.0, color = "#58D68D",
-           family = "outfit", fontface = "bold", lineheight = 1.35) +
-  annotate("text", x = 0, y = 0.12,
-           label = "HEAT\nRISK",
-           size = 5.2, fontface = "bold", family = "outfit",
-           color = "white", lineheight = 1.2) +
-  coord_equal(xlim = c(-4.2, 4.2), ylim = c(-3.5, 4.5)) +
-  labs(
-    title    = "Heat risk = Hazard × Exposure × Vulnerability",
-    subtitle = "Adapted from IPCC AR6 WGII (2022), Chapter 8"
-  ) +
-  theme_void(base_family = "outfit") +
-  theme(
-    plot.background = element_rect(fill = "#0F1117", color = NA),
-    plot.title      = element_text(color = "#EDE8DF", size = 11,
-                                   face = "bold", hjust = 0.5,
-                                   margin = margin(b = 4)),
-    plot.subtitle   = element_text(color = "#5C6380", size = 8.5,
-                                   hjust = 0.5, margin = margin(b = 8)),
-    plot.margin     = margin(8, 8, 8, 8)
-  )
+<div style="margin-top:-1.4rem;">
+```{r fig-c, out.width="100%", fig.align="left"}
+knitr::include_graphics("Content From ShiYao Zhang/IPCC.png")
 ```
+</div>
 
 .fig-caption[Fig. C · IPCC AR6 Risk Framework adapted for Ahmedabad]
 
@@ -344,36 +304,51 @@ ggplot() +
 .slide-label[Slide 04 · Problem Definition]
 
 .left-narrow[
+<div style="height:1.5rem;"></div>
 
 .policy-global[
-<span class="policy-label">🌍 Global</span>
-**SDG** 3.9 · 11.5 · 11.7 · 13.1  
-**Sendai Framework** Priority 1 & 3  
-**New Urban Agenda** Para 37, 65, 79
+<p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--teal); margin:0.6 0 0.6rem 0;">🌍 Global</p>
+<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
+<div style="font-size:0.95em; line-height:1.8;font-family:var(--font-body);">
+<strong>SDG</strong> 3.9 · 11.5 · 11.7 · 13.1<br>
+<strong>Sendai Framework</strong> Priority 1 &amp; 3<br>
+<strong>New Urban Agenda</strong> Para 37, 65, 79<br>&nbsp;
+</div>
+<img src="Content From ShiYao Zhang/SDG.png" style="height:80px; flex-shrink:0;margin-top:-1rem;">
+</div>
 ]
 
-<span style="font-size:0.8em;">↓</span>
-
+<span style="font-size:1.2em; color:#5C6380;"></span>
 
 .policy-national[
-<span class="policy-label">🇮🇳 National</span>
-**NAPCC** — Mission on Sustainable Habitat  
-**India NDC 2022** — 33% urban green cover
+<p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin:0.6 0 0.6rem 0;">🕌 Regional</p>
+
+<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
+<div style="font-size:0.98em; line-height:1.8;font-family:var(--font-body);">
+<strong>NAPCC</strong> — Mission on Sustainable Habitat<br>
+<strong>India NDC 2022</strong> — 33% urban green cover<br>&nbsp;
+</div>
+<img src="Content From ShiYao Zhang/NAPCC.png" style="height:65px; flex-shrink:0;margin-top:-1rem;">
+</div>
 ]
 
-<span style="font-size:0.8em;">↓</span>
-
+<span style="font-size:1.2em; color:#5C6380;"> </span>
 
 .policy-local[
-<span class="policy-label">🏙️ Local</span>
-**Ahmedabad HAP 2019**  
-~1,190 deaths averted / year
+<p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--white); margin:0.6 0 0.6rem 0;">🌇 Local</p>
+<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
+<div style="font-size:0.95em; line-height:1.8;font-family:var(--font-body);">
+<strong>Ahmedabad HAP 2019</strong><br>
+~1,190 deaths averted / year<br>&nbsp;
+</div>
+<img src="Content From ShiYao Zhang/AMC.png" style="height:45px; flex-shrink:0;margin-top:-0.3rem;filter:invert(1)">
+</div>
 ]
-
 
 ]
 
 .right-wide[
+<div style="height:1.4rem;"></div>
 
 ### Ahmedabad Heat Action Plan (2019) — 4 Pillars
 
@@ -397,9 +372,10 @@ Heat stroke wards, ORS corners in all AMC hospitals, frontline worker training
 Cool Roofs Programme, 24hr park access, cooling centres for slum communities
 ]
 
-<br>
 
-> The HAP is pioneering — but all 4 pillars activate from **one weather station**. EO-HEAT provides the **ward-level spatial data** that makes every pillar more targeted.
+<div style="background:var(--bg-card); border-left:3px solid var(--teal); padding:2.98rem 1.2rem; width:100%; box-sizing:border-box; font-style:italic; color:var(--white); font-size:0.9em;font-weight:600;">
+The HAP is pioneering — but all 4 pillars activate from <strong style="color:var(--teal);">one weather station</strong>. EO-HEAT provides the <strong style="color:var(--teal);">ward-level spatial data</strong> that makes every pillar more targeted.
+</div>
 
 ]
 

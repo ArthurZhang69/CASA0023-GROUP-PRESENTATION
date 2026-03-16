@@ -40,20 +40,20 @@ class: center, middle, inverse, title-slide
   slide 内布局选一种：
   
   ┌─────────────────────────────┐
-  │ 布局A：左宽右窄 (60/36)      │
+  │ 布局A：左宽右窄 (60/36)     │
   │ .left-wide[ ]               │
   │ .right-narrow[ ]            │
   ├─────────────────────────────┤
-  │ 布局B：左窄右宽 (36/60)      │
+  │ 布局B：左窄右宽 (36/60)     │
   │ .left-narrow[ ]             │
   │ .right-wide[ ]              │
   ├─────────────────────────────┤
-  │ 布局C：左右各半 (50/50)      │
+  │ 布局C：左右各半 (50/50)     │
   │ .pull-left[ ]               │
   │ .pull-right[ ]              │
   ├─────────────────────────────┤
-  │ 布局D：整页（不分栏）         │
-  │ 直接写内容即可               │
+  │ 布局D：整页（不分栏）       │
+  │ 直接写内容即可              │
   └─────────────────────────────┘
 
   每个 chunk 名字必须全局唯一！
@@ -65,148 +65,188 @@ class: center, middle, inverse, title-slide
 
 &lt;!--
 ╔══════════════════════════════════════════════════════╗
-║  SLIDE 模板：左图右文（布局A）                         ║
-║  适合：折线图/地图 + 统计数字                          ║
+║  SLIDE 02 · The Problem: Extreme Urban Heat Kills    ║
+║  布局A：左栏上下叠两图，右栏统计数字                 ║
 ╚══════════════════════════════════════════════════════╝
 --&gt;
 
-## Slide 标题写这里
+## The Problem: Extreme Urban Heat Kills
 
-.slide-label[Slide XX · 章节名 · 你的名字]
+.slide-label[Slide 02 · Problem Definition]
 
 .left-wide[
 
-&lt;img src="preview_files/figure-html/fig-XX-yourname-1.png" alt="" width="504" style="display: block; margin: auto;" /&gt;
+&lt;div style="display:flex; gap:0.8rem; align-items:flex-start; margin-bottom:0.3rem;"&gt;
 
-.fig-caption[Fig. X · 图的简短说明 · 数据来源]
+&lt;div style="flex:1.5;"&gt;
+&lt;img src="fig_lst_ahmedabad.png" alt="" width="100%" style="display: block; margin: auto auto auto 0;" /&gt;
+&lt;/div&gt;
+
+&lt;div style="flex:1;"&gt;
+&lt;img src="Land Cover 2019.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;img src="preview_files/figure-html/fig-a-syz-1.png" alt="" width="705.6" style="display: block; margin: auto;" /&gt;
+
+&lt;div style="text-align:left;"&gt;
+.fig-caption[Top Left: LST map · Landsat 8 TIRS via GEE &amp;nbsp;·&amp;nbsp; Top Right: Land Cover 2019 · Chaturvedi et al. (2022)  
+Bottom: Built-up &amp; population · Chaturvedi et al. (2022)]
+&lt;/div&gt;
 
 ]
 
-.right-narrow[
-
-&lt;br&gt;
-
-&lt;!-- 统计数字卡片，有三种颜色：默认金色 / .alert 红色 / .teal 青色 --&gt;
+&lt;div class="right-narrow" style="margin-top:-2.5rem;"&gt;
 
 .stat-box.alert[
-&lt;span class="stat-number"&gt;数字&lt;/span&gt;
-&lt;span class="stat-label"&gt;这个数字说明什么&lt;/span&gt;
-&lt;span class="stat-source"&gt;来源：作者 (年份)&lt;/span&gt;
+&lt;span class="stat-number"&gt;1,344&lt;/span&gt;
+&lt;span class="stat-label"&gt;Excess deaths, May 2010&lt;/span&gt;
+&lt;span class="stat-source"&gt;Azhar et al. (2014), PLOS ONE&lt;/span&gt;
 ]
 
 .stat-box[
-&lt;span class="stat-number"&gt;数字&lt;/span&gt;
-&lt;span class="stat-label"&gt;这个数字说明什么&lt;/span&gt;
-&lt;span class="stat-source"&gt;来源：作者 (年份)&lt;/span&gt;
+&lt;span class="stat-number"&gt;46.8°C&lt;/span&gt;
+&lt;span class="stat-label"&gt;Peak temperature, May 25&lt;/span&gt;
+&lt;span class="stat-source"&gt;IMD / Azhar et al. (2014)&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;+130%&lt;/span&gt;
+&lt;span class="stat-label"&gt;Built-up area growth, 1990–2019&lt;/span&gt;
+&lt;span class="stat-source"&gt;Chaturvedi et al. (2022) Table 4&lt;/span&gt;
 ]
 
 .stat-box.teal[
-&lt;span class="stat-number"&gt;数字&lt;/span&gt;
-&lt;span class="stat-label"&gt;这个数字说明什么&lt;/span&gt;
-&lt;span class="stat-source"&gt;来源：作者 (年份)&lt;/span&gt;
+&lt;span class="stat-number"&gt;70%&lt;/span&gt;
+&lt;span class="stat-label"&gt;of city area projected ≥45°C&lt;/span&gt;
+&lt;span class="stat-source"&gt;Mohammad et al. (2022)&lt;/span&gt;
 ]
 
-]
+&lt;/div&gt;
 
-.footnote[参考文献1 · 参考文献2]
 
 ---
 
-&lt;!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 模板：左文右图（布局B）                         ║
-║  适合：解释性文字 + 地图/分类图                        ║
-╚══════════════════════════════════════════════════════╝
---&gt;
+## Who Suffers Most? Heat Vulnerability is Unequal
 
-## Slide 标题写这里
+.slide-label[Slide 03 · Problem Definition]
 
-.slide-label[Slide XX · 章节名 · 你的名字]
+.pull-left[
+&lt;div style="margin-top:-1.4rem;"&gt;
+&lt;img src="IPCC.png" alt="" width="100%" style="display: block; margin: auto auto auto 0;" /&gt;
+&lt;/div&gt;
+.fig-caption[Fig. C · IPCC AR6 Risk Framework adapted for Ahmedabad]
 
-.left-narrow[
+]
 
-### 小标题
+.pull-right[
 
-&lt;!-- 普通文字列表 --&gt;
-- 要点一，用 **加粗** 突出关键词
-- 要点二
-- 要点三
+### Most exposed groups
+
+
+| Group | Mechanism |
+|-------|-----------|
+| 🏚️ Slum communities | Metal roofs, no shade, no greenery |
+| &lt;span style="color:#EDE8DF"&gt;👷 Outdoor workers&lt;/span&gt; | &lt;span style="color:#9DA3B4"&gt;Direct thermal exposure, 8h+/day&lt;/span&gt; |
+| 👴 Elderly &amp; infants | Impaired thermoregulation |
+| &lt;span style="color:#EDE8DF"&gt;💰 Low-income&lt;/span&gt; | &lt;span style="color:#9DA3B4"&gt;No AC, no access to cooling centres&lt;/span&gt; |
 
 &lt;br&gt;
 
-&lt;!-- 引用块：用于放论文原话或专家观点 --&gt;
-&gt; "引用内容写这里"
+&gt; "The official temperature is recorded **8 km outside** the city. On the tarmac where workers walk, it can be **10°C hotter**."
 &gt;
-&gt; — 作者名, *来源* (年份)
+&gt; — Dr. Mavalankar, *Exemplars in Global Health* (2022)
 
-&lt;!-- 小标签芯片，可叠加 --&gt;
-.chip.gold[关键词] .chip.teal[关键词] .chip.alert[关键词]
+.chip.alert[Spatial Data Gap] .chip[Ward-level] .chip.teal[1 Weather Station]
+
+]
+
+.footnote[IPCC AR6 WGII (2022) Ch.8 · Knowlton et al. (2014) *IJERPH* 11(4):3473 · Exemplars in Global Health (2022)]
+
+---
+
+## Policy Context: From Global Goals to Local Action
+
+.slide-label[Slide 04 · Problem Definition]
+
+.left-narrow[
+&lt;div style="height:1.5rem;"&gt;&lt;/div&gt;
+
+.policy-global[
+&lt;p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--teal); margin:0.6 0 0.6rem 0;"&gt;🌍 Global&lt;/p&gt;
+&lt;div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;"&gt;
+&lt;div style="font-size:0.95em; line-height:1.8;font-family:var(--font-body);"&gt;
+&lt;strong&gt;SDG&lt;/strong&gt; 3.9 · 11.5 · 11.7 · 13.1&lt;br&gt;
+&lt;strong&gt;Sendai Framework&lt;/strong&gt; Priority 1 &amp;amp; 3&lt;br&gt;
+&lt;strong&gt;New Urban Agenda&lt;/strong&gt; Para 37, 65, 79&lt;br&gt;&amp;nbsp;
+&lt;/div&gt;
+&lt;img src="SDG.png" style="height:80px; flex-shrink:0;margin-top:-1rem;"&gt;
+&lt;/div&gt;
+]
+
+&lt;span style="font-size:1.2em; color:#5C6380;"&gt;&lt;/span&gt;
+
+.policy-national[
+&lt;p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin:0.6 0 0.6rem 0;"&gt;🕌 Regional&lt;/p&gt;
+
+&lt;div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;"&gt;
+&lt;div style="font-size:0.98em; line-height:1.8;font-family:var(--font-body);"&gt;
+&lt;strong&gt;NAPCC&lt;/strong&gt; — Mission on Sustainable Habitat&lt;br&gt;
+&lt;strong&gt;India NDC 2022&lt;/strong&gt; — 33% urban green cover&lt;br&gt;&amp;nbsp;
+&lt;/div&gt;
+&lt;img src="NAPCC.png" style="height:65px; flex-shrink:0;margin-top:-1rem;"&gt;
+&lt;/div&gt;
+]
+
+&lt;span style="font-size:1.2em; color:#5C6380;"&gt; &lt;/span&gt;
+
+.policy-local[
+&lt;p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--white); margin:0.6 0 0.6rem 0;"&gt;🌇 Local&lt;/p&gt;
+&lt;div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;"&gt;
+&lt;div style="font-size:0.95em; line-height:1.8;font-family:var(--font-body);"&gt;
+&lt;strong&gt;Ahmedabad HAP 2019&lt;/strong&gt;&lt;br&gt;
+~1,190 deaths averted / year&lt;br&gt;&amp;nbsp;
+&lt;/div&gt;
+&lt;img src="AMC.png" style="height:45px; flex-shrink:0;margin-top:-0.3rem;filter:invert(1)"&gt;
+&lt;/div&gt;
+]
 
 ]
 
 .right-wide[
+&lt;div style="height:1.4rem;"&gt;&lt;/div&gt;
 
-&lt;img src="preview_files/figure-html/fig-XX-yourname-2-1.png" alt="" width="504" style="display: block; margin: auto;" /&gt;
-
-.fig-caption[Fig. X · 图的简短说明 · 数据来源]
-
-]
-
-.footnote[参考文献1 · 参考文献2]
-
----
-
-&lt;!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 模板：整页表格（布局D）                         ║
-║  适合：数据对比表、风险矩阵、方法对比                   ║
-╚══════════════════════════════════════════════════════╝
---&gt;
-
-## Slide 标题写这里
-
-.slide-label[Slide XX · 章节名 · 你的名字]
-
-&lt;!-- 表格：第一列自动加粗显示 --&gt;
-
-| 列标题1 | 列标题2 | 列标题3 | 列标题4 |
-|---------|---------|---------|---------|
-| 行1内容 | 内容    | 内容    | 内容    |
-| 行2内容 | 内容    | 内容    | 内容    |
-| 行3内容 | 内容    | 内容    | 内容    |
-
-&lt;br&gt;
-
-&lt;!-- 横排统计数字（一行四格） --&gt;
-.stats-row[
+### Ahmedabad Heat Action Plan (2019) — 4 Pillars
 
 .stat-box[
-&lt;span class="stat-number"&gt;数字1&lt;/span&gt;
-&lt;span class="stat-label"&gt;说明&lt;/span&gt;
-&lt;span class="stat-source"&gt;来源&lt;/span&gt;
-]
-
-.stat-box.teal[
-&lt;span class="stat-number"&gt;数字2&lt;/span&gt;
-&lt;span class="stat-label"&gt;说明&lt;/span&gt;
-&lt;span class="stat-source"&gt;来源&lt;/span&gt;
-]
-
-.stat-box.alert[
-&lt;span class="stat-number"&gt;数字3&lt;/span&gt;
-&lt;span class="stat-label"&gt;说明&lt;/span&gt;
-&lt;span class="stat-source"&gt;来源&lt;/span&gt;
+&lt;span class="stat-label"&gt;① Public Awareness &amp; Community Outreach&lt;/span&gt;
+Multilingual pamphlets, WhatsApp alerts, LED boards, school campaigns
 ]
 
 .stat-box[
-&lt;span class="stat-number"&gt;数字4&lt;/span&gt;
-&lt;span class="stat-label"&gt;说明&lt;/span&gt;
-&lt;span class="stat-source"&gt;来源&lt;/span&gt;
+&lt;span class="stat-label"&gt;② Early Warning System&lt;/span&gt;
+Colour-coded heat alerts (Green → Red) triggered by IMD temperature thresholds
 ]
+
+.stat-box[
+&lt;span class="stat-label"&gt;③ Medical Preparedness&lt;/span&gt;
+Heat stroke wards, ORS corners in all AMC hospitals, frontline worker training
+]
+
+.stat-box[
+&lt;span class="stat-label"&gt;④ Reduce Heat Exposure (Long-term)&lt;/span&gt;
+Cool Roofs Programme, 24hr park access, cooling centres for slum communities
+]
+
+
+&lt;div style="background:var(--bg-card); border-left:3px solid var(--teal); padding:2.98rem 1.2rem; width:100%; box-sizing:border-box; font-style:italic; color:var(--white); font-size:0.9em;font-weight:600;"&gt;
+The HAP is pioneering — but all 4 pillars activate from &lt;strong style="color:var(--teal);"&gt;one weather station&lt;/strong&gt;. EO-HEAT provides the &lt;strong style="color:var(--teal);"&gt;ward-level spatial data&lt;/strong&gt; that makes every pillar more targeted.
+&lt;/div&gt;
 
 ]
 
-.footnote[参考文献]
+.footnote[AMC / NRDC / IIPH-G (2019) *Ahmedabad HAP 2019* · Hess et al. (2018) *J Environ Public Health* · UNDRR (2015) Sendai Framework · UN (2017) New Urban Agenda]
 
 ---
 
@@ -221,8 +261,8 @@ class: center, middle, inverse, title-slide
 
 .slide-label[Slide XX · 章节名 · 你的名字]
 
-<div class="grViz html-widget html-fill-item" id="htmlwidget-584ada18d58b8209d172" style="width:792px;height:396px;"></div>
-<script type="application/json" data-for="htmlwidget-584ada18d58b8209d172">{"x":{"diagram":"\ndigraph workflow {\n  graph [layout = dot, rankdir = LR, bgcolor = \"#0F1117\",\n         fontname = \"Helvetica\"]\n  \n  node [fontname = \"Helvetica\", shape = rectangle,\n        style = filled, fontcolor = white, margin = 0.2]\n  \n  # 节点定义（fillcolor 用主题色）\n  A [label = \"步骤一\",   fillcolor = \"#2E86C1\"]\n  B [label = \"步骤二\",   fillcolor = \"#27AE60\"]\n  C [label = \"步骤三\",   fillcolor = \"#C9A96E\", fontcolor = \"#0F1117\"]\n  D [label = \"最终输出\", fillcolor = \"#8E44AD\"]\n  \n  # 连接关系\n  A -> B -> C -> D\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-7af163ce57cc2af6890b" style="width:792px;height:396px;"></div>
+<script type="application/json" data-for="htmlwidget-7af163ce57cc2af6890b">{"x":{"diagram":"\ndigraph workflow {\n  graph [layout = dot, rankdir = LR, bgcolor = \"#0F1117\",\n         fontname = \"Helvetica\"]\n  \n  node [fontname = \"Helvetica\", shape = rectangle,\n        style = filled, fontcolor = white, margin = 0.2]\n  \n  # 节点定义（fillcolor 用主题色）\n  A [label = \"步骤一\",   fillcolor = \"#2E86C1\"]\n  B [label = \"步骤二\",   fillcolor = \"#27AE60\"]\n  C [label = \"步骤三\",   fillcolor = \"#C9A96E\", fontcolor = \"#0F1117\"]\n  D [label = \"最终输出\", fillcolor = \"#8E44AD\"]\n  \n  # 连接关系\n  A -> B -> C -> D\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 .footnote[参考文献]
 
