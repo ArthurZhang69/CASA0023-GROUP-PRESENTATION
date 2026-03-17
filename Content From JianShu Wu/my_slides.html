@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>EO-HEAT · Ahmedabad</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/htmltools-fill/fill.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/viz/viz.js"></script>
+    <link href="libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+    <script src="libs/grViz-binding/grViz.js"></script>
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# EO-HEAT · Ahmedabad
+]
+.subtitle[
+## Approach · [你的名字]
+]
+
+---
+
+
+
+
+
+
+---
+
+## Data Preprocessing
+
+.left-wide[
+
+<div class="grViz html-widget html-fill-item" id="htmlwidget-06c89e1ab597c47d8962" style="width:504px;height:302.4px;"></div>
+<script type="application/json" data-for="htmlwidget-06c89e1ab597c47d8962">{"x":{"diagram":"\ndigraph preprocessing {\n  graph [layout = dot, rankdir = TB, bgcolor = \"#0F1117\",\n         fontname = \"Helvetica\", nodesep = 0.4, ranksep = 0.45]\n\n  node [fontname = \"Helvetica\", shape = rectangle,\n        style = filled, fontcolor = white,\n        margin = \"0.18,0.12\", width = 2.2, fontsize = 12]\n\n  subgraph cluster_sources {\n    rank = same\n    style = invis\n    L8  [label = \"Landsat 8/9 TIRS LST\",    fillcolor = \"#2C3E6B\", color = \"#2C3E6B\"]\n    S2  [label = \"Sentinel-2 MSI NDVI/LULC\", fillcolor = \"#2C3E6B\", color = \"#2C3E6B\"]\n    MOD [label = \"MODIS LST Time Series\",    fillcolor = \"#2C3E6B\", color = \"#2C3E6B\"]\n  }\n\n  CM [label = \"Cloud Masking\",          fillcolor = \"#5D4037\", color = \"#5D4037\"]\n  AC [label = \"Atmospheric Correction\", fillcolor = \"#5D4037\", color = \"#5D4037\"]\n  IC [label = \"Image Compositing\",      fillcolor = \"#5D4037\", color = \"#5D4037\"]\n  SA [label = \"Spatial Alignment\",      fillcolor = \"#C9A96E\", color = \"#C9A96E\", fontcolor = \"#0F1117\"]\n\n  L8  -> CM [color = \"#4FC4CF\"]\n  S2  -> CM [color = \"#4FC4CF\"]\n  MOD -> CM [color = \"#4FC4CF\"]\n\n  CM -> AC [color = \"#9DA3B4\"]\n  AC -> IC [color = \"#9DA3B4\"]\n  IC -> SA [color = \"#C9A96E\", penwidth = 2]\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+.fig-caption[Fig. X · Preprocessing pipeline · Sources: GEE, USGS, ESA, NASA LP DAAC]
+
+]
+
+.right-narrow[
+
+&lt;style&gt;
+.right-narrow .stat-box {
+  padding: 4px 8px 4px 12px !important;
+  margin-bottom: 4px !important;
+}
+.right-narrow .stat-number {
+  font-size: 0.95em !important;
+  line-height: 1.1 !important;
+  display: block !important;
+  margin-bottom: 2px !important;
+}
+.right-narrow .stat-label {
+  font-size: 0.68em !important;
+  line-height: 1.25 !important;
+  display: block !important;
+}
+.right-narrow .stat-source {
+  font-size: 0.58em !important;
+  display: block !important;
+  margin-top: 2px !important;
+}
+&lt;/style&gt;
+
+.stat-box[
+&lt;span class="stat-number"&gt;Step 1&lt;/span&gt;
+&lt;span class="stat-label"&gt;**Cloud Masking** — Remove pixels contaminated by cloud and shadow&lt;/span&gt;
+&lt;span class="stat-source"&gt;Ensures only clear-sky data enters the pipeline&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;Step 2&lt;/span&gt;
+&lt;span class="stat-label"&gt;**Atmospheric Correction** — Strip out atmospheric interference to get true surface values&lt;/span&gt;
+&lt;span class="stat-source"&gt;Critical for accurate LST in dusty conditions&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;Step 3&lt;/span&gt;
+&lt;span class="stat-label"&gt;**Image Compositing** — Merge multiple images into one clean seasonal snapshot&lt;/span&gt;
+&lt;span class="stat-source"&gt;Reduces noise across the pre-monsoon period&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;Step 4&lt;/span&gt;
+&lt;span class="stat-label"&gt;**Spatial Alignment** — Stack all data layers onto a single shared grid&lt;/span&gt;
+&lt;span class="stat-source"&gt;Enables pixel-level comparison across all sources&lt;/span&gt;
+]
+
+]
+
+.footnote[USGS Landsat Collection 2 · ESA Sentinel Hub · NASA LP DAAC · GEE Python API]
+
+---
+
+## Outputs for Policy
+
+.stats-row[
+
+.stat-box[
+&lt;span class="stat-number"&gt;01&lt;/span&gt;
+&lt;span class="stat-label"&gt;**Ward-level Heat Maps**&lt;br&gt;
+&lt;span style="font-size:0.82em;color:#9DA3B4"&gt;
+HVI (LST × 0.5 + Pop × 0.3 − NDVI × 0.2) overlaid with OSM data — identifies areas with the highest HVI scores
+&lt;/span&gt;&lt;/span&gt;
+&lt;span class="stat-source"&gt;Sources: Landsat LST · Sentinel-2 NDVI · Census · OSM&lt;/span&gt;
+]
+
+.stat-box.teal[
+&lt;span class="stat-number"&gt;02&lt;/span&gt;
+&lt;span class="stat-label"&gt;**Priority Intervention Zones**&lt;br&gt;
+&lt;span style="font-size:0.82em;color:#9DA3B4"&gt;
+Derived from ward-level heat maps — flags areas with the highest combined heat and social vulnerability scores
+&lt;/span&gt;&lt;/span&gt;
+]
+
+.stat-box.alert[
+&lt;span class="stat-number"&gt;03&lt;/span&gt;
+&lt;span class="stat-label"&gt;**Policy Dashboard Mockup**&lt;br&gt;
+&lt;span style="font-size:0.82em;color:#9DA3B4"&gt;
+Static prototype linking ward heat scores to Ahmedabad Heat Action Plan targets
+&lt;/span&gt;&lt;/span&gt;
+&lt;span class="stat-source"&gt;Figma wireframe / R Shiny mockup&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;04&lt;/span&gt;
+&lt;span class="stat-label"&gt;**Annual Monitoring Plan**&lt;br&gt;
+&lt;span style="font-size:0.82em;color:#9DA3B4"&gt;
+Repeatable GEE script for yearly LST updates across all wards
+&lt;/span&gt;&lt;/span&gt;
+&lt;span class="stat-source"&gt;Documented GEE code + update schedule&lt;/span&gt;
+]
+
+]
+
+&lt;br&gt;
+
+&gt; All four outputs feed directly into **Ahmedabad's Heat Action Plan (HAP)** — enabling evidence-based cooling investment at ward level.
+
+.footnote[Ahmedabad HAP (2013) · Knowlton et al. (2014) PMC · SDG 11.6.2]
+
+---
+
+## Limitations
+
+| Stage | Limitation | Consequence | Mitigation |
+|-------|-----------|-------------|------------|
+| **Data** | Landsat 16-day revisit cycle | Misses intra-heatwave LST peaks | Gap-fill with MODIS 8-day MOD11A2 |
+| **Data** | WorldPop 2020 — 6-year lag from present | HVI may not reflect current population distribution | No newer high-resolution population dataset available via GEE |
+| **Preprocessing** | Atmospheric correction uncertainty 1.6–2 K | Inflated LST in dust-storm events common in Ahmedabad | Apply MODTRAN coefficients validated for arid South Asia |
+| **Preprocessing** | Monsoon cloud cover (JJA) leaves composite gaps | Incomplete seasonal stack for June–August | Restrict analysis to pre-monsoon (MAM) and post-monsoon (OND) |
+| **Analysis** | 30 m resolution cannot resolve street-level micro-UHI | Priority zones generalised at ward scale only | — |
+
+.stats-row[
+
+.stat-box.alert[
+&lt;span class="stat-number"&gt;1.6–2 K&lt;/span&gt;
+&lt;span class="stat-label"&gt;LST error, arid region&lt;/span&gt;
+&lt;span class="stat-source"&gt;Emami &amp; Mojaradi (2021)&lt;/span&gt;
+]
+
+.stat-box[
+&lt;span class="stat-number"&gt;16 days&lt;/span&gt;
+&lt;span class="stat-label"&gt;Landsat revisit gap&lt;/span&gt;
+&lt;span class="stat-source"&gt;USGS Landsat Handbook&lt;/span&gt;
+]
+
+.stat-box.teal[
+&lt;span class="stat-number"&gt;2020&lt;/span&gt;
+&lt;span class="stat-label"&gt;WorldPop data lag&lt;/span&gt;
+&lt;span class="stat-source"&gt;WorldPop (2020)&lt;/span&gt;
+]
+
+]
+
+.footnote[Emami &amp; Mojaradi (2021) RSE · USGS Landsat Handbook · WorldPop (2020)]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "ratio": "16:9",
+  "countIncrementalSlides": false,
+  "slideNumberFormat": "%current% / %total%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
