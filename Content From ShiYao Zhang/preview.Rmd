@@ -84,20 +84,20 @@ theme_eoheat <- function(base_size = 12) {
   slide 内布局选一种：
   
   ┌─────────────────────────────┐
-  │ 布局A：左宽右窄 (60/36)      │
+  │ 布局A：左宽右窄 (60/36)     │
   │ .left-wide[ ]               │
   │ .right-narrow[ ]            │
   ├─────────────────────────────┤
-  │ 布局B：左窄右宽 (36/60)      │
+  │ 布局B：左窄右宽 (36/60)     │
   │ .left-narrow[ ]             │
   │ .right-wide[ ]              │
   ├─────────────────────────────┤
-  │ 布局C：左右各半 (50/50)      │
+  │ 布局C：左右各半 (50/50)     │
   │ .pull-left[ ]               │
   │ .pull-right[ ]              │
   ├─────────────────────────────┤
-  │ 布局D：整页（不分栏）         │
-  │ 直接写内容即可               │
+  │ 布局D：整页（不分栏）       │
+  │ 直接写内容即可              │
   └─────────────────────────────┘
 
   每个 chunk 名字必须全局唯一！
@@ -109,187 +109,253 @@ theme_eoheat <- function(base_size = 12) {
 
 <!--
 ╔══════════════════════════════════════════════════════╗
-║  SLIDE 模板：左图右文（布局A）                         ║
-║  适合：折线图/地图 + 统计数字                          ║
+║  SLIDE 02 · The Problem: Extreme Urban Heat Kills    ║
+║  布局A：左栏上下叠两图，右栏统计数字                 ║
 ╚══════════════════════════════════════════════════════╝
 -->
 
-## Slide 标题写这里
+## The Problem: Extreme Urban Heat Kills
 
-.slide-label[Slide XX · 章节名 · 你的名字]
+.slide-label[Slide 02 · Problem Definition]
 
 .left-wide[
 
-```{r fig-XX-yourname, fig.height=4.2, fig.width=7}
-# ══════════════════════════════════════════════
-# 📊 图表 chunk
-# chunk 名：fig-XX-yourname（XX = 图编号，yourname = 你名字缩写）
-# fig.height / fig.width 根据需要调整
-# 所有 ggplot 图结尾加 + theme_eoheat()
-# ══════════════════════════════════════════════
+<div style="display:flex; gap:0.8rem; align-items:flex-start; margin-bottom:0.3rem;">
 
-# 示例：折线图
+<div style="flex:1.5;">
+```{r fig-lst-syz, out.width="100%", fig.align="left"}
+knitr::include_graphics("fig_lst_ahmedabad.png")
+```
+</div>
+
+<div style="flex:1;">
+```{r fig-pie-hyj, out.width="100%", fig.align="center"}
+knitr::include_graphics("Land Cover 2019.png")
+```
+</div>
+
+</div>
+
+```{r fig-a-syz, fig.height=2.8, fig.width=9.8, dev.args=list(bg="#0F1117")}
+# ══════════════════════════════════════════════
+# 📊 下图：人口与建成区折线图
+# 数据来源：
+#   Built-up area — Chaturvedi et al. (2022) Table 4
+#   Population — Census of India (2001,2011); World Population Review
+# ══════════════════════════════════════════════
 df <- data.frame(
-  x = c(2000, 2005, 2010, 2015, 2020),
-  y = c(10, 15, 22, 30, 38)
+  year       = c(1990, 2000,  2001,  2010,  2011,  2019),
+  population = c(3.547,4.519, 4.519, 5.578, 5.578, 7.868),
+  builtup    = c(132.45,181.55,NA,  276.46, NA,   305.24)
 )
+df_builtup <- df[!is.na(df$builtup), ]
+coeff <- 40
 
-ggplot(df, aes(x, y)) +
-  geom_line(color = "#C9A96E", linewidth = 1.3) +
-  geom_point(color = "#C9A96E", size = 3) +
-  labs(
-    title    = "title",
-    subtitle = "subtitle",
-    caption  = "Source",
-    x = "X", y = "Y"
+ggplot(df, aes(x = year)) +
+  geom_area(data = df_builtup,
+            aes(y = builtup / coeff), fill = "#C9A96E", alpha = 0.12) +
+  geom_line(data = df_builtup,
+            aes(y = builtup / coeff, color = "Built-up Area (km²)"),
+            linewidth = 1.1, linetype = "dashed") +
+  geom_point(data = df_builtup,
+             aes(y = builtup / coeff, color = "Built-up Area (km²)"),
+             size = 2.5, shape = 15) +
+  geom_line(aes(y = population, color = "Population (millions)"),
+            linewidth = 1.3) +
+  geom_point(aes(y = population, color = "Population (millions)"),
+             size = 2.8, shape = 19) +
+  annotate("segment",
+           x = 2010, xend = 2010, y = 0.3, yend = 9.4,
+           color = "#E05C5C",alpha = 0.72,linewidth = 1) +
+  annotate("label", x = 2010.4, y = 2.6,
+           label = "May 2010\n1,344 deaths",
+           fill = "#1E2235", color = "#E05C5C",
+           size = 10.5, fontface = "bold", family = "outfit",
+           label.padding = unit(0.2, "lines"),
+           lineheight = 0.6, 
+           label.r = unit(0.15, "lines"), hjust = 0) +
+  scale_y_continuous(
+    name = "Population (millions)", limits = c(0, 9.5),
+    sec.axis = sec_axis(~ . * coeff, name = "Built-up Area (km²)")
   ) +
-  theme_eoheat()
+  scale_x_continuous(breaks = c(1990, 2000, 2010, 2019)) +
+  scale_color_manual(values = c("Population (millions)" = "#EDE8DF",
+                                "Built-up Area (km²)"   = "#C9A96E")) +
+  labs(title   = "Rapid urbanisation drives escalating heat risk",
+       caption = "Built-up: Chaturvedi et al. (2022) Table 4 · Population: Census of India / World Pop Review",
+       x = NULL, color = NULL) +
+  theme_eoheat(base_size = 10) +
+  theme(legend.position    = c(0.18, 0.82),
+      legend.text        = element_text(size = 26),
+      legend.key.size    = unit(0.4, "cm"),
+      axis.text          = element_text(size = 27, color = "#9DA3B4"),  # ← 轴刻度
+      axis.title         = element_text(size = 27, color = "#9DA3B4"),  # ← 轴标题
+      axis.title.y.right = element_text(size = 27, color = "#C9A96E"),
+      axis.title.y.left  = element_text(size = 27, color = "#EDE8DF"),
+      plot.title         = element_text(size = 29),
+      plot.caption       = element_text(size = 26),
+      plot.margin        = margin(4, 8, 4, 8))
 ```
 
-.fig-caption[Fig. X · 图的简短说明 · 数据来源]
+<div style="text-align:left;">
+.fig-caption[Top Left: LST map · Landsat 8 TIRS via GEE &nbsp;·&nbsp; Top Right: Land Cover 2019 · Chaturvedi et al. (2022)  
+Bottom: Built-up & population · Chaturvedi et al. (2022)]
+</div>
 
 ]
 
-.right-narrow[
-
-<br>
-
-<!-- 统计数字卡片，有三种颜色：默认金色 / .alert 红色 / .teal 青色 -->
+<div class="right-narrow" style="margin-top:-2.5rem;">
 
 .stat-box.alert[
-<span class="stat-number">数字</span>
-<span class="stat-label">这个数字说明什么</span>
-<span class="stat-source">来源：作者 (年份)</span>
+<span class="stat-number">1,344</span>
+<span class="stat-label">Excess deaths, May 2010</span>
+<span class="stat-source">Azhar et al. (2014), PLOS ONE</span>
 ]
 
 .stat-box[
-<span class="stat-number">数字</span>
-<span class="stat-label">这个数字说明什么</span>
-<span class="stat-source">来源：作者 (年份)</span>
+<span class="stat-number">46.8°C</span>
+<span class="stat-label">Peak temperature, May 25</span>
+<span class="stat-source">IMD / Azhar et al. (2014)</span>
+]
+
+.stat-box[
+<span class="stat-number">+130%</span>
+<span class="stat-label">Built-up area growth, 1990–2019</span>
+<span class="stat-source">Chaturvedi et al. (2022) Table 4</span>
 ]
 
 .stat-box.teal[
-<span class="stat-number">数字</span>
-<span class="stat-label">这个数字说明什么</span>
-<span class="stat-source">来源：作者 (年份)</span>
+<span class="stat-number">70%</span>
+<span class="stat-label">of city area projected ≥45°C</span>
+<span class="stat-source">Mohammad et al. (2022)</span>
 ]
 
-]
+</div>
 
-.footnote[参考文献1 · 参考文献2]
 
 ---
 
-<!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 模板：左文右图（布局B）                         ║
-║  适合：解释性文字 + 地图/分类图                        ║
-╚══════════════════════════════════════════════════════╝
--->
+## Who Suffers Most? Heat Vulnerability is Unequal
 
-## Slide 标题写这里
+.slide-label[Slide 03 · Problem Definition]
 
-.slide-label[Slide XX · 章节名 · 你的名字]
+.pull-left[
+<div style="margin-top:-1.4rem;">
+```{r fig-c, out.width="100%", fig.align="left"}
+knitr::include_graphics("IPCC.png")
+```
+</div>
+.fig-caption[Fig. C · IPCC AR6 Risk Framework adapted for Ahmedabad]
 
-.left-narrow[
+]
 
-### 小标题
+.pull-right[
 
-<!-- 普通文字列表 -->
-- 要点一，用 **加粗** 突出关键词
-- 要点二
-- 要点三
+### Most exposed groups
+
+
+| Group | Mechanism |
+|-------|-----------|
+| 🏚️ Slum communities | Metal roofs, no shade, no greenery |
+| <span style="color:#EDE8DF">👷 Outdoor workers</span> | <span style="color:#9DA3B4">Direct thermal exposure, 8h+/day</span> |
+| 👴 Elderly & infants | Impaired thermoregulation |
+| <span style="color:#EDE8DF">💰 Low-income</span> | <span style="color:#9DA3B4">No AC, no access to cooling centres</span> |
 
 <br>
 
-<!-- 引用块：用于放论文原话或专家观点 -->
-> "引用内容写这里"
+> "The official temperature is recorded **8 km outside** the city. On the tarmac where workers walk, it can be **10°C hotter**."
 >
-> — 作者名, *来源* (年份)
+> — Dr. Mavalankar, *Exemplars in Global Health* (2022)
 
-<!-- 小标签芯片，可叠加 -->
-.chip.gold[关键词] .chip.teal[关键词] .chip.alert[关键词]
+.chip.alert[Spatial Data Gap] .chip[Ward-level] .chip.teal[1 Weather Station]
+
+]
+
+.footnote[IPCC AR6 WGII (2022) Ch.8 · Knowlton et al. (2014) *IJERPH* 11(4):3473 · Exemplars in Global Health (2022)]
+
+---
+
+## Policy Context: From Global Goals to Local Action
+
+.slide-label[Slide 04 · Problem Definition]
+
+.left-narrow[
+<div style="height:1.5rem;"></div>
+
+.policy-global[
+<p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--teal); margin:0.6 0 0.6rem 0;">🌍 Global</p>
+<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
+<div style="font-size:0.95em; line-height:1.8;font-family:var(--font-body);">
+<strong>SDG</strong> 3.9 · 11.5 · 11.7 · 13.1<br>
+<strong>Sendai Framework</strong> Priority 1 &amp; 3<br>
+<strong>New Urban Agenda</strong> Para 37, 65, 79<br>&nbsp;
+</div>
+<img src="SDG.png" style="height:80px; flex-shrink:0;margin-top:-1rem;">
+</div>
+]
+
+<span style="font-size:1.2em; color:#5C6380;"></span>
+
+.policy-national[
+<p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin:0.6 0 0.6rem 0;">🕌 Regional</p>
+
+<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
+<div style="font-size:0.98em; line-height:1.8;font-family:var(--font-body);">
+<strong>NAPCC</strong> — Mission on Sustainable Habitat<br>
+<strong>India NDC 2022</strong> — 33% urban green cover<br>&nbsp;
+</div>
+<img src="NAPCC.png" style="height:65px; flex-shrink:0;margin-top:-1rem;">
+</div>
+]
+
+<span style="font-size:1.2em; color:#5C6380;"> </span>
+
+.policy-local[
+<p style="font-family:var(--font-body); font-size:0.85em; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--white); margin:0.6 0 0.6rem 0;">🌇 Local</p>
+<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
+<div style="font-size:0.95em; line-height:1.8;font-family:var(--font-body);">
+<strong>Ahmedabad HAP 2019</strong><br>
+~1,190 deaths averted / year<br>&nbsp;
+</div>
+<img src="AMC.png" style="height:45px; flex-shrink:0;margin-top:-0.3rem;filter:invert(1)">
+</div>
+]
 
 ]
 
 .right-wide[
+<div style="height:1.4rem;"></div>
 
-```{r fig-XX-yourname-2, fig.height=5.0, fig.width=7}
-# ══════════════════════════════════════════════
-# 📊 图表 chunk（放地图或分类图）
-# 用 knitr::include_graphics() 插入已有图片：
-#   knitr::include_graphics("Content From [你的名字]/图片名.png")
-# 注意路径从 repo 根目录出发
-# ══════════════════════════════════════════════
-
-# 示例：插入外部图片（把下面注释去掉换成你的图片路径）
-# knitr::include_graphics("Content From YourName/fig_lst_map.png")
-
-# 或者直接写 ggplot 代码
-ggplot() +
-  labs(title = "map") +
-  theme_eoheat()
-```
-
-.fig-caption[Fig. X · 图的简短说明 · 数据来源]
-
-]
-
-.footnote[参考文献1 · 参考文献2]
-
----
-
-<!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 模板：整页表格（布局D）                         ║
-║  适合：数据对比表、风险矩阵、方法对比                   ║
-╚══════════════════════════════════════════════════════╝
--->
-
-## Slide 标题写这里
-
-.slide-label[Slide XX · 章节名 · 你的名字]
-
-<!-- 表格：第一列自动加粗显示 -->
-
-| 列标题1 | 列标题2 | 列标题3 | 列标题4 |
-|---------|---------|---------|---------|
-| 行1内容 | 内容    | 内容    | 内容    |
-| 行2内容 | 内容    | 内容    | 内容    |
-| 行3内容 | 内容    | 内容    | 内容    |
-
-<br>
-
-<!-- 横排统计数字（一行四格） -->
-.stats-row[
+### Ahmedabad Heat Action Plan (2019) — 4 Pillars
 
 .stat-box[
-<span class="stat-number">数字1</span>
-<span class="stat-label">说明</span>
-<span class="stat-source">来源</span>
-]
-
-.stat-box.teal[
-<span class="stat-number">数字2</span>
-<span class="stat-label">说明</span>
-<span class="stat-source">来源</span>
-]
-
-.stat-box.alert[
-<span class="stat-number">数字3</span>
-<span class="stat-label">说明</span>
-<span class="stat-source">来源</span>
+<span class="stat-label">① Public Awareness & Community Outreach</span>
+Multilingual pamphlets, WhatsApp alerts, LED boards, school campaigns
 ]
 
 .stat-box[
-<span class="stat-number">数字4</span>
-<span class="stat-label">说明</span>
-<span class="stat-source">来源</span>
+<span class="stat-label">② Early Warning System</span>
+Colour-coded heat alerts (Green → Red) triggered by IMD temperature thresholds
 ]
+
+.stat-box[
+<span class="stat-label">③ Medical Preparedness</span>
+Heat stroke wards, ORS corners in all AMC hospitals, frontline worker training
+]
+
+.stat-box[
+<span class="stat-label">④ Reduce Heat Exposure (Long-term)</span>
+Cool Roofs Programme, 24hr park access, cooling centres for slum communities
+]
+
+
+<div style="background:var(--bg-card); border-left:3px solid var(--teal); padding:2.98rem 1.2rem; width:100%; box-sizing:border-box; font-style:italic; color:var(--white); font-size:0.9em;font-weight:600;">
+The HAP is pioneering — but all 4 pillars activate from <strong style="color:var(--teal);">one weather station</strong>. EO-HEAT provides the <strong style="color:var(--teal);">ward-level spatial data</strong> that makes every pillar more targeted.
+</div>
 
 ]
 
-.footnote[参考文献]
+.footnote[AMC / NRDC / IIPH-G (2019) *Ahmedabad HAP 2019* · Hess et al. (2018) *J Environ Public Health* · UNDRR (2015) Sendai Framework · UN (2017) New Urban Agenda]
 
 ---
 
