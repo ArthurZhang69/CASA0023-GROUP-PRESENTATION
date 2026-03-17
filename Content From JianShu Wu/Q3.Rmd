@@ -1,0 +1,474 @@
+---
+title: "EO-HEAT · Ahmedabad"
+subtitle: "Approach · HaoyuJiang & [你的名字]"
+output:
+  xaringan::moon_reader:
+    css: [default, custom.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: "16:9"
+      countIncrementalSlides: false
+      slideNumberFormat: "%current% / %total%"
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  fig.retina = 3, fig.align = "center"
+)
+```
+
+```{r libraries, include=FALSE}
+library(ggplot2)
+library(scales)
+library(showtext)
+library(DiagrammeR)
+
+font_add_google("Cormorant Garamond", "cormorant")
+font_add_google("Outfit", "outfit")
+showtext_auto()
+
+theme_eoheat <- function(base_size = 12) {
+  theme_minimal(base_family = "outfit", base_size = base_size) +
+  theme(
+    plot.background  = element_rect(fill = "#0F1117", color = NA),
+    panel.background = element_rect(fill = "#0F1117", color = NA),
+    panel.grid.major = element_line(color = "#252A40", linewidth = 0.4),
+    panel.grid.minor = element_blank(),
+    text             = element_text(color = "#9DA3B4"),
+    axis.text        = element_text(color = "#5C6380", size = rel(0.82)),
+    axis.title       = element_text(color = "#9DA3B4", size = rel(0.9)),
+    plot.title       = element_text(color = "#EDE8DF", face = "bold",
+                                    size = rel(1.15), margin = margin(b = 6)),
+    plot.subtitle    = element_text(color = "#9DA3B4", size = rel(0.85),
+                                    margin = margin(b = 12)),
+    plot.caption     = element_text(color = "#5C6380", size = rel(0.7),
+                                    hjust = 0, margin = margin(t = 8)),
+    legend.background = element_rect(fill = "#0F1117", color = NA),
+    legend.text      = element_text(color = "#9DA3B4"),
+    legend.title     = element_text(color = "#EDE8DF"),
+    plot.margin      = margin(12, 12, 12, 12)
+  )
+}
+```
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 1 · OVERVIEW                                  ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Our Workflow
+
+.slide-label[Slide 1 · Overview · HaoyuJiang]
+
+.left-narrow[
+
+### Method Overview
+
+> "Our approach integrates multi-source Earth Observation data with demographic and spatial information to quantify heat risk and vulnerability at the ward scale."
+
+- **1 · Data Acquisition**
+- **2 · Preprocessing**
+- **3 · Heat & Land Cover Mapping**
+- **4 · Heat Vulnerability Assessment**
+- **5 · Spatial Inequality Analysis**
+- **6 · Policy-Relevant Outputs**
+
+]
+
+.right-wide[
+
+```{r fig-01-workflow, fig.height=5.5, fig.width=9}
+library(DiagrammeR)
+
+grViz("
+digraph workflow {
+  graph [layout = dot, rankdir = TB, bgcolor = '#0F1117',
+         fontname = 'Helvetica', splines = polyline, nodesep = 0.4, ranksep = 0.5]
+
+  node [shape = rectangle, style = filled, fontname = 'Helvetica',
+        fontcolor = 'white', margin = 0.2, fontsize = 11]
+
+  DA   [label = 'Data Acquisition\nLandsat 8/9 · Sentinel-2 · MODIS · WorldPop · OSM',
+        fillcolor = '#2E86C1', color = '#2E86C1']
+  PP   [label = 'Preprocessing\nCloud Masking · Atmospheric Correction · Compositing · Alignment',
+        fillcolor = '#27AE60', color = '#27AE60']
+  LULC [label = 'Vegetation & Land Cover', fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+  UHI  [label = 'UHI Intensity Mapping',   fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+  HVI  [label = 'Heat Vulnerability Index\nHVI = LST×0.5 + Pop×0.3 − NDVI×0.2',
+        fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+  SPA  [label = 'Spatial Inequality Analysis', fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+  OUT  [label = 'Outputs for Policy\nHeat Maps · Priority Zones · Dashboard · Monitoring',
+        fillcolor = '#8E44AD', color = '#8E44AD']
+
+  DA   -> PP   [color = white]
+  PP   -> LULC [color = white]
+  PP   -> UHI  [color = white]
+  LULC -> HVI  [color = white]
+  UHI  -> HVI  [color = white]
+  DA   -> HVI  [style = dashed, color = white]
+  DA   -> SPA  [style = dashed, color = white]
+  HVI  -> SPA  [color = white]
+  SPA  -> OUT  [color = white]
+}
+")
+```
+
+]
+
+.footnote[Workflow adapted from IPCC AR5 exposure–sensitivity–adaptive capacity framework]
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 2 · DATA INPUT                                ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Data Inputs and Their Role in Heat Risk Assessment
+
+.slide-label[Slide 2 · Input · HaoyuJiang]
+
+.left-narrow[
+
+### Key Data Inputs
+
+- **Satellite LST**
+  Multi-temporal LST from MODIS and Landsat 8/9 to identify urban heat islands and hotspots
+
+- **Land Cover & Vegetation**
+  Sentinel-2 NDVI / LULC data to analyse green space, built-up area, and impervious surfaces
+
+- **Population Data**
+  WorldPop 2020 gridded population to assess exposure of vulnerable populations at ward scale
+
+- **Street & Building Data**
+  OSM data to capture building density, street network, and their effects on heat distribution
+
+> "Accurate and multi-source data inputs are critical to model heat vulnerability at fine spatial scales."
+
+]
+
+.right-wide[
+
+```{r fig-02-inputs, fig.height=5, fig.width=8}
+library(DiagrammeR)
+
+grViz("
+digraph inputs {
+  graph [layout = dot, rankdir = LR, bgcolor = '#0F1117',
+         fontname = 'Helvetica', nodesep = 0.5, ranksep = 0.6]
+
+  node [fontname = 'Helvetica', shape = rectangle, style = filled,
+        fontcolor = white, margin = '0.2,0.12', fontsize = 11]
+
+  L8  [label = 'Landsat 8/9\nTIRS LST',       fillcolor = '#2C3E6B', color = '#2C3E6B']
+  S2  [label = 'Sentinel-2\nNDVI / LULC',     fillcolor = '#2C3E6B', color = '#2C3E6B']
+  MOD [label = 'MODIS\nLST Time Series',      fillcolor = '#2C3E6B', color = '#2C3E6B']
+  WP  [label = 'WorldPop 2020\nPopulation',   fillcolor = '#2C3E6B', color = '#2C3E6B']
+  OSM [label = 'OSM\nBuilding & Street',      fillcolor = '#2C3E6B', color = '#2C3E6B']
+
+  LST  [label = 'LST\nAnalysis',  fillcolor = '#5D4037', color = '#5D4037']
+  VEG  [label = 'Vegetation\nMapping', fillcolor = '#5D4037', color = '#5D4037']
+  POP  [label = 'Vulnerability\nAssessment', fillcolor = '#5D4037', color = '#5D4037']
+  STR  [label = 'Spatial\nContext', fillcolor = '#5D4037', color = '#5D4037']
+
+  HVI [label = 'Heat Vulnerability\nIndex (HVI)', fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+
+  L8  -> LST [color = '#4FC4CF']
+  MOD -> LST [color = '#4FC4CF']
+  S2  -> VEG [color = '#4FC4CF']
+  WP  -> POP [color = '#4FC4CF']
+  OSM -> STR [color = '#4FC4CF']
+
+  LST -> HVI [color = '#C9A96E']
+  VEG -> HVI [color = '#C9A96E']
+  POP -> HVI [color = '#C9A96E']
+  STR -> HVI [color = '#C9A96E']
+}
+")
+```
+
+]
+
+.footnote[USGS Landsat Collection 2 · ESA Sentinel Hub · NASA LP DAAC · WorldPop (2020) · OpenStreetMap]
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 3 · PREPROCESSING                             ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Data Preprocessing
+
+.slide-label[Slide 3 · Preprocessing · 你的名字]
+
+.left-wide[
+
+```{r fig-03-preprocess, fig.height=4.2, fig.width=7}
+grViz("
+digraph preprocessing {
+  graph [layout = dot, rankdir = TB, bgcolor = '#0F1117',
+         fontname = 'Helvetica', nodesep = 0.4, ranksep = 0.45]
+
+  node [fontname = 'Helvetica', shape = rectangle, style = filled,
+        fontcolor = white, margin = '0.18,0.12', width = 2.2, fontsize = 12]
+
+  subgraph cluster_sources {
+    rank = same
+    style = invis
+    L8  [label = 'Landsat 8/9 TIRS LST',    fillcolor = '#2C3E6B', color = '#2C3E6B']
+    S2  [label = 'Sentinel-2 MSI NDVI/LULC', fillcolor = '#2C3E6B', color = '#2C3E6B']
+    MOD [label = 'MODIS LST Time Series',    fillcolor = '#2C3E6B', color = '#2C3E6B']
+  }
+
+  CM [label = 'Cloud Masking',          fillcolor = '#5D4037', color = '#5D4037']
+  AC [label = 'Atmospheric Correction', fillcolor = '#5D4037', color = '#5D4037']
+  IC [label = 'Image Compositing',      fillcolor = '#5D4037', color = '#5D4037']
+  SA [label = 'Spatial Alignment',      fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+
+  L8  -> CM [color = '#4FC4CF']
+  S2  -> CM [color = '#4FC4CF']
+  MOD -> CM [color = '#4FC4CF']
+  CM  -> AC [color = '#9DA3B4']
+  AC  -> IC [color = '#9DA3B4']
+  IC  -> SA [color = '#C9A96E', penwidth = 2]
+}
+")
+```
+
+.fig-caption[Fig. 1 · Preprocessing pipeline · Sources: GEE, USGS, ESA, NASA LP DAAC]
+
+]
+
+.right-narrow[
+
+<style>
+.right-narrow .stat-box {
+  padding: 4px 8px 4px 12px !important;
+  margin-bottom: 4px !important;
+}
+.right-narrow .stat-number {
+  font-size: 0.95em !important;
+  line-height: 1.1 !important;
+  display: block !important;
+  margin-bottom: 2px !important;
+}
+.right-narrow .stat-label {
+  font-size: 0.68em !important;
+  line-height: 1.25 !important;
+  display: block !important;
+}
+.right-narrow .stat-source {
+  font-size: 0.58em !important;
+  display: block !important;
+  margin-top: 2px !important;
+}
+</style>
+
+.stat-box[
+<span class="stat-number">Step 1</span>
+<span class="stat-label">**Cloud Masking** — Remove pixels contaminated by cloud and shadow</span>
+<span class="stat-source">Ensures only clear-sky data enters the pipeline</span>
+]
+
+.stat-box[
+<span class="stat-number">Step 2</span>
+<span class="stat-label">**Atmospheric Correction** — Strip out atmospheric interference to get true surface values</span>
+<span class="stat-source">Critical for accurate LST in dusty conditions</span>
+]
+
+.stat-box[
+<span class="stat-number">Step 3</span>
+<span class="stat-label">**Image Compositing** — Merge multiple images into one clean seasonal snapshot</span>
+<span class="stat-source">Reduces noise across the pre-monsoon period</span>
+]
+
+.stat-box[
+<span class="stat-number">Step 4</span>
+<span class="stat-label">**Spatial Alignment** — Stack all data layers onto a single shared grid</span>
+<span class="stat-source">Enables pixel-level comparison across all sources</span>
+]
+
+]
+
+.footnote[USGS Landsat Collection 2 · ESA Sentinel Hub · NASA LP DAAC · GEE Python API]
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 4 · ANALYSIS                                  ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Analysis: From Preprocessed Data to HVI
+
+.slide-label[Slide 4 · Analysis · HaoyuJiang]
+
+.left-narrow[
+
+### Three Integrated Work Packages
+
+**WP1 · Heat Mapping**
+Generate multi-temporal LST maps to identify heat hotspots at ward scale
+
+**WP2 · Land Cover & Green Space**
+Analyse vegetation cover, built-up area, and impervious surfaces using Sentinel-2 NDVI
+
+**WP3 · Heat Vulnerability Index**
+Combine EO data with WorldPop and OSM to produce ward-level HVI
+
+> HVI = LST × 0.5 + Pop × 0.3 − NDVI × 0.2
+
+.chip.gold[LST] .chip.teal[NDVI] .chip.alert[Population]
+
+]
+
+.right-wide[
+
+```{r fig-04-analysis, fig.height=5, fig.width=8}
+grViz("
+digraph analysis {
+  graph [layout = dot, rankdir = TB, bgcolor = '#0F1117',
+         fontname = 'Helvetica', nodesep = 0.5, ranksep = 0.5]
+
+  node [fontname = 'Helvetica', shape = rectangle, style = filled,
+        fontcolor = white, margin = '0.2,0.12', fontsize = 11]
+
+  PP  [label = 'Preprocessed Data Stack', fillcolor = '#27AE60', color = '#27AE60']
+
+  subgraph rank_mid {
+    rank = same
+    LULC [label = 'Vegetation &\nLand Cover (WP2)', fillcolor = '#2C3E6B', color = '#2C3E6B']
+    UHI  [label = 'UHI Intensity\nMapping (WP1)',   fillcolor = '#2C3E6B', color = '#2C3E6B']
+  }
+
+  HVI [label = 'Heat Vulnerability Index\nHVI = LST×0.5 + Pop×0.3 − NDVI×0.2 (WP3)',
+       fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+
+  SPA [label = 'Spatial Inequality Analysis\nWard-level disparity in heat exposure',
+       fillcolor = '#8E44AD', color = '#8E44AD']
+
+  PP   -> LULC [color = '#4FC4CF']
+  PP   -> UHI  [color = '#4FC4CF']
+  LULC -> HVI  [color = '#C9A96E']
+  UHI  -> HVI  [color = '#C9A96E']
+  HVI  -> SPA  [color = white, penwidth = 2]
+}
+")
+```
+
+]
+
+.footnote[IPCC AR5 exposure–sensitivity–adaptive capacity framework · Chen et al. (2021)]
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 5 · OUTPUTS FOR POLICY                        ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Outputs for Policy
+
+.slide-label[Slide 5 · Output · 你的名字]
+
+.stats-row[
+
+.stat-box[
+<span class="stat-number">01</span>
+<span class="stat-label">**Ward-level Heat Maps**<br>
+<span style="font-size:0.82em;color:#9DA3B4">
+HVI (LST × 0.5 + Pop × 0.3 − NDVI × 0.2) overlaid with OSM data — identifies areas with the highest HVI scores
+</span></span>
+<span class="stat-source">Sources: Landsat LST · Sentinel-2 NDVI · WorldPop · OSM</span>
+]
+
+.stat-box.teal[
+<span class="stat-number">02</span>
+<span class="stat-label">**Priority Intervention Zones**<br>
+<span style="font-size:0.82em;color:#9DA3B4">
+Derived from ward-level heat maps — flags areas with the highest combined heat and social vulnerability scores
+</span></span>
+]
+
+.stat-box.alert[
+<span class="stat-number">03</span>
+<span class="stat-label">**Policy Dashboard Mockup**<br>
+<span style="font-size:0.82em;color:#9DA3B4">
+Static prototype linking ward heat scores to Ahmedabad Heat Action Plan targets
+</span></span>
+<span class="stat-source">Figma wireframe / R Shiny mockup</span>
+]
+
+.stat-box[
+<span class="stat-number">04</span>
+<span class="stat-label">**Annual Monitoring Plan**<br>
+<span style="font-size:0.82em;color:#9DA3B4">
+Repeatable GEE script for yearly LST updates across all wards
+</span></span>
+<span class="stat-source">Documented GEE code + update schedule</span>
+]
+
+]
+
+<br>
+
+> All four outputs feed directly into **Ahmedabad's Heat Action Plan (HAP)** — enabling evidence-based cooling investment at ward level.
+
+.footnote[Ahmedabad HAP (2013) · Knowlton et al. (2014) PMC · SDG 11.6.2]
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 6 · LIMITATIONS                               ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Limitations
+
+.slide-label[Slide 6 · Limitations · 你的名字]
+
+| Stage | Limitation | Consequence | Mitigation |
+|-------|-----------|-------------|------------|
+| **Data** | Landsat 16-day revisit cycle | Misses intra-heatwave LST peaks | Gap-fill with MODIS 8-day MOD11A2 |
+| **Data** | WorldPop 2020 — 6-year lag from present | HVI may not reflect current population distribution | No newer high-resolution population dataset available via GEE |
+| **Preprocessing** | Atmospheric correction uncertainty 1.6–2 K | Inflated LST in dust-storm events common in Ahmedabad | Apply MODTRAN coefficients validated for arid South Asia |
+| **Preprocessing** | Monsoon cloud cover (JJA) leaves composite gaps | Incomplete seasonal stack for June–August | Restrict analysis to pre-monsoon (MAM) and post-monsoon (OND) |
+| **Analysis** | 30 m resolution cannot resolve street-level micro-UHI | Priority zones generalised at ward scale only | — |
+
+.stats-row[
+
+.stat-box.alert[
+<span class="stat-number">1.6–2 K</span>
+<span class="stat-label">LST error, arid region</span>
+<span class="stat-source">Emami & Mojaradi (2021)</span>
+]
+
+.stat-box[
+<span class="stat-number">16 days</span>
+<span class="stat-label">Landsat revisit gap</span>
+<span class="stat-source">USGS Landsat Handbook</span>
+]
+
+.stat-box.teal[
+<span class="stat-number">2020</span>
+<span class="stat-label">WorldPop data lag</span>
+<span class="stat-source">WorldPop (2020)</span>
+]
+
+]
+
+.footnote[Emami & Mojaradi (2021) RSE · USGS Landsat Handbook · WorldPop (2020)]
