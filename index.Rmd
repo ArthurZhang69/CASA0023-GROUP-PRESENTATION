@@ -1,6 +1,6 @@
 ---
-title: "EO-HEAT Ahmedabad"
-subtitle: "Earth Observation for Heat Exposure Assessment and Targeted Mitigation"
+title: "PROJECT THERMIS"
+subtitle: "Thermal Heat-Risk Earth Remote Mapping & Intervention System"
 author: "Terravance Advisory Group · CASA0023"
 institute: "Centre for Advanced Spatial Analysis, UCL"
 date: "2026"
@@ -19,18 +19,20 @@ output:
     seal: false
 ---
 class: title-slide
+<div style="position:absolute; top:-4%; left:1%; right:0; padding:2.3rem 4rem; border-top:1px solid rgba(201,169,110,0.5);">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-<div style="position:absolute; top:8%; left:0; right:0; padding:2.3rem 4rem; border-top:1px solid rgba(201,169,110,0.5);">
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<span style="display:inline-block; background:var(--bg-card); border:1px solid rgba(201,169,110,0.5); color:var(--gold); font-family:var(--font-body); font-size:0.7em; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; padding:0.35em 0.9em; border-radius:2px; margin-bottom:1.2rem;">CASA0023 · Remotely Sensing Cities and Environments · 2026</span>
+<span style="display:inline-block; background:var(--bg-card); border:1px solid rgba(201,169,110,0.5); color:var(--gold); font-family:var(--font-body); font-size:0.7em; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; padding:0.35em 0.9em; border-radius:2px; margin-bottom:0rem;">CASA0023 · Remotely Sensing Cities and Environments · 2026</span>
 
 <h1 style="font-family:var(--font-display); font-size:3.4em; font-weight:700; color:var(--text-primary); line-height:1.05; margin:0 0 0.3em 0;">PROJECT THERMIS
-<h2 style="font-family:var(--font-body); font-size:1.05em; font-weight:300; color:var(--text-secondary); letter-spacing:0.03em; margin:0 0 1.5rem 0;">Thermal Heat-Risk Earth Mapping & Intervention System</h2>
+
+<h2 style="font-family:var(--font-body); font-size:0.96em !important; font-weight:300; color:var(--text-secondary); letter-spacing:0.03em; margin:0 0 1.5rem 0;"><span style="color:var(--gold);font-weight:600;">T</span>hermal <span style="color:var(--gold);font-weight:600;">H</span>eat-<span style="color:var(--gold);font-weight:600;">R</span>isk <span style="color:var(--gold);font-weight:600;">E</span>arth <span style="color:var(--gold);font-weight:600;">R</span>emote <span style="color:var(--gold);font-weight:600;">M</span>apping & <span style="color:var(--gold);font-weight:600;">I</span>ntervention <span style="color:var(--gold);font-weight:600;">S</span>ystem</h2>
 
 <p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;">Bidding to Ahmedabad Municipal Corporation (AMC)</p>
 <p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--white); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;">Terravance Advisory Group [TAG] · UCL CASA</p>
@@ -144,7 +146,7 @@ class: section-slide
 
 ## The Problem: Extreme Urban Heat Kills
 
-.slide-label[Slide 02 · Problem Definition]
+.slide-label[Slide 04 · Problem Definition · shiyao zhang]
 
 .left-wide[
 
@@ -264,7 +266,7 @@ Bottom: Built-up & population · Chaturvedi et al. (2022)]
 
 ## Who Suffers Most? Heat Vulnerability is Unequal
 
-.slide-label[Slide 03 · Problem Definition]
+.slide-label[Slide 05 · Problem Definition · shiyao zhang]
 
 .pull-left[
 <div style="margin-top:-1.4rem;">
@@ -305,7 +307,7 @@ knitr::include_graphics("Content From ShiYao Zhang/IPCC.png")
 
 ## Policy Context: From Global Goals to Local Action
 
-.slide-label[Slide 04 · Problem Definition]
+.slide-label[Slide 06 · Problem Definition · shiyao zhang]
 
 .left-narrow[
 <div style="height:1.5rem;"></div>
@@ -393,61 +395,334 @@ class: section-slide
 
 ---
 
-## Earth Observation & Ancillary Data
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 1 · OVERVIEW                                  ║
+╚══════════════════════════════════════════════════════╝
+-->
 
-.slide-label[Slide 06 · Approach]
+## Our Workflow
 
-```{r fig-f, fig.height=3.8, fig.width=11}
-datasets <- data.frame(
-  name   = c("Landsat 8/9 TIRS", "Sentinel-2 MSI", "MODIS MOD11A2",
-              "Census Ward Data", "OSM Buildings"),
-  start  = c(1984, 2015, 2000, 2001, 2010),
-  end    = c(2026, 2026, 2026, 2011, 2026),
-  res    = c("30 m · 16-day", "10 m · 5-day", "1 km · 8-day",
-             "Ward-level", "Building-level"),
-  use    = c("Land Surface Temperature (LST)",
-             "NDVI · Land Cover Classification",
-             "Long-term LST trend (2000–2025)",
-             "Demographics · Vulnerability Index",
-             "Urban morphology · Imperviousness"),
-  colour = c("#C9A96E", "#4FC4CF", "#E05C5C", "#58D68D", "#9DA3B4")
-)
+.slide-label[Slide 08 · Overview · Haoyu Jiang]
 
-y_pos <- c(4, 3, 2, 1, 0)
+.left-narrow[
 
-ggplot(datasets) +
-  geom_segment(aes(x = start, xend = end,
-                   y = y_pos, yend = y_pos,
-                   color = colour),
-               linewidth = 5.5, lineend = "round") +
-  geom_label(aes(x = start + 0.5, y = y_pos,
-                 label = name, color = colour),
-             fill = "#0F1117", size = 3.1,
-             family = "outfit", fontface = "bold",
-             label.padding = unit(0.3, "lines"),
-             label.r = unit(0.15, "lines"), hjust = 0) +
-  geom_text(aes(x = end - 0.5, y = y_pos + 0.55,
-                label = res, color = colour),
-            size = 2.5, family = "outfit", hjust = 1) +
-  geom_text(aes(x = (start + end) / 2, y = y_pos - 0.45,
-                label = use),
-            color = "#5C6380", size = 2.6, family = "outfit") +
-  scale_color_identity() +
-  scale_x_continuous(breaks = seq(1985, 2025, 5),
-                     expand = expansion(add = c(1, 2))) +
-  labs(
-    title    = "Multi-sensor, multi-temporal Earth Observation stack",
-    subtitle = "All datasets free & analysis-ready via Google Earth Engine",
-    x = NULL, y = NULL
-  ) +
-  theme_eoheat() +
-  theme(axis.text.y = element_blank(),
-        panel.grid.major.y = element_blank())
-```
+### Method Overview
 
-.fig-caption[Fig. F · EO Data Timeline · USGS / ESA / NASA / Census India / OpenStreetMap]
+> "Our approach integrates multi-source Earth Observation data with demographic and spatial information to quantify heat risk and vulnerability at the ward scale."
 
-.footnote[All EO data accessed via Google Earth Engine · No licensing cost · Full temporal coverage from 1984]
+<p style="line-height:2.2; color:#EDE8DF; font-weight:600; font-size:1.05em;">
+<span style="color:#C9A96E;">I</span> &nbsp;· Data Acquisition<br>
+<span style="color:#C9A96E;">II</span> &nbsp;· Preprocessing<br>
+<span style="color:#C9A96E;">III</span> · Heat & Land Cover Mapping<br>
+<span style="color:#C9A96E;">IV</span> · Heat Vulnerability Assessment<br>
+<span style="color:#C9A96E;">V</span> &nbsp;· Spatial Inequality Analysis<br>
+<span style="color:#C9A96E;">VI</span> · Policy-Relevant Outputs
+</p>
+]
+
+.right-wide[
+
+<div style="overflow:hidden; height:108vh; margin-top:-6rem;">
+<img src="Content From ShiYao Zhang/Flowchart1_refined.png" style="width:80%;  max-height:108vh; object-fit:contain;margin-left:7rem;">
+</div>
+
+]
+
+.footnote[Workflow adapted from IPCC AR5 exposure–sensitivity–adaptive capacity framework]
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 2 · DATA INPUT                                ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Data Inputs and Their Role in Heat Risk Assessment
+
+.slide-label[Slide 09 · Input · Haoyu Jiang]
+
+.left-narrow[
+
+### Key Data Inputs
+
+- **Satellite LST**
+  MODIS for temporal continuity and gap-filling; Landsat 8/9 for higher-resolution ward-scale hotspot mapping
+
+- **Land Cover & Vegetation**
+  Sentinel-2 NDVI to analyse vegetation cover and green-space cooling effects
+
+- **Population Data**
+  WorldPop 2020 gridded population to assess exposure of vulnerable populations at ward scale
+
+- **Street & Building Data**
+  OSM provides contextual layers for interpreting priority zones and communicating results
+
+
+
+]
+
+.right-wide[
+
+<div style="display:flex; flex-direction:column; gap:0.4rem; padding:0.2rem 0.5rem; font-family:'Outfit',sans-serif; height:34vh;margin-left:4rem;margin-top:2rem;width:85%;">
+
+  <div style="display:flex; gap:0.4rem; flex:1;">
+    <div style="flex:1; background:#1A1F2E; border:1.5px solid #4FC4CF; border-radius:6px; padding:0.7rem 0.9rem; position:relative;">
+      <img src="Content From ShiYao Zhang/Landsat.png" style="position:absolute; top:0.7rem; right:0.6rem; height:88px; object-fit:contain;">
+      <div style="color:#4FC4CF; font-size:0.58em; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.2rem;">🛰 Thermal Infrared</div>
+      <div style="color:#EDE8DF; font-size:0.85em; font-weight:700; margin-bottom:0.25rem;">Landsat 8/9 TIRS</div>
+      <div style="color:#9DA3B4; font-size:0.63em; line-height:1.7;"><span style="color:#EDE8DF;">Resolution</span> 30 m &nbsp;|&nbsp; <span style="color:#EDE8DF;">Revisit</span> 16 days<br><span style="color:#EDE8DF;">Use</span> LST mapping</div>
+    </div>
+    <div style="flex:1; background:#1A1F2E; border:1.5px solid #4FC4CF; border-radius:6px; padding:0.7rem 0.9rem; position:relative;">
+      <img src="Content From ShiYao Zhang/NASA.svg" style="position:absolute; top:0.55rem; right:0.55rem; height:85px; object-fit:contain;">
+      <div style="color:#4FC4CF; font-size:0.58em; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.2rem;">🛰 Time Series</div>
+      <div style="color:#EDE8DF; font-size:0.85em; font-weight:700; margin-bottom:0.25rem;">MODIS LST</div>
+      <div style="color:#9DA3B4; font-size:0.63em; line-height:1.7;"><span style="color:#EDE8DF;">Resolution</span> 1 km &nbsp;|&nbsp; <span style="color:#EDE8DF;">Revisit</span> 1–2 days<br><span style="color:#EDE8DF;">Use</span> Temporal trends</div>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:0.4rem; flex:1;">
+    <div style="flex:1; background:#1A1F2E; border:1.5px solid #58D68D; border-radius:6px; padding:0.7rem 0.9rem; position:relative;">
+      <img src="Content From ShiYao Zhang/Sentinel-2.jpg" style="position:absolute; top:0.5rem; right:0.5rem; height:85px; object-fit:contain; border-radius:3px;">
+      <div style="color:#58D68D; font-size:0.58em; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.2rem;">🛰 Multispectral</div>
+      <div style="color:#EDE8DF; font-size:0.85em; font-weight:700; margin-bottom:0.25rem;">Sentinel-2 MSI</div>
+      <div style="color:#9DA3B4; font-size:0.63em; line-height:1.7;"><span style="color:#EDE8DF;">Resolution</span> 10 m &nbsp;|&nbsp; <span style="color:#EDE8DF;">Revisit</span> 5 days<br><span style="color:#EDE8DF;">Use</span> NDVI / LULC</div>
+    </div>
+    <div style="flex:1; background:#1A1F2E; border:1.5px solid #9B59B6; border-radius:6px; padding:0.7rem 0.9rem; position:relative;">
+      <img src="Content From ShiYao Zhang/WorldPop.png" style="position:absolute; top:1.8rem; right:0.4rem; height:45px; object-fit:contain; filter:invert(1);">
+      <div style="color:#9B59B6; font-size:0.58em; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.2rem;">👥 Population</div>
+      <div style="color:#EDE8DF; font-size:0.85em; font-weight:700; margin-bottom:0.25rem;">WorldPop 2020</div>
+      <div style="color:#9DA3B4; font-size:0.63em; line-height:1.7;"><span style="color:#EDE8DF;">Resolution</span> 100 m &nbsp;|&nbsp; <span style="color:#EDE8DF;">Coverage</span> Global<br><span style="color:#EDE8DF;">Use</span> Exposure mapping</div>
+    </div>
+  </div>
+
+  <div style="flex:1; background:#1A1F2E; border:1.5px solid #E05C5C; border-radius:6px; padding:0.7rem 0.9rem; position:relative;">
+    <img src="Content From ShiYao Zhang/OSM-2.png" style="position:absolute; top:-1rem; right:0.1rem; height:145px; object-fit:contain; border-radius:3px;mix-blend-mode:lighten;">
+    <div style="color:#E05C5C; font-size:0.58em; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.2rem;">🗺 Vector</div>
+    <div style="color:#EDE8DF; font-size:0.85em; font-weight:700; margin-bottom:0.25rem;">OpenStreetMap</div>
+    <div style="color:#9DA3B4; font-size:0.63em; line-height:1.7;"><span style="color:#EDE8DF;">Type</span> Vector — buildings, roads, green space<br><span style="color:#EDE8DF;">Use</span> Spatial context &amp; heat distribution modelling</div>
+  </div>
+
+</div>
+
+]
+
+.footnote[USGS Landsat Collection 2 · ESA Sentinel Hub · NASA LP DAAC · WorldPop (2020) · OpenStreetMap]
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 3 · PREPROCESSING                             ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Data Preprocessing
+
+.slide-label[Slide 10 · Preprocessing · JIANSHU WU]
+
+.left-wide[
+
+<img src="Content From ShiYao Zhang/Flowchart2-refined.png" style="width:100%; max-height:48vh; object-fit:contain; display:block;margin-top:-1.6rem;margin-left:-2rem">
+
+
+
+]
+
+.right-narrow[
+
+<style>
+.right-narrow .stat-box {
+  padding: 4px 8px 4px 12px !important;
+  margin-bottom: 4px !important;
+}
+.right-narrow .stat-number {
+  font-size: 0.95em !important;
+  line-height: 1.1 !important;
+  display: block !important;
+  margin-bottom: 2px !important;
+}
+.right-narrow .stat-label {
+  font-size: 0.68em !important;
+  line-height: 1.25 !important;
+  display: block !important;
+}
+.right-narrow .stat-source {
+  font-size: 0.58em !important;
+  display: block !important;
+  margin-top: 2px !important;
+}
+</style>
+
+.stat-box[
+<span class="stat-number">Step 1</span>
+<span class="stat-label">**Cloud Masking** — Remove pixels contaminated by cloud and shadow</span>
+<span class="stat-source">Ensures only clear-sky data enters the pipeline</span>
+]
+
+.stat-box[
+<span class="stat-number">Step 2</span>
+<span class="stat-label">**Atmospheric Correction** — Strip out atmospheric interference to get true surface values</span>
+<span class="stat-source">Critical for accurate LST in dusty conditions</span>
+]
+
+.stat-box[
+<span class="stat-number">Step 3</span>
+<span class="stat-label">**Image Compositing** — Merge multiple images into one clean seasonal snapshot</span>
+<span class="stat-source">Reduces noise across the pre-monsoon period</span>
+]
+
+.stat-box[
+<span class="stat-number">Step 4</span>
+<span class="stat-label">**Spatial Alignment** — Stack all data layers onto a single shared grid</span>
+<span class="stat-source">Enables pixel-level comparison across all sources</span>
+]
+
+]
+
+.footnote[USGS Landsat Collection 2 · ESA Sentinel Hub · NASA LP DAAC · GEE Python API]
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 4 · ANALYSIS                                  ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Analysis: From Preprocessed Data to HVI
+
+.slide-label[Slide 11 · Analysis · Haoyu Jiang]
+
+.left-narrow[
+
+### Three Integrated Work Packages
+
+**WP1 · Heat Mapping**
+Generate multi-temporal LST maps to identify surface heat hotspots at ward scale
+
+**WP2 · Vegetation Mapping**
+Analyse vegetation cover and green-space cooling effects using Sentinel-2 NDVI
+
+**WP3 · Heat Vulnerability Index**
+Aggregate normalised indicators to ward boundaries using zonal statistics
+
+> HVI = 0.5 × LST(NORM) + 0.3 × POP(NORM) − 0.2 × NDVI(NORM)
+
+<div style="display:flex; align-items:center; gap:0.5rem; margin-top:0.5rem;">
+.chip.gold[LST] .chip.teal[NDVI] .chip.alert[HVI] .chip[+MORE]
+</div>
+
+]
+
+.right-wide[
+
+
+<img src="Content From ShiYao Zhang/MAP.png" style="width:100%; max-height:80vh; object-fit:contain; display:block; margin-top:-11rem;margin-left:1.5rem">
+
+]
+
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 5 · OUTPUTS FOR POLICY                        ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Outputs for Policy
+
+.slide-label[Slide 12 · Output · JIANSHU WU]
+<br>
+.stats-row[
+
+.stat-box[
+<span class="stat-number">01</span>
+<span class="stat-label">**Ward-level Heat Maps**<br>
+<span style="font-size:0.82em;color:#9DA3B4">
+Heat Vulnerability Index map overlaid with OSM data — identifies areas with the <br>highest HVI scores
+</span></span>
+<span class="stat-source">Data Sources: Landsat LST · Sentinel-2 NDVI · WorldPop · OSM</span>
+]
+
+.stat-box.teal[
+<span class="stat-number">02</span>
+<span class="stat-label">**Priority Intervention Zones**<br>
+<span style="font-size:0.82em;color:#9DA3B4">
+Derived from ward-level HVI maps — flags areas with the highest combined thermal and population exposure
+</span></span>
+]
+
+.stat-box.alert[
+<span class="stat-number">03</span>
+<span class="stat-label">**THERMIS Interface**<br>
+<span style="font-size:0.82em;color:#9DA3B4">
+A decision-ready prototype with interactive mapping & dashboard built for AMC's Heat Action Plan 
+</span></span>
+
+]
+
+.stat-box[
+<span class="stat-number">04</span>
+<span class="stat-label">**Annual Monitoring Plan**<br>
+<span style="font-size:0.82em;color:#9DA3B4">
+Workflow designed to be repeatable for annual LST updates across all wards
+</span></span>
+<span class="stat-source">Documented GEE code + update schedule</span>
+]
+
+]
+
+<br>
+
+> These outputs can inform **Ahmedabad's Heat Action Plan (HAP)** and support ward-level cooling prioritisation.
+
+.footnote[Ahmedabad HAP (2013) · Knowlton et al. (2014) PMC · SDG 11.6.2]
+
+---
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║  SLIDE 6 · LIMITATIONS                               ║
+╚══════════════════════════════════════════════════════╝
+-->
+
+## Limitations
+
+.slide-label[Slide 13 · Limitations · Jianshu Wu]
+
+| Stage | Limitation | Consequence | Mitigation |
+|-------|-----------|-------------|------------|
+| **Data** | WorldPop 2020 — 6-year lag | HVI may not reflect current population distribution | Best available proxy via GEE |
+| **Preprocessing** | Atmospheric correction uncertainty 1.6–2 K | LST may be inflated under dusty conditions | Use region-appropriate correction parameters |
+| **Analysis** | HVI is a simplified proxy — not a full vulnerability index | Socio-economic dimensions not captured | Interpret results as indicative only |
+| **Analysis** | Weights derived from Kumar et al. (2024) correlations but rounded for simplicity | Ward rankings may shift under alternative weighting | Sensitivity testing in future work |
+
+.stats-row[
+
+.stat-box.alert[
+<span class="stat-number">1.6–2 K</span>
+<span class="stat-label">LST error, arid region</span>
+<span class="stat-source">Emami & Mojaradi (2021)</span>
+]
+
+.stat-box[
+<span class="stat-number">16 days</span>
+<span class="stat-label">Landsat revisit gap</span>
+<span class="stat-source">USGS Landsat Handbook</span>
+]
+
+.stat-box.teal[
+<span class="stat-number">2020</span>
+<span class="stat-label">WorldPop data lag</span>
+<span class="stat-source">WorldPop (2020)</span>
+]
+
+]
+
+.footnote[Emami & Mojaradi (2021) RSE · USGS Landsat Handbook · WorldPop (2020) · Kumar et al. (2024)]
 
 ---
 class: section-slide
@@ -459,7 +734,7 @@ class: section-slide
 ---
 ## Project Timeline
 
-.slide-label[Slide 13a · Project Plan]
+.slide-label[Slide 15 · Project Plan · zhexiang zhou]
 
 .left-wide[
 
@@ -562,7 +837,7 @@ ggplot(wp, aes(y = label)) +
 
 ## Budget & Value for Money
 
-.slide-label[Slide 13b · Project Plan]
+.slide-label[Slide 136 · Project Plan · zhexiang zhou]
 
 .left-wide[
 <br>
@@ -643,7 +918,7 @@ ggplot(budget, aes(x = amount, y = item, fill = fill)) +
 
 ## Risk Register
 
-.slide-label[Slide 14 · Project Plan]
+.slide-label[Slide 17 · Project Plan · li sheng]
 
 <table style="width:100%; border-collapse:collapse; font-size:0.82em; margin-top:0.2rem; line-height:1.45;">
 <thead>
@@ -708,7 +983,7 @@ ggplot(budget, aes(x = amount, y = item, fill = fill)) +
 
 ## Summary: Why PROJECT THERMIS initiated in Ahmedabad?
 
-.slide-label[Slide 15 · Summary & Call to Action]
+.slide-label[Slide 18 · Summary & Call to Action · shiyao zhang]
 
 <div style="display:flex; gap:1.4rem; margin:1rem 0 1.8rem 0;">
 

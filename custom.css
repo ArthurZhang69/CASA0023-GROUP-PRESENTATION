@@ -127,9 +127,9 @@ pre code {
 }
 
 .title-slide h2 {
-  font-size: 1.1em !important;
+  font-size: 0.96em !important;
   font-family: var(--font-body) !important;
-  font-weight: 300 !important;
+  font-weight: 400 !important;
   color: var(--text-secondary) !important;
   letter-spacing: 0.05em;
   margin-bottom: 2rem;
