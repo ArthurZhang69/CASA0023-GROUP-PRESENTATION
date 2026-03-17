@@ -57,12 +57,6 @@ theme_eoheat <- function(base_size = 12) {
 
 ---
 
-<!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 1 · OVERVIEW                                  ║
-╚══════════════════════════════════════════════════════╝
--->
-
 ## Our Workflow
 
 .slide-label[Slide 1 · Overview · HaoyuJiang]
@@ -75,8 +69,8 @@ theme_eoheat <- function(base_size = 12) {
 
 - **1 · Data Acquisition**
 - **2 · Preprocessing**
-- **3 · Heat & Land Cover Mapping**
-- **4 · Heat Vulnerability Assessment**
+- **3 · Heat & Vegetation Mapping**
+- **4 · Ward-level HVI Construction**
 - **5 · Spatial Inequality Analysis**
 - **6 · Policy-Relevant Outputs**
 
@@ -99,21 +93,23 @@ digraph workflow {
         fillcolor = '#2E86C1', color = '#2E86C1']
   PP   [label = 'Preprocessing\nCloud Masking · Atmospheric Correction · Compositing · Alignment',
         fillcolor = '#27AE60', color = '#27AE60']
-  LULC [label = 'Vegetation & Land Cover', fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
-  UHI  [label = 'UHI Intensity Mapping',   fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
-  HVI  [label = 'Heat Vulnerability Index\nHVI = LST×0.5 + Pop×0.3 − NDVI×0.2',
+  LULC [label = 'Vegetation Mapping', fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+  HEAT [label = 'Surface Heat Mapping', fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+  WARD [label = 'Ward-level Aggregation\nZonal Statistics', fillcolor = '#5D4037', color = '#5D4037']
+  HVI  [label = 'Heat Vulnerability Index\n0.5×LST_norm + 0.3×Pop_norm − 0.2×NDVI_norm',
         fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
-  SPA  [label = 'Spatial Inequality Analysis', fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+  SPA  [label = 'Spatial Inequality Analysis\nIdentify high-risk ward clusters',
+        fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
   OUT  [label = 'Outputs for Policy\nHeat Maps · Priority Zones · Dashboard · Monitoring',
         fillcolor = '#8E44AD', color = '#8E44AD']
 
   DA   -> PP   [color = white]
   PP   -> LULC [color = white]
-  PP   -> UHI  [color = white]
-  LULC -> HVI  [color = white]
-  UHI  -> HVI  [color = white]
-  DA   -> HVI  [style = dashed, color = white]
-  DA   -> SPA  [style = dashed, color = white]
+  PP   -> HEAT [color = white]
+  LULC -> WARD [color = white]
+  HEAT -> WARD [color = white]
+  DA   -> WARD [style = dashed, color = white]
+  WARD -> HVI  [color = white]
   HVI  -> SPA  [color = white]
   SPA  -> OUT  [color = white]
 }
@@ -126,12 +122,6 @@ digraph workflow {
 
 ---
 
-<!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 2 · DATA INPUT                                ║
-╚══════════════════════════════════════════════════════╝
--->
-
 ## Data Inputs and Their Role in Heat Risk Assessment
 
 .slide-label[Slide 2 · Input · HaoyuJiang]
@@ -141,26 +131,22 @@ digraph workflow {
 ### Key Data Inputs
 
 - **Satellite LST**
-  Multi-temporal LST from MODIS and Landsat 8/9 to identify urban heat islands and hotspots
+  MODIS for temporal continuity and gap-filling; Landsat 8/9 for higher-resolution ward-scale hotspot mapping
 
 - **Land Cover & Vegetation**
-  Sentinel-2 NDVI / LULC data to analyse green space, built-up area, and impervious surfaces
+  Sentinel-2 NDVI to analyse vegetation cover and green-space cooling effects
 
 - **Population Data**
   WorldPop 2020 gridded population to assess exposure of vulnerable populations at ward scale
 
-- **Street & Building Data**
-  OSM data to capture building density, street network, and their effects on heat distribution
-
-> "Accurate and multi-source data inputs are critical to model heat vulnerability at fine spatial scales."
+- **Spatial Context**
+  OSM provides contextual layers for interpreting priority zones and communicating results
 
 ]
 
 .right-wide[
 
 ```{r fig-02-inputs, fig.height=5, fig.width=8}
-library(DiagrammeR)
-
 grViz("
 digraph inputs {
   graph [layout = dot, rankdir = LR, bgcolor = '#0F1117',
@@ -169,29 +155,28 @@ digraph inputs {
   node [fontname = 'Helvetica', shape = rectangle, style = filled,
         fontcolor = white, margin = '0.2,0.12', fontsize = 11]
 
-  L8  [label = 'Landsat 8/9\nTIRS LST',       fillcolor = '#2C3E6B', color = '#2C3E6B']
-  S2  [label = 'Sentinel-2\nNDVI / LULC',     fillcolor = '#2C3E6B', color = '#2C3E6B']
-  MOD [label = 'MODIS\nLST Time Series',      fillcolor = '#2C3E6B', color = '#2C3E6B']
-  WP  [label = 'WorldPop 2020\nPopulation',   fillcolor = '#2C3E6B', color = '#2C3E6B']
-  OSM [label = 'OSM\nBuilding & Street',      fillcolor = '#2C3E6B', color = '#2C3E6B']
+  L8  [label = 'Landsat 8/9\nTIRS LST',      fillcolor = '#2C3E6B', color = '#2C3E6B']
+  S2  [label = 'Sentinel-2\nNDVI',           fillcolor = '#2C3E6B', color = '#2C3E6B']
+  MOD [label = 'MODIS\nLST Time Series',     fillcolor = '#2C3E6B', color = '#2C3E6B']
+  WP  [label = 'WorldPop 2020\nPopulation',  fillcolor = '#2C3E6B', color = '#2C3E6B']
+  OSM [label = 'OSM\nSpatial Context',       fillcolor = '#2C3E6B', color = '#2C3E6B']
 
-  LST  [label = 'LST\nAnalysis',  fillcolor = '#5D4037', color = '#5D4037']
-  VEG  [label = 'Vegetation\nMapping', fillcolor = '#5D4037', color = '#5D4037']
-  POP  [label = 'Vulnerability\nAssessment', fillcolor = '#5D4037', color = '#5D4037']
-  STR  [label = 'Spatial\nContext', fillcolor = '#5D4037', color = '#5D4037']
+  LST [label = 'Surface Heat\nAnalysis',     fillcolor = '#5D4037', color = '#5D4037']
+  VEG [label = 'Vegetation\nMapping',        fillcolor = '#5D4037', color = '#5D4037']
+  POP [label = 'Population\nExposure',       fillcolor = '#5D4037', color = '#5D4037']
+  CTX [label = 'Spatial\nInterpretation',    fillcolor = '#5D4037', color = '#5D4037']
 
-  HVI [label = 'Heat Vulnerability\nIndex (HVI)', fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+  HVI [label = 'Ward-level Heat\nVulnerability Index', fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
 
   L8  -> LST [color = '#4FC4CF']
   MOD -> LST [color = '#4FC4CF']
   S2  -> VEG [color = '#4FC4CF']
   WP  -> POP [color = '#4FC4CF']
-  OSM -> STR [color = '#4FC4CF']
+  OSM -> CTX [color = '#4FC4CF']
 
   LST -> HVI [color = '#C9A96E']
   VEG -> HVI [color = '#C9A96E']
   POP -> HVI [color = '#C9A96E']
-  STR -> HVI [color = '#C9A96E']
 }
 ")
 ```
@@ -202,15 +187,9 @@ digraph inputs {
 
 ---
 
-<!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 3 · PREPROCESSING                             ║
-╚══════════════════════════════════════════════════════╝
--->
-
 ## Data Preprocessing
 
-.slide-label[Slide 3 · Preprocessing · 你的名字]
+.slide-label[Slide 3 · Preprocessing · Jianshu Wu]
 
 .left-wide[
 
@@ -227,7 +206,7 @@ digraph preprocessing {
     rank = same
     style = invis
     L8  [label = 'Landsat 8/9 TIRS LST',    fillcolor = '#2C3E6B', color = '#2C3E6B']
-    S2  [label = 'Sentinel-2 MSI NDVI/LULC', fillcolor = '#2C3E6B', color = '#2C3E6B']
+    S2  [label = 'Sentinel-2 MSI NDVI',      fillcolor = '#2C3E6B', color = '#2C3E6B']
     MOD [label = 'MODIS LST Time Series',    fillcolor = '#2C3E6B', color = '#2C3E6B']
   }
 
@@ -296,7 +275,7 @@ digraph preprocessing {
 .stat-box[
 <span class="stat-number">Step 4</span>
 <span class="stat-label">**Spatial Alignment** — Stack all data layers onto a single shared grid</span>
-<span class="stat-source">Enables pixel-level comparison across all sources</span>
+<span class="stat-source">Enables pixel-level comparison and ward-level aggregation</span>
 ]
 
 ]
@@ -304,12 +283,6 @@ digraph preprocessing {
 .footnote[USGS Landsat Collection 2 · ESA Sentinel Hub · NASA LP DAAC · GEE Python API]
 
 ---
-
-<!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 4 · ANALYSIS                                  ║
-╚══════════════════════════════════════════════════════╝
--->
 
 ## Analysis: From Preprocessed Data to HVI
 
@@ -320,15 +293,15 @@ digraph preprocessing {
 ### Three Integrated Work Packages
 
 **WP1 · Heat Mapping**
-Generate multi-temporal LST maps to identify heat hotspots at ward scale
+Generate multi-temporal LST maps to identify surface heat hotspots at ward scale
 
-**WP2 · Land Cover & Green Space**
-Analyse vegetation cover, built-up area, and impervious surfaces using Sentinel-2 NDVI
+**WP2 · Vegetation Mapping**
+Analyse vegetation cover and green-space cooling effects using Sentinel-2 NDVI
 
 **WP3 · Heat Vulnerability Index**
-Combine EO data with WorldPop and OSM to produce ward-level HVI
+Aggregate normalised indicators to ward boundaries using zonal statistics
 
-> HVI = LST × 0.5 + Pop × 0.3 − NDVI × 0.2
+> HVI = 0.5 × LST_norm + 0.3 × Pop_norm − 0.2 × NDVI_norm
 
 .chip.gold[LST] .chip.teal[NDVI] .chip.alert[Population]
 
@@ -345,24 +318,27 @@ digraph analysis {
   node [fontname = 'Helvetica', shape = rectangle, style = filled,
         fontcolor = white, margin = '0.2,0.12', fontsize = 11]
 
-  PP  [label = 'Preprocessed Data Stack', fillcolor = '#27AE60', color = '#27AE60']
+  PP   [label = 'Preprocessed Data Stack', fillcolor = '#27AE60', color = '#27AE60']
 
   subgraph rank_mid {
     rank = same
-    LULC [label = 'Vegetation &\nLand Cover (WP2)', fillcolor = '#2C3E6B', color = '#2C3E6B']
-    UHI  [label = 'UHI Intensity\nMapping (WP1)',   fillcolor = '#2C3E6B', color = '#2C3E6B']
+    VEG  [label = 'Vegetation\nMapping (WP2)', fillcolor = '#2C3E6B', color = '#2C3E6B']
+    HEAT [label = 'Surface Heat\nMapping (WP1)', fillcolor = '#2C3E6B', color = '#2C3E6B']
   }
 
-  HVI [label = 'Heat Vulnerability Index\nHVI = LST×0.5 + Pop×0.3 − NDVI×0.2 (WP3)',
-       fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
+  WARD [label = 'Ward-level Aggregation\nZonal Statistics', fillcolor = '#5D4037', color = '#5D4037']
 
-  SPA [label = 'Spatial Inequality Analysis\nWard-level disparity in heat exposure',
-       fillcolor = '#8E44AD', color = '#8E44AD']
+  HVI  [label = 'Heat Vulnerability Index (WP3)\n0.5×LST_norm + 0.3×Pop_norm − 0.2×NDVI_norm',
+        fillcolor = '#C9A96E', color = '#C9A96E', fontcolor = '#0F1117']
 
-  PP   -> LULC [color = '#4FC4CF']
-  PP   -> UHI  [color = '#4FC4CF']
-  LULC -> HVI  [color = '#C9A96E']
-  UHI  -> HVI  [color = '#C9A96E']
+  SPA  [label = 'Spatial Inequality Analysis\nCompare ward HVI · Identify high-risk clusters',
+        fillcolor = '#8E44AD', color = '#8E44AD']
+
+  PP   -> VEG  [color = '#4FC4CF']
+  PP   -> HEAT [color = '#4FC4CF']
+  VEG  -> WARD [color = '#C9A96E']
+  HEAT -> WARD [color = '#C9A96E']
+  WARD -> HVI  [color = '#C9A96E']
   HVI  -> SPA  [color = white, penwidth = 2]
 }
 ")
@@ -370,19 +346,13 @@ digraph analysis {
 
 ]
 
-.footnote[IPCC AR5 exposure–sensitivity–adaptive capacity framework · Chen et al. (2021)]
+.footnote[IPCC AR5 exposure–sensitivity–adaptive capacity framework · Kumar et al. (2024) · Chen et al. (2021)]
 
 ---
 
-<!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 5 · OUTPUTS FOR POLICY                        ║
-╚══════════════════════════════════════════════════════╝
--->
-
 ## Outputs for Policy
 
-.slide-label[Slide 5 · Output · 你的名字]
+.slide-label[Slide 5 · Output · Jianshu Wu]
 
 .stats-row[
 
@@ -390,7 +360,7 @@ digraph analysis {
 <span class="stat-number">01</span>
 <span class="stat-label">**Ward-level Heat Maps**<br>
 <span style="font-size:0.82em;color:#9DA3B4">
-HVI (LST × 0.5 + Pop × 0.3 − NDVI × 0.2) overlaid with OSM data — identifies areas with the highest HVI scores
+HVI (0.5×LST_norm + 0.3×Pop_norm − 0.2×NDVI_norm) overlaid with OSM context — identifies areas with highest HVI scores
 </span></span>
 <span class="stat-source">Sources: Landsat LST · Sentinel-2 NDVI · WorldPop · OSM</span>
 ]
@@ -399,15 +369,15 @@ HVI (LST × 0.5 + Pop × 0.3 − NDVI × 0.2) overlaid with OSM data — identif
 <span class="stat-number">02</span>
 <span class="stat-label">**Priority Intervention Zones**<br>
 <span style="font-size:0.82em;color:#9DA3B4">
-Derived from ward-level heat maps — flags areas with the highest combined heat and social vulnerability scores
+Derived from ward-level HVI maps — flags areas with the highest combined thermal and population exposure
 </span></span>
 ]
 
 .stat-box.alert[
 <span class="stat-number">03</span>
-<span class="stat-label">**Policy Dashboard Mockup**<br>
+<span class="stat-label">**Dashboard Mockup**<br>
 <span style="font-size:0.82em;color:#9DA3B4">
-Static prototype linking ward heat scores to Ahmedabad Heat Action Plan targets
+Mockup to communicate ward-level HVI scores and intervention priorities
 </span></span>
 <span class="stat-source">Figma wireframe / R Shiny mockup</span>
 ]
@@ -416,7 +386,7 @@ Static prototype linking ward heat scores to Ahmedabad Heat Action Plan targets
 <span class="stat-number">04</span>
 <span class="stat-label">**Annual Monitoring Plan**<br>
 <span style="font-size:0.82em;color:#9DA3B4">
-Repeatable GEE script for yearly LST updates across all wards
+Workflow designed to be repeatable for annual LST updates across all wards
 </span></span>
 <span class="stat-source">Documented GEE code + update schedule</span>
 ]
@@ -425,29 +395,22 @@ Repeatable GEE script for yearly LST updates across all wards
 
 <br>
 
-> All four outputs feed directly into **Ahmedabad's Heat Action Plan (HAP)** — enabling evidence-based cooling investment at ward level.
+> These outputs can inform **Ahmedabad's Heat Action Plan (HAP)** and support ward-level cooling prioritisation.
 
 .footnote[Ahmedabad HAP (2013) · Knowlton et al. (2014) PMC · SDG 11.6.2]
 
 ---
 
-<!--
-╔══════════════════════════════════════════════════════╗
-║  SLIDE 6 · LIMITATIONS                               ║
-╚══════════════════════════════════════════════════════╝
--->
-
 ## Limitations
 
-.slide-label[Slide 6 · Limitations · 你的名字]
+.slide-label[Slide 6 · Limitations · Jianshu Wu]
 
 | Stage | Limitation | Consequence | Mitigation |
 |-------|-----------|-------------|------------|
-| **Data** | Landsat 16-day revisit cycle | Misses intra-heatwave LST peaks | Gap-fill with MODIS 8-day MOD11A2 |
-| **Data** | WorldPop 2020 — 6-year lag from present | HVI may not reflect current population distribution | No newer high-resolution population dataset available via GEE |
-| **Preprocessing** | Atmospheric correction uncertainty 1.6–2 K | Inflated LST in dust-storm events common in Ahmedabad | Apply MODTRAN coefficients validated for arid South Asia |
-| **Preprocessing** | Monsoon cloud cover (JJA) leaves composite gaps | Incomplete seasonal stack for June–August | Restrict analysis to pre-monsoon (MAM) and post-monsoon (OND) |
-| **Analysis** | 30 m resolution cannot resolve street-level micro-UHI | Priority zones generalised at ward scale only | — |
+| **Data** | WorldPop 2020 — 6-year lag | HVI may not reflect current population distribution | Best available proxy via GEE |
+| **Preprocessing** | Atmospheric correction uncertainty 1.6–2 K | LST may be inflated under dusty conditions | Use region-appropriate correction parameters |
+| **Analysis** | HVI is a simplified proxy — not a full vulnerability index | Socio-economic dimensions not captured | Interpret results as indicative only |
+| **Analysis** | Weights derived from Kumar et al. (2024) correlations but rounded for simplicity | Ward rankings may shift under alternative weighting | Sensitivity testing in future work |
 
 .stats-row[
 
@@ -471,4 +434,4 @@ Repeatable GEE script for yearly LST updates across all wards
 
 ]
 
-.footnote[Emami & Mojaradi (2021) RSE · USGS Landsat Handbook · WorldPop (2020)]
+.footnote[Emami & Mojaradi (2021) RSE · USGS Landsat Handbook · WorldPop (2020) · Kumar et al. (2024)]
