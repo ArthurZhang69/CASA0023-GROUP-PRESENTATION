@@ -28,7 +28,7 @@ class: title-slide
 <br>
 <br>
 
-<span style="display:inline-block; background:var(--bg-card); border:1px solid rgba(201,169,110,0.5); color:var(--gold); font-family:var(--font-body); font-size:0.7em; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; padding:0.35em 0.9em; border-radius:2px; margin-bottom:0rem;">CASA0023 · Remotely Sensing Cities and Environments · 2026</span>
+<span style="display:inline-block; background:var(--bg-card); border:1px solid rgba(201,169,110,0.5); color:var(--gold); font-family:var(--font-body); font-size:0.7em; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; padding:0.35em 0.9em; border-radius:2px; margin-bottom:1rem;">CASA0023 · Remotely Sensing Cities and Environments · 2026</span>
 
 <h1 style="font-family:var(--font-display); font-size:3.4em; font-weight:700; color:var(--text-primary); line-height:1.05; margin:0 0 0.3em 0;">PROJECT THERMIS
 
@@ -38,6 +38,11 @@ class: title-slide
 <p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--white); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;">Terravance Advisory Group [TAG] · UCL CASA</p>
 <p style="font-family:var(--font-body); font-size:0.8em; font-weight:300; color:var(--white); letter-spacing:0.08em; text-transform:uppercase; margin:0.2em 0;">March 2026</p>
 
+.pull-right[
+<div style="display:flex; align-items:right; justify-content:center; height:80%; margin-top:-17rem;">
+<img src="Content From ShiYao Zhang/tag_logo.svg" style="min-width:100%; object-fit:contain;margin-left:0.5rem;">
+</div>
+]
 </div>
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
@@ -84,51 +89,38 @@ theme_eoheat <- function(base_size = 12) {
 ```
 
 ---
-
 ## Presentation Structure
 
-<br>
-
 .pull-left[
-
-.stat-box[
-<span class="stat-number">01</span>
-<span class="stat-label">Problem Definition</span>
-<span class="stat-source">Slides 2–4 · ~2.5 min </span>
-]
-
-.stat-box.teal[
-<span class="stat-number">02</span>
-<span class="stat-label">Approach & Methodology</span>
-<span class="stat-source">Slides 5–10 · ~4 min </span>
-]
-
-.stat-box[
-<span class="stat-number">03</span>
-<span class="stat-label">Project Plan & VFM</span>
-<span class="stat-source">Slides 11–14 · ~2.5 min </span>
-]
-
+<div style="display:flex; align-items:left; justify-content:center; height:100%; margin-top:01rem;">
+<img src="Content From ShiYao Zhang/THERMISV2.png" style="min-width:150%; object-fit:contain;margin-left:1.5rem;">
+</div>
 ]
 
 .pull-right[
+<div style="display:flex; flex-direction:column; gap:0.8rem; margin-top:1rem;margin-left:2.5rem; font-family:'Outfit',sans-serif;width:85%;">
+<div style="background:#1A1F2E; border:1.5px solid rgba(201,169,110,0.4); border-left:3px solid #C9A96E; border-radius:6px; padding:1rem 1.2rem;">
+<div style="color:#C9A96E; font-size:1.5em; font-weight:700; line-height:1; margin-bottom:0.3rem;">01</div>
+<div style="color:#EDE8DF; font-size:0.85em; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem;">Problem Definition</div>
+<div style="color:#5C6380; font-size:0.65em; margin-bottom:0.5rem;">Slides 3–6 · ~2.5 min</div>
+<div style="color:#9DA3B4; font-size:0.7em; line-height:1.6;">8 million residents. 1,300 heat deaths. Zero predictive infrastructure.</div>
+</div>
+<div style="background:#1A1F2E; border:1.5px solid rgba(79,196,207,0.4); border-left:3px solid #4FC4CF; border-radius:6px; padding:1rem 1.2rem;">
+<div style="color:#4FC4CF; font-size:1.5em; font-weight:700; line-height:1; margin-bottom:0.3rem;">02</div>
+<div style="color:#EDE8DF; font-size:0.85em; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem;">Approach & Methodology</div>
+<div style="color:#5C6380; font-size:0.65em; margin-bottom:0.5rem;">Slides 7–13 · ~4 min</div>
+<div style="color:#9DA3B4; font-size:0.7em; line-height:1.6;">Multi-sensor EO pipeline from data acquisition to ward-level HVI mapping.</div>
+</div>
+<div style="background:#1A1F2E; border:1.5px solid rgba(201,169,110,0.4); border-left:3px solid #C9A96E; border-radius:6px; padding:1rem 1.2rem;">
+<div style="color:#C9A96E; font-size:1.5em; font-weight:700; line-height:1; margin-bottom:0.3rem;">03</div>
+<div style="color:#EDE8DF; font-size:0.85em; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem;">Project Plan & VALUE FOR MONEY</div>
+<div style="color:#5C6380; font-size:0.65em; margin-bottom:0.5rem;">Slides 11–14 · ~2.5 min</div>
+<div style="color:#9DA3B4; font-size:0.7em; line-height:1.6;">12-month delivery schedule, £500k budget breakdown and risk register.</div>
 
-<br>
+</div>
+</div>
 
-> Our proposal is structured around a single question:
->
-> **How do we get the right intervention to the right ward, on the right day — before people die?**
-
-<br>
-
-.text-small.text-muted[
-All figures in this presentation are produced from open-access  
-Earth Observation data (Landsat 8/9, Sentinel-2, MODIS) unless  
-otherwise noted. Code available at: `https://github.com/ArthurZhang69/CASA0023-GROUP-PRESENTATION.git`
 ]
-
-]
-
 ---
 class: section-slide
 
@@ -159,7 +151,7 @@ knitr::include_graphics("Content From ShiYao Zhang/fig_lst_ahmedabad.png")
 </div>
 
 <div style="flex:1;">
-```{r fig-pie-hyj, out.width="100%", fig.align="center"}
+```{r fig-pie-syz, out.width="100%", fig.align="center"}
 knitr::include_graphics("Content From ShiYao Zhang/Land Cover 2019.png")
 ```
 </div>
@@ -234,32 +226,29 @@ Bottom: Built-up & population · Chaturvedi et al. (2022)]
 
 ]
 
-<div class="right-narrow" style="margin-top:-2.5rem;">
-
-.stat-box.alert[
-<span class="stat-number">1,344</span>
-<span class="stat-label">Excess deaths, May 2010</span>
+<div class="right-narrow" style="margin-top:3.5rem;margin-left:-1rem">
+<div style="width:70%;margin-left:12.5%">
+<div class="stat-box alert">
+<span class="stat-number" style="font-size:2em !important;">1,344</span>
+<span class="stat-label" style="color:#EDE8DF !important; font-weight:700 !important; margin-top:0.5rem !important;">Excess deaths, May 2010</span>
 <span class="stat-source">Azhar et al. (2014), PLOS ONE</span>
-]
-
-.stat-box[
-<span class="stat-number">46.8°C</span>
-<span class="stat-label">Peak temperature, May 25</span>
+</div>
+<div class="stat-box">
+<span class="stat-number" style="font-size:2em !important;">46.8°C</span>
+<span class="stat-label" style="color:#EDE8DF !important; font-weight:700 !important; margin-top:0.5rem !important;">Peak temperature, May 25</span>
 <span class="stat-source">IMD / Azhar et al. (2014)</span>
-]
-
-.stat-box[
-<span class="stat-number">+130%</span>
-<span class="stat-label">Built-up area growth, 1990–2019</span>
+</div>
+<div class="stat-box">
+<span class="stat-number" style="font-size:2em !important;">+130%</span>
+<span class="stat-label" style="color:#EDE8DF !important; font-weight:700 !important; margin-top:0.5rem !important;">Built-up area growth, 1990–2019</span>
 <span class="stat-source">Chaturvedi et al. (2022) Table 4</span>
-]
-
-.stat-box.teal[
-<span class="stat-number">70%</span>
-<span class="stat-label">of city area projected ≥45°C</span>
+</div>
+<div class="stat-box teal">
+<span class="stat-number" style="font-size:2em !important;">70%</span>
+<span class="stat-label" style="color:#EDE8DF !important; font-weight:700 !important; margin-top:0.5rem !important;">of city area projected ≥45°C</span>
 <span class="stat-source">Mohammad et al. (2022)</span>
-]
-
+</div>
+</div>
 </div>
 
 ---
@@ -293,11 +282,11 @@ knitr::include_graphics("Content From ShiYao Zhang/IPCC.png")
 
 <br>
 
-> "The official temperature is recorded **8 km outside** the city. On the tarmac where workers walk, it can be **10°C hotter**."
->
-> — Dr. Mavalankar, *Exemplars in Global Health* (2022)
+<div style="background:var(--bg-card); border-left:3px solid var(--teal); padding:1rem 1.2rem; margin-top:-2rem;">
+<p style="color:#EDE8DF; font-style:italic; font-size:0.85em; line-height:1.6; margin:0;">"The official temperature is recorded <strong>8 km outside</strong> the city. On the tarmac where workers walk, it can be <strong style="color:#4FC4CF;">10°C hotter</strong>."</p>
+<p style="color:#5C6380; font-size:0.75em; margin:0.5rem 0 0 0;">— Dr. Mavalankar, <em>Exemplars in Global Health</em> (2022)</p>
+</div>
 
-.chip.alert[Spatial Data Gap] .chip[Ward-level] .chip.teal[1 Weather Station]
 
 ]
 
@@ -397,7 +386,7 @@ class: section-slide
 
 <!--
 ╔══════════════════════════════════════════════════════╗
-║  SLIDE 1 · OVERVIEW                                  ║
+║  SLIDE 5 · OVERVIEW                                  ║
 ╚══════════════════════════════════════════════════════╝
 -->
 
@@ -423,7 +412,7 @@ class: section-slide
 
 .right-wide[
 
-<div style="overflow:hidden; height:108vh; margin-top:-6rem;">
+<div style="overflow:hidden; height:108vh; margin-top:-7rem;">
 <img src="Content From ShiYao Zhang/Flowchart1_refined.png" style="width:80%;  max-height:108vh; object-fit:contain;margin-left:7rem;">
 </div>
 
@@ -435,7 +424,7 @@ class: section-slide
 
 <!--
 ╔══════════════════════════════════════════════════════╗
-║  SLIDE 2 · DATA INPUT                                ║
+║  SLIDE 6 · DATA INPUT                                ║
 ╚══════════════════════════════════════════════════════╝
 -->
 
@@ -514,7 +503,7 @@ class: section-slide
 
 <!--
 ╔══════════════════════════════════════════════════════╗
-║  SLIDE 3 · PREPROCESSING                             ║
+║  SLIDE 7 · PREPROCESSING                             ║
 ╚══════════════════════════════════════════════════════╝
 -->
 
@@ -524,7 +513,7 @@ class: section-slide
 
 .left-wide[
 
-<img src="Content From ShiYao Zhang/Flowchart2-refined.png" style="width:100%; max-height:48vh; object-fit:contain; display:block;margin-top:-1.6rem;margin-left:-2rem">
+<img src="Content From ShiYao Zhang/Flowchart2_refined.png" style="width:100%; max-height:48vh; object-fit:contain; display:block;margin-top:-1.6rem;margin-left:-2rem">
 
 
 
@@ -587,7 +576,7 @@ class: section-slide
 
 <!--
 ╔══════════════════════════════════════════════════════╗
-║  SLIDE 4 · ANALYSIS                                  ║
+║  SLIDE 11 · ANALYSIS        
 ╚══════════════════════════════════════════════════════╝
 -->
 
@@ -837,7 +826,7 @@ ggplot(wp, aes(y = label)) +
 
 ## Budget & Value for Money
 
-.slide-label[Slide 136 · Project Plan · zhexiang zhou]
+.slide-label[Slide 16 · Project Plan · zhexiang zhou]
 
 .left-wide[
 <br>
@@ -908,7 +897,7 @@ ggplot(budget, aes(x = amount, y = item, fill = fill)) +
 
 </div>
 
-.chip[56% Personnel] .chip.teal[12% Contingency] .chip[0% EO Licence]
+.chip[56% Personnel] .chip.teal[12% Contingency] .chip.gold[0% EO Licence]
 
 ]
 
@@ -1039,9 +1028,8 @@ ggplot(budget, aes(x = amount, y = item, fill = fill)) +
 
 <br>
 
-.mono.text-small.text-muted[
-github.com/ArthurZhang69/CASA0023-GROUP-PRESENTATION
-]
+
+
 
 ]
 
@@ -1063,15 +1051,17 @@ class: final-slide
 </div>
 
 <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:4px; padding:1.2rem;">
-<p style="font-family:var(--font-body); color:var(--gold); font-size:0.65em; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 0.5rem 0;">EO Analysis</p>
-<p style="color:var(--text-primary); margin:0 0 0.3rem 0;">Member B</p>
-<p style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.75em; margin:0;">b.member@ucl.ac.uk</p>
+<p style="font-family:var(--font-body); color:var(--gold); font-size:0.65em; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 0.5rem 0;">TAG ADVISORS</p>
+<p style="color:var(--text-primary); margin:0 0 0.3rem 0;">ZheXiang Zhou丨HaoYu Jiang JianShu Wu丨Li Sheng</p>
+<p style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.75em; margin:0;"></p>
 </div>
 
 <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:4px; padding:1.2rem;">
-<p style="font-family:var(--font-body); color:var(--teal); font-size:0.65em; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 0.5rem 0;">Repository</p>
-<p style="color:var(--text-primary); margin:0 0 0.3rem 0;">All code &amp; data</p>
-<p style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.75em; margin:0;">github.com/[team]/eo-heat</p>
+<p style="font-family:var(--font-body); color:var(--teal); font-size:0.65em; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 0.5rem 0;">PROJECT DEMO</p>
+<p style="color:var(--text-primary); margin:0 0 0.3rem 0;">THERMIS VER ALPHA-1.0</p>
+<p style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.75em; margin:0;">
+<a href="https://arthurzhang69.github.io/PROJECT-THERMIS/" style="color:#4FC4CF; text-decoration:none; word-break:break-all;">https://arthurzhang69.github.io/PROJECT-THERMIS/</a>
+</p>
 </div>
 
 </div>
