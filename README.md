@@ -10,11 +10,11 @@
 ```
 CASA0023-GROUP-PRESENTATION/
 │
-├── index.Rmd          ← ⭐ 最终演示文稿主文件（Arthur维护）
-├── index.html         ← Knit 后生成，GitHub Pages 渲染这个
-├── custom.css         ← 共享主题样式（根目录css的除了Arthur之外其他人不要修改⚠,
-                         然后自己文件夹里的css可以定时跟根目录里的css同步一下）
-├── .gitignore         ← GitHub大文件忽略，切勿往GitHub上传大文件(>100MB)堵塞tree
+├── index.Rmd          ← ⭐ Main presentation file (maintained by Arthur)
+├── index.html         ← Generated after Knit; rendered by GitHub Pages
+├── custom.css         ← Shared theme stylesheet (root-level CSS: do NOT modify unless you are Arthur ⚠;
+                         sync your personal folder's CSS with the root CSS periodically)
+├── .gitignore         ← Ignores large files on GitHub — never push files >100MB
 ├── README.md
 │
 ├── Content From HaoYu Jiang/
@@ -26,23 +26,23 @@ CASA0023-GROUP-PRESENTATION/
 
 ---
 
-## ✍️ 每个人的文件夹怎么用
+## ✍️ How to Use Your Folder
 
-### Step 1 · 确认文件已就位
+### Step 1 · Confirm Your Files Are in Place
 
-每个人的文件夹里已经放好了：
+Each person's folder already contains:
 
 ```
 Content From [Your Name]/
-├── preview.Rmd    ✅ 已放好，包含你负责的 slides 内容
-└── custom.css     ✅ 已放好，共享主题样式
+├── preview.Rmd    ✅ Already set up — contains your assigned slides
+└── custom.css     ✅ Already set up — shared theme stylesheet
 ```
 
-无需任何操作，直接从 Step 2 开始。
+No setup needed. Jump straight to Step 2.
 
-### Step 2 · 在 preview.Rmd 里写你的 slides
+### Step 2 · Write Your Slides in preview.Rmd
 
-打开 `preview.Rmd`，在文件末尾按格式添加你负责的 slides：
+Open `preview.Rmd` and add your slides at the end of the file using this format:
 
 ```rmd
 ---
@@ -51,70 +51,70 @@ Content From [Your Name]/
 
 .slide-label[Slide XX · Your Name]
 
-内容写在这里...
+Content goes here...
 
-.footnote[参考文献]
+.footnote[References]
 ```
 
-每张 slide 之间用 `---` 分隔。
+Separate each slide with `---`.
 
-### Step 3 · 本地预览
+### Step 3 · Preview Locally
 
-在 RStudio 里打开 `preview.Rmd`，点击 **Knit**，浏览器会自动弹出预览。
+Open `preview.Rmd` in RStudio and click **Knit**. Your browser will automatically open a preview.
 
-样式与最终版完全一致，所见即所得。
+The styling is identical to the final version — what you see is what you get.
 
-### Step 4 · 把图片也放在自己文件夹里
+### Step 4 · Store Images in Your Own Folder
 
 ```
 Content From [Your Name]/
 ├── preview.Rmd
 ├── custom.css
-├── fig_01_map.png       ← 图片放这里
+├── fig_01_map.png       ← Images go here
 └── fig_02_chart.png
 ```
 
-引用图片时：
+When referencing images, use:
 
 ```r
 knitr::include_graphics("Content From [Your Name]/fig_01_map.png")
 ```
 
-> ⚠️ 路径从 **repo 根目录** 出发写，不要用 `./`
+> ⚠️ Write paths from the **repo root** — do not use `./`
 
-### Step 5 · 推送到 GitHub
+### Step 5 · Push to GitHub
 
 ```bash
-# 每次开始前先同步
+# Sync before starting
 git pull
 
-# 编辑完成后
+# After editing
 git add "Content From [Your Name]/"
-git commit -m "简短描述，比如：Add slide 3 vulnerability diagram"
+git commit -m "Brief description, e.g.: Add slide 3 vulnerability diagram"
 git push
 ```
 
-**只 add 自己的文件夹**，不要碰其他人的文件夹和根目录文件。
+**Only add your own folder** — do not touch other people's folders or root-level files.
 
 ---
 
-## 🔀 最终整合流程（Arthur操作）
+## 🔀 Final Integration (Arthur only)
 
-当所有人完成各自内容后，Arthur按以下步骤合并：
+Once everyone has finished their content, Arthur follows these steps to merge:
 
-### Step 1 · 确认每个人的 preview.Rmd 能正常 Knit
+### Step 1 · Verify Each Person's preview.Rmd Knits Successfully
 
-逐一打开每个人文件夹里的 `preview.Rmd` 点 Knit，确保没有报错。
+Open each person's `preview.Rmd` and Knit it one by one. Make sure there are no errors.
 
-### Step 2 · 在 index.Rmd 里按顺序引入每个人的内容
+### Step 2 · Import Each Person's Content into index.Rmd in Order
 
-### Step 3 · Knit index.Rmd 生成最终文件
+### Step 3 · Knit index.Rmd to Generate the Final File
 
-RStudio 中打开根目录的 `index.Rmd`，点击 **Knit**，生成 `index.html`。
+Open the root-level `index.Rmd` in RStudio and click **Knit** to generate `index.html`.
 
-如果报错，通常是某人的图片路径写错了，逐一检查 `include_graphics()` 的路径。
+If errors occur, they are usually caused by incorrect image paths — check each `include_graphics()` call.
 
-### Step 4 · 推送，GitHub Pages 自动更新
+### Step 4 · Push — GitHub Pages Updates Automatically
 
 ```bash
 git add index.html libs/
@@ -122,19 +122,19 @@ git commit -m "Final presentation build"
 git push
 ```
 
-几分钟后访问页面顶部的链接即可看到在线版本。
+The live page will update within a few minutes.
 
 ---
 
-## ⚠️ 常见问题
+## ⚠️ Common Issues
 
-| 问题 | 原因 | 解决方法 |
-|------|------|---------|
-| Knit 报错找不到图片 | 路径用了 `./` 或相对路径 | 改成从根目录出发的完整路径 |
-| 样式不对 | `custom.css` 没放在同级目录 | 确认文件夹里有 `custom.css` |
-| Push 被拒绝 | 忘记先 pull | 先 `git pull` 再 push |
-| 图片太大推不上去 | 文件超过 100MB | 大文件放 Google Drive，repo 里只放导出的图表截图 |
-| Push 报 403 / Permission denied | 本地缓存了别人的 GitHub 账号 | 运行 `git remote set-url origin https://你的用户名@github.com/ArthurZhang69/CASA0023-GROUP-PRESENTATION.git` 再 push，弹出密码框时输入自己的 Personal Access Token（GitHub → Settings → Developer Settings → Personal Access Tokens → 勾选 repo 权限生成） |
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| Knit error: image not found | Path uses `./` or a relative path | Rewrite as a full path from the repo root |
+| Styles not applying | `custom.css` not in the same directory | Confirm your folder contains `custom.css` |
+| Push rejected | Forgot to pull first | Run `git pull` before pushing |
+| Image too large to push | File exceeds 100MB | Store large files on Google Drive; only push exported chart screenshots to the repo |
+| Push returns 403 / Permission denied | Local Git is cached with someone else's GitHub account | Run `git remote set-url origin https://YOUR_USERNAME@github.com/ArthurZhang69/CASA0023-GROUP-PRESENTATION.git`, then push again. When prompted for a password, enter your Personal Access Token (GitHub → Settings → Developer Settings → Personal Access Tokens → generate one with `repo` scope) |
 
 ---
 
